@@ -10,11 +10,10 @@
     tools:context="com.example.hmiyado.sampo.MainActivity">
 
     <fragment
-        android:name="com.example.hmiyado.sampo.view.MapFragment"
         android:id="@+id/map_fragment"
+        android:name="com.example.hmiyado.sampo.view.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
     </fragment>
 </RelativeLayout>
