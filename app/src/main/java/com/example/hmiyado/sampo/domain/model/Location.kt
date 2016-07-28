@@ -8,7 +8,7 @@ open class Location (
         val longitude: Double
 ){
     companion object{
-        fun empty() = object:Location(0.0,0.0){
+        fun empty() = object:Location(-100000.0,-100000.0){
             override fun isEmpty(): Boolean{
                 return true
             }

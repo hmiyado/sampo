@@ -23,20 +23,30 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
     }
 
     private val locationSubject: PublishSubject<SampoLocation>
+    private val locationListener: LocationListener
 
     init {
         locationSubject = PublishSubject.create()
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                /*min time for update*/0,
-                /*min distance for update*/0f,
-                createLocationListener()
-        )
+        locationListener = createLocationListener()
     }
 
     override fun getLocationObservable(): Observable<SampoLocation> {
         return locationSubject.asObservable().share()
     }
+
+    override fun startLocationObserve() {
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                /*min time for update*/0,
+                /*min distance for update*/0f,
+                locationListener
+        )
+    }
+
+    override fun stopLocationObserve() {
+        locationManager.removeUpdates(locationListener)
+    }
+
 
     private fun createLocationListener(): LocationListener {
         return object : LocationListener {

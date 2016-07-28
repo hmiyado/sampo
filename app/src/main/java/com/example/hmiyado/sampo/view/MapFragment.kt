@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import butterknife.bindView
 import com.example.hmiyado.sampo.R
+import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.example.hmiyado.sampo.presenter.FragmentPresenter
 import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.repository.LocationService
@@ -30,7 +32,9 @@ class MapFragment: Fragment(),FragmentWithPresenter {
     }
 
     private var presenter: MapFragmentPresenter? = null
-    private val gpsButton: Button by bindView(R.id.gps_button)
+    private val gpsStartButton: Button by bindView(R.id.gps_start_button)
+    private val gpsStopButton: Button by bindView(R.id.gps_stop_button)
+    private val textView: TextView by bindView(R.id.text_view)
 
     init {
     }
@@ -43,14 +47,15 @@ class MapFragment: Fragment(),FragmentWithPresenter {
         super.onCreate(savedInstanceState)
         presenter = MapFragmentPresenter(
                 this,
-                LocationServiceImpl(this.activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager)
+                UseLocation(
+                    LocationServiceImpl(this.activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager)
+                )
         )
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-
-        gpsButton.setOnClickListener ( presenter?.createOnGpsButtonClickListener() )
-
+        gpsStartButton.setOnClickListener ( presenter?.createOnGpsStartButtonClickListener() )
+        gpsStopButton.setOnClickListener( presenter?.createOnGpsStopButtonClickListener())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -64,5 +69,9 @@ class MapFragment: Fragment(),FragmentWithPresenter {
     override fun onDestroy() {
         super.onDestroy()
         presenter = null
+    }
+
+    fun setText(text: String){
+        textView.setText(text)
     }
 }

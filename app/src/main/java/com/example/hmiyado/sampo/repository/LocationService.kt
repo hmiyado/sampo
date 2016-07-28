@@ -8,4 +8,6 @@ import rx.Observable
  */
 interface LocationService {
     fun getLocationObservable(): Observable<Location>
+    fun startLocationObserve(): Unit
+    fun stopLocationObserve(): Unit
 }
