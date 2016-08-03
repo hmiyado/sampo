@@ -3,6 +3,7 @@ package com.example.hmiyado.sampo.presenter
 import android.util.Log
 import android.view.View
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.kotlin.Time.Second
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.example.hmiyado.sampo.view.MapFragment
 import rx.android.schedulers.AndroidSchedulers
@@ -22,6 +23,7 @@ class MapFragmentPresenter(
                 .getLocationObservable()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .filter { tempLocation.isEmpty() || (it.localDateTime - tempLocation.localDateTime).toSecond() > Second(30) }
                 .subscribe { location: Location ->
                     Log.d("subscribe", location.toString())
                     tempLocation = location

@@ -61,6 +61,28 @@ Fragmentを切り替えてなんとかする
 記録した結果を，端末に登録する
 記録を画面から消したり出したりできるようにする
 
+LocationにDateTime突っ込むだけでクソめんどくさいことこの上なかった
+data class は結局そのデータ特有のアクセッサとか定義しようとしたら崩壊するからダメ
+継承できないからヌルオブジェクト定義できない
+
+1月30日の1ヶ月後は何日？
+というのを定義するために，abstract Month を継承したJanuary...December を作る
+abstract Month {
+    private val end_day
+}
+
+1月30日の1ヶ月後→日付が，末日を超えていたら，日付を末日に合わせる　
+
+TimePointとTimeIntervalに概念を分ける？
+Timepoint　時点：何年何月何日を表す．それ以上の概念はない
+TimeInterval 時間：時間経過を表す
+
+現状の問題点：LocalDateTime,Year,Monthの.toSecond()が表すものと，Day,Hour,Second,MinuteのtoSecond()が表すものが違う
+Day, Hour, Minute, Second は，絶対的に,toSecondを定義できる
+でも，LocalDateTime, Year, Monthは，相対的な定義（Monthは年初からの経過秒，LocalDateTime, Yearは西暦0年からの経過秒）になってしまっている
+Year, Month はtoSecondを定義できない！！
+相対を定義する
+
 ## GPS情報の取得
 UseLocationでできるようになった
 テストを書こう

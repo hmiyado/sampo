@@ -17,6 +17,7 @@ class UseLocation (
     fun getLocationObservable(): Observable<Location> {
         return locationService.getLocationObservable()
     }
+
     fun startLocationObserve() {
         locationService.startLocationObserve()
     }

@@ -6,6 +6,12 @@ import android.location.LocationManager
 import android.location.LocationProvider
 import android.os.Bundle
 import android.util.Log
+import com.example.hmiyado.sampo.kotlin.Time.*
+import com.example.hmiyado.sampo.kotlin.Time.LocalDateTime as SampoLocalDateTime
+import com.example.hmiyado.sampo.kotlin.Month.Month
+import com.example.hmiyado.sampo.kotlin.Time.Year.Year
+import com.example.hmiyado.sampo.kotlin.Time.ZonedDateTime
+import org.threeten.bp.*
 import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
 import rx.Observable
 import rx.subjects.PublishSubject
@@ -18,7 +24,23 @@ import rx.subjects.PublishSubject
 class LocationServiceImpl(private val locationManager: LocationManager) : LocationService {
     companion object {
         private fun convertFromAndroidLocationToSampoLocation(androidLocation: AndroidLocation): SampoLocation {
-            return SampoLocation(androidLocation.latitude, androidLocation.longitude)
+            return SampoLocation(
+                    androidLocation.latitude,
+                    androidLocation.longitude,
+                    convertFromUnixTimeToLocalDateTime(androidLocation.time)
+            )
+        }
+
+        private fun convertFromUnixTimeToLocalDateTime(unixTime: Long): SampoLocalDateTime {
+            val localDateTime = LocalDateTime.ofEpochSecond(unixTime, 0, ZoneOffset.UTC)
+            return SampoLocalDateTime.Companion.Factory
+                    .build(Year(localDateTime.year))
+                    .build(Month.newInstance(localDateTime.monthValue, Year(localDateTime.year)))
+                    .build(Day(localDateTime.dayOfMonth))
+                    .build(Hour(localDateTime.hour))
+                    .build(Minute(localDateTime.minute))
+                    .build(Second(localDateTime.second))
+                    .complete()
         }
     }
 
