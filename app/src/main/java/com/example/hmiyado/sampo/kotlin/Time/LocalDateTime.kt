@@ -81,19 +81,29 @@ class LocalDateTime protected constructor(
             }
 
             fun build(day: Day): Factory {
-                val daysOfThisMonth = Day(month.LastDay)
+                var daysOfThisMonth = Day(month.LastDay)
                 when {
                     day > daysOfThisMonth -> {
-                        val newDay = day - daysOfThisMonth
-                        build(this.month + Month.Interval(1))
+                        var newDay: Day = day
+                        do {
+                            newDay -= daysOfThisMonth
+                            this.month += Month.Interval(1)
+                            daysOfThisMonth = Day(this.month.LastDay)
+                        } while ( newDay > daysOfThisMonth)
+                        build(this.month)
                         build(newDay)
                     }
                     day <= Day(month.LastDay) && day >= Day(1) -> {
                         this.day = day
                     }
                     else -> {
-                        build(this.month - Month.Interval(1))
-                        val newDay = day + Day(this.month.LastDay)
+                        var newDay: Day = day
+                        do {
+                            newDay += daysOfThisMonth
+                            this.month -= Month.Interval(1)
+                            daysOfThisMonth = Day(this.month.LastDay)
+                        } while ( newDay < Day(1))
+                        build(this.month)
                         build(newDay)
                     }
                 }
@@ -222,20 +232,20 @@ class LocalDateTime protected constructor(
     }
 
     // LocalDateTime 同士を足すことに意味は無い
-//    operator fun plus(localDateTime: LocalDateTime): LocalDateTime
+//    operator fun plus(other: LocalDateTime): LocalDateTime
 
     operator fun minus(localDateTime: LocalDateTime): Second {
         return toUnixTime() - localDateTime.toUnixTime()
     }
 
-    override operator fun compareTo(localDateTime: LocalDateTime): Int {
+    override operator fun compareTo(other: LocalDateTime): Int {
         when {
-            year != localDateTime.year -> return (year - localDateTime.year).value
-            month != localDateTime.month -> return (month - localDateTime.month).value
-            day != localDateTime.day -> return (day - localDateTime.day).toInt()
-            hour != localDateTime.hour -> return (hour - localDateTime.hour).toInt()
-            minute != localDateTime.minute -> return (minute - localDateTime.minute).toInt()
-            second != localDateTime.second -> return (second - localDateTime.second).toInt()
+            year != other.year -> return (year - other.year).value
+            month != other.month -> return (month - other.month).value
+            day != other.day -> return (day - other.day).toInt()
+            hour != other.hour -> return (hour - other.hour).toInt()
+            minute != other.minute -> return (minute - other.minute).toInt()
+            second != other.second -> return (second - other.second).toInt()
             else -> return 0
         }
     }

@@ -8,6 +8,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SampoModule.attachActivity(this)
         setContentView(R.layout.activity_main)
     }
 }

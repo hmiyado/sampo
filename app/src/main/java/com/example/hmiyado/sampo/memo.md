@@ -53,6 +53,9 @@ Fragmentを切り替えてなんとかする
 
 1. GPS情報の取得 -> Service から Observable で
 1. GPS情報の記録
+    - 時間情報の取得
+    - 記録
+    - バックグラウンドでの取得
 1. 記録の閲覧
 1. 
 
@@ -82,6 +85,11 @@ Day, Hour, Minute, Second は，絶対的に,toSecondを定義できる
 でも，LocalDateTime, Year, Monthは，相対的な定義（Monthは年初からの経過秒，LocalDateTime, Yearは西暦0年からの経過秒）になってしまっている
 Year, Month はtoSecondを定義できない！！
 相対を定義する
+
+テスト上はtoUnixTimeなんかを実装できた．
+だが，実アプリケーションでStackOverflow
+1ヶ月先にすすめるごとに1回buildを呼ぶのはさすがにひどいかもしれない．
+とりあえずwhileループあたりの実装に変えよう
 
 ## GPS情報の取得
 UseLocationでできるようになった

@@ -45,15 +45,11 @@ class MapFragment: Fragment(),FragmentWithPresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = MapFragmentPresenter(
-                this,
-                UseLocation(
-                    LocationServiceImpl(this.activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager)
-                )
-        )
+        presenter = MapFragmentPresenter(this)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+
         gpsStartButton.setOnClickListener ( presenter?.createOnGpsStartButtonClickListener() )
         gpsStopButton.setOnClickListener( presenter?.createOnGpsStopButtonClickListener())
     }
@@ -72,6 +68,6 @@ class MapFragment: Fragment(),FragmentWithPresenter {
     }
 
     fun setText(text: String){
-        textView.setText(text)
+        textView.text = text
     }
 }

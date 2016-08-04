@@ -61,8 +61,8 @@ class Year(
         return Interval(value - year.value)
     }
 
-    override operator fun compareTo(year: Year): Int {
-        return value - year.value
+    override operator fun compareTo(other: Year): Int {
+        return value - other.value
     }
     operator fun rangeTo(other: Year): YearRange {
         return YearRange(this, other)

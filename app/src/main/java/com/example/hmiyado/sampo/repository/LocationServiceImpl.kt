@@ -27,20 +27,11 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
             return SampoLocation(
                     androidLocation.latitude,
                     androidLocation.longitude,
-                    convertFromUnixTimeToLocalDateTime(androidLocation.time)
+                    SampoLocalDateTime.Companion.Factory
+                            // Location.getTime() は ms を返すので，1000で割って秒に変換する
+                            .initByUnixTime(Second((androidLocation.time/1000).toInt()))
+                            .complete()
             )
-        }
-
-        private fun convertFromUnixTimeToLocalDateTime(unixTime: Long): SampoLocalDateTime {
-            val localDateTime = LocalDateTime.ofEpochSecond(unixTime, 0, ZoneOffset.UTC)
-            return SampoLocalDateTime.Companion.Factory
-                    .build(Year(localDateTime.year))
-                    .build(Month.newInstance(localDateTime.monthValue, Year(localDateTime.year)))
-                    .build(Day(localDateTime.dayOfMonth))
-                    .build(Hour(localDateTime.hour))
-                    .build(Minute(localDateTime.minute))
-                    .build(Second(localDateTime.second))
-                    .complete()
         }
     }
 
@@ -92,6 +83,7 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
             override fun onLocationChanged(location: AndroidLocation) {
                 val sampoLoation = convertFromAndroidLocationToSampoLocation(location)
                 Log.d("GPS", sampoLoation.toString())
+                Log.d("UnixTime", location.time.toString())
                 locationSubject.onNext(sampoLoation)
             }
         }

@@ -9,7 +9,7 @@ import com.example.hmiyado.sampo.kotlin.Time.Year.YearRange
 /**
  * Created by hmiyado on 2016/07/29.
  */
-sealed abstract class Month constructor(
+sealed class Month constructor(
         private val value: Int,
         val year: Year// うるう年があるので，年も必須
 ) : Comparable<Month> {
@@ -133,11 +133,11 @@ sealed abstract class Month constructor(
         return Second(sumOfSeconds)
     }
 
-    override operator fun compareTo(month: Month): Int {
+    override operator fun compareTo(other: Month): Int {
         when {
-            year > month.year -> return 1
-            year < month.year -> return -1
-            else -> return value - month.value
+            year > other.year -> return 1
+            year < other.year -> return -1
+            else -> return value - other.value
         }
     }
 

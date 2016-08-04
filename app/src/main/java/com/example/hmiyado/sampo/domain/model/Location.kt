@@ -19,7 +19,7 @@ open class Location (
     }
 
     override fun toString(): String {
-        return "Location(${latitude}, ${longitude}, ${localDateTime.toString()})"
+        return "Location($latitude, $longitude, ${localDateTime.toString()})"
     }
 
     open fun isEmpty(): Boolean {
