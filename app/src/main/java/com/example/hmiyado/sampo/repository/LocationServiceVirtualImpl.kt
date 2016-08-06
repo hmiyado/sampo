@@ -18,14 +18,14 @@ import kotlin.concurrent.schedule
  */
 class LocationServiceVirtualImpl : LocationService{
     private val locationSubject: PublishSubject<Location>
-    private var handler: Handler?
+    private var handler: Handler
     private var nextLocation: Location
     private val delayTimeMs:Long = 1000
 
     init {
         locationSubject = PublishSubject.create()
         nextLocation = Location(0.0, 0.0, LocalDateTime.UnixEpoch)
-        handler = null
+        handler = Handler()
     }
 
 
@@ -34,20 +34,16 @@ class LocationServiceVirtualImpl : LocationService{
     }
 
     override fun startLocationObserve() {
-        if (handler == null) {
-            handler = Handler()
-            handler?.postDelayed(object: Runnable{
-                override fun run() {
-                    onNextLocation()
-                    handler?.postDelayed(this, delayTimeMs)
-                }
-            },delayTimeMs)
-        }
+        handler.postDelayed(object: Runnable{
+            override fun run() {
+                onNextLocation()
+                handler?.postDelayed(this, delayTimeMs)
+            }
+        },delayTimeMs)
     }
 
     override fun stopLocationObserve() {
-        handler?.removeCallbacksAndMessages(null)
-        handler = null
+        handler.removeCallbacksAndMessages(null)
     }
 
     private fun updateNextLocation() {
