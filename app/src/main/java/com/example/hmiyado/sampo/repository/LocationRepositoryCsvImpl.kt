@@ -9,7 +9,7 @@ import java.io.File
 /**
  * Created by hmiyado on 2016/08/05.
  */
-class LocationRepositoryImpl(
+class LocationRepositoryCsvImpl(
         private val context: Context
 ) :LocationRepository{
     companion object{

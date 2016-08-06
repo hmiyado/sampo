@@ -82,8 +82,6 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
 
             override fun onLocationChanged(location: AndroidLocation) {
                 val sampoLoation = convertFromAndroidLocationToSampoLocation(location)
-                Log.d("GPS", sampoLoation.toString())
-                Log.d("UnixTime", location.time.toString())
                 locationSubject.onNext(sampoLoation)
             }
         }

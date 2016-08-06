@@ -16,18 +16,34 @@ import rx.schedulers.Schedulers
 class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) : FragmentPresenter {
-    private var tempLocation: Location = Location.empty()
+    private val tempLocationList: MutableList<Location> = mutableListOf()
+    private val LOCATION_INTERVAL = Second(10)
 
     init {
         SampoModule.UseLocation
                 .getLocationObservable()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter { tempLocation.isEmpty() || (it.localDateTime - tempLocation.localDateTime).toSecond() > Second(60) }
+                .filter {
+                    Log.i("filter:observed item", it.localDateTime.toString())
+                    if (tempLocationList.isNotEmpty() ){
+                        Log.i("filter:temp.last", tempLocationList.last().toString())
+                    }
+                    tempLocationList.isEmpty() || (it.localDateTime - tempLocationList.last().localDateTime).toSecond() >= LOCATION_INTERVAL
+                }
                 .subscribe { location: Location ->
                     Log.d("subscribe", location.toString())
-                    tempLocation = location
-                    mapFragment.setText(tempLocation.toString())
+                    if ( tempLocationList.isNotEmpty()) {
+                        Log.d("tempLocationList", tempLocationList.joinToString { it.toString() })
+                    }
+                    tempLocationList.add(location)
+                    val text = tempLocationList.fold(""){ text: String, location: Location ->
+                        """
+                        $text
+                        ${location.toString()}
+                        """
+                    }
+                    mapFragment.setText(text)
                 }
     }
 
