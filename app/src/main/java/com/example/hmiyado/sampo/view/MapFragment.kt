@@ -18,12 +18,17 @@ import com.example.hmiyado.sampo.presenter.FragmentPresenter
 import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.repository.LocationService
 import com.example.hmiyado.sampo.repository.LocationServiceImpl
+import com.example.hmiyado.sampo.view.ui.MapFragmentUi
+import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
+import org.jetbrains.anko.support.v4.ctx
 
 /**
  * Created by hmiyado on 2016/07/26.
  */
 
-class MapFragment: Fragment(),FragmentWithPresenter {
+class MapFragment: Fragment(),FragmentWithPresenter,AnkoLogger {
 
     companion object{
         fun getInstance(): MapFragment{
@@ -32,12 +37,7 @@ class MapFragment: Fragment(),FragmentWithPresenter {
     }
 
     private var presenter: MapFragmentPresenter? = null
-    private val gpsStartButton: Button by bindView(R.id.gps_start_button)
-    private val gpsStopButton: Button by bindView(R.id.gps_stop_button)
-    private val textView: TextView by bindView(R.id.text_view)
-
-    init {
-    }
+    private val textView: TextView by bindView(MapFragmentUi.textViewID)
 
     override fun getPresenter(): FragmentPresenter {
         return presenter!!
@@ -50,12 +50,11 @@ class MapFragment: Fragment(),FragmentWithPresenter {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 
-        gpsStartButton.setOnClickListener ( presenter?.createOnGpsStartButtonClickListener() )
-        gpsStopButton.setOnClickListener( presenter?.createOnGpsStopButtonClickListener())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.map_fragment, container, false)
+        debug { "on create view" }
+        return MapFragmentUi(presenter!!).createView(AnkoContext.Companion.create(ctx, this))
     }
 
     override fun onPause() {
