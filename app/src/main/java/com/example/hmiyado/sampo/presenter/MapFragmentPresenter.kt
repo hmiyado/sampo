@@ -9,6 +9,7 @@ import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.example.hmiyado.sampo.view.MapFragment
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/07/26.
@@ -25,16 +26,17 @@ class MapFragmentPresenter(
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter {
-                    Log.i("filter:observed item", it.localDateTime.toString())
+                    Timber.i("filter:observed item ${it.localDateTime.toString()}")
+                    Timber.i("tempLocationList size ${tempLocationList.size}")
                     if (tempLocationList.isNotEmpty() ){
-                        Log.i("filter:temp.last", tempLocationList.last().toString())
+                        Timber.i("filter:temp.last " + tempLocationList.last().toString())
                     }
                     tempLocationList.isEmpty() || (it.localDateTime - tempLocationList.last().localDateTime).toSecond() >= LOCATION_INTERVAL
                 }
                 .subscribe { location: Location ->
-                    Log.d("subscribe", location.toString())
+                    Timber.d("subscribe", location.toString())
                     if ( tempLocationList.isNotEmpty()) {
-                        Log.d("tempLocationList", tempLocationList.joinToString { it.toString() })
+                        Timber.d("tempLocationList " + tempLocationList.joinToString { it.toString() })
                     }
                     tempLocationList.add(location)
                     val text = tempLocationList.fold(""){ text: String, location: Location ->
@@ -49,14 +51,14 @@ class MapFragmentPresenter(
 
     fun createOnGpsStartButtonClickListener(): (View) -> Unit {
         return {v: View ->
-            Log.d("StartButton", "onClicked")
+            Timber.d("StartButton", "onClicked")
             SampoModule.UseLocation.startLocationObserve()
         }
     }
 
     fun createOnGpsStopButtonClickListener(): (View) -> Unit {
         return { v: View ->
-            Log.d("StopButton", "onclicked")
+            Timber.d("StopButton", "onclicked")
             SampoModule.UseLocation.stopLocationObserve()
         }
     }
