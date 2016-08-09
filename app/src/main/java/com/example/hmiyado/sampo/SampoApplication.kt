@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
+import android.util.Log
 import com.example.hmiyado.sampo.repository.LocationService
 import com.example.hmiyado.sampo.repository.LocationServiceImpl
 import com.jakewharton.threetenabp.AndroidThreeTen

@@ -37,7 +37,7 @@ class LocationServiceVirtualImpl : LocationService{
         handler.postDelayed(object: Runnable{
             override fun run() {
                 onNextLocation()
-                handler?.postDelayed(this, delayTimeMs)
+                handler.postDelayed(this, delayTimeMs)
             }
         },delayTimeMs)
     }
@@ -55,7 +55,6 @@ class LocationServiceVirtualImpl : LocationService{
     }
 
     private fun onNextLocation() {
-        Log.i("TimerTask", nextLocation.toString())
         locationSubject.onNext(nextLocation)
         updateNextLocation()
     }
