@@ -32,6 +32,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    compile 'com.jakewharton.timber:timber:4.1.2'
     compile group: 'io.reactivex', name: 'rxkotlin', version: '0.60.0'
     // https://mvnrepository.com/artifact/io.reactivex/rxandroid
     compile group: 'io.reactivex', name: 'rxandroid', version: '1.2.1'

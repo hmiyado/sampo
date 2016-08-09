@@ -7,6 +7,8 @@ import com.example.hmiyado.sampo.kotlin.Time.Second
 import com.example.hmiyado.sampo.view.MapFragment
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import timber.log.Timber
+
 import org.jetbrains.anko.*
 
 /**
@@ -14,7 +16,7 @@ import org.jetbrains.anko.*
  */
 class MapFragmentPresenter(
         private val mapFragment: MapFragment
-) : FragmentPresenter, AnkoLogger {
+) : FragmentPresenter {
     private val tempLocationList: MutableList<Location> = mutableListOf()
     private val LOCATION_INTERVAL = Second(10)
 
@@ -24,17 +26,17 @@ class MapFragmentPresenter(
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter {
-                    Log.d("filter:observed item"," ${it.localDateTime.toString()}")
-                    debug("filter:observed item ${it.localDateTime.toString()}")
+                    Timber.i("filter:observed item ${it.localDateTime.toString()}")
+                    Timber.i("tempLocationList size ${tempLocationList.size}")
                     if (tempLocationList.isNotEmpty() ){
-                        debug("filter:temp.last $tempLocationList.last().toString()")
+                        Timber.i("filter:temp.last " + tempLocationList.last().toString())
                     }
                     tempLocationList.isEmpty() || (it.localDateTime - tempLocationList.last().localDateTime).toSecond() >= LOCATION_INTERVAL
                 }
                 .subscribe { location: Location ->
-                    debug("subscribe $location")
+                    Timber.d("subscribe", location.toString())
                     if ( tempLocationList.isNotEmpty()) {
-                        debug("tempLocationList ${tempLocationList.joinToString { it.toString() }}")
+                        Timber.d("tempLocationList " + tempLocationList.joinToString { it.toString() })
                     }
                     tempLocationList.add(location)
                     val text = tempLocationList.fold(""){ text: String, location: Location ->
@@ -48,12 +50,12 @@ class MapFragmentPresenter(
     }
 
     fun startLocationLogging() {
-        debug("StartButton onClicked")
+        Timber.d("StartButton onClicked")
         SampoModule.UseLocation.startLocationObserve()
     }
 
     fun stopLocationLogging() {
-        debug("StopButton onclicked")
+        Timber.d("StopButton onclicked")
         SampoModule.UseLocation.stopLocationObserve()
     }
 }

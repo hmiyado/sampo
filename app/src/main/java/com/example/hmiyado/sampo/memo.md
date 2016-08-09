@@ -91,6 +91,13 @@ Year, Month はtoSecondを定義できない！！
 1ヶ月先にすすめるごとに1回buildを呼ぶのはさすがにひどいかもしれない．
 とりあえずwhileループあたりの実装に変えよう
 
+有用ライブラリを導入する
+http://qiita.com/EnoMt/items/0e0d4b1ba2693f625afc
+優先順位
+Timber.d　ログは大事　ビルド設定も同じく
+Realm　DB使いやすく鳴るらしい．要件にあってる
+Dagger2　いるかな？　DIがまだ感覚的につかめていない
+
 ## GPS情報の取得
 UseLocationでできるようになった
 テストを書こう
