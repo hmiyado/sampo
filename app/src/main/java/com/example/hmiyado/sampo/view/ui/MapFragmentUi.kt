@@ -17,6 +17,7 @@ class MapFragmentUi(
         val textViewID = View.generateViewId()
     }
     override fun createView(ui: AnkoContext<MapFragment>) = with(ui) {
+        // TODO スクロール可能にする
         verticalLayout {
             button("Start") {
                 onClick {

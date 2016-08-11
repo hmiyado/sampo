@@ -1,10 +1,11 @@
-package com.example.hmiyado.sampo.kotlin.Month
+package com.example.hmiyado.sampo.domain.model.Time.Month
 
-import com.example.hmiyado.sampo.kotlin.Time.Day
-import com.example.hmiyado.sampo.kotlin.Time.Second
-import com.example.hmiyado.sampo.kotlin.Time.Year.Year
-import com.example.hmiyado.sampo.kotlin.Time.Year.YearProgression
-import com.example.hmiyado.sampo.kotlin.Time.Year.YearRange
+import com.example.hmiyado.sampo.domain.exception.IllegalValueOfMonthException
+import com.example.hmiyado.sampo.domain.model.Time.Day
+import com.example.hmiyado.sampo.domain.model.Time.Second
+import com.example.hmiyado.sampo.domain.model.Time.Year.Year
+import com.example.hmiyado.sampo.domain.model.Time.Year.YearProgression
+import com.example.hmiyado.sampo.domain.model.Time.Year.YearRange
 
 /**
  * Created by hmiyado on 2016/07/29.
@@ -48,7 +49,7 @@ sealed class Month constructor(
                 10 -> return October(yearNext)
                 11 -> return November(yearNext)
                 12 -> return December(yearNext)
-                else -> throw Error("Illegal value of Month")
+                else -> throw IllegalValueOfMonthException()
             }
         }
 

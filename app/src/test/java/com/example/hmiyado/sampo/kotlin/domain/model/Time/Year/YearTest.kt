@@ -1,8 +1,8 @@
 package com.example.hmiyado.sampo.kotlin.domain.model.Time.Year
 
-import com.example.hmiyado.sampo.kotlin.Time.Day
-import com.example.hmiyado.sampo.kotlin.Time.Second
-import com.example.hmiyado.sampo.kotlin.Time.Year.Year
+import com.example.hmiyado.sampo.domain.model.Time.Day
+import com.example.hmiyado.sampo.domain.model.Time.Second
+import com.example.hmiyado.sampo.domain.model.Time.Year.Year
 import org.junit.Test
 import org.hamcrest.Matchers.*
 import org.junit.Assert.*

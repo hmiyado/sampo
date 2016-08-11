@@ -1,7 +1,8 @@
-package com.example.hmiyado.sampo.kotlin.Time
+package com.example.hmiyado.sampo.domain.model.Time
 
-import com.example.hmiyado.sampo.kotlin.Month.Month
-import com.example.hmiyado.sampo.kotlin.Time.Year.Year
+import com.example.hmiyado.sampo.domain.exception.IllegalTypeOfTimeException
+import com.example.hmiyado.sampo.domain.model.Time.Month.Month
+import com.example.hmiyado.sampo.domain.model.Time.Year.Year
 
 /**
  * Created by hmiyado on 2016/07/29.
@@ -32,7 +33,7 @@ class LocalDateTime protected constructor(
                     is Day -> return month.LastDay
                     is Hour -> return 23
                     is Minute, is Second -> return 59
-                    else -> throw Error("Illegal Type of Time")
+                    else -> throw IllegalTypeOfTimeException()
                 }
             }
 
@@ -40,7 +41,7 @@ class LocalDateTime protected constructor(
                 when (time) {
                     is Day -> return 1
                     is Hour, is Minute, is Second -> return 0
-                    else -> throw Error("Illegal Type of Time")
+                    else -> throw IllegalTypeOfTimeException()
                 }
             }
 
@@ -190,8 +191,7 @@ class LocalDateTime protected constructor(
             is Minute -> return minute
             is Hour -> return hour
             is Day -> return day
-            else -> throw Error("Illegal type of time")
-        // TODO 例外定義
+            else -> throw IllegalTypeOfTimeException()
         }
     }
 
@@ -201,7 +201,7 @@ class LocalDateTime protected constructor(
             is Minute -> return Factory.init(this).build(time + minute).complete()
             is Hour -> return Factory.init(this).build(time + hour).complete()
             is Day -> return Factory.init(this).build(time + day).complete()
-            else -> throw Error("Illegal type of time")
+            else -> throw IllegalTypeOfTimeException()
         }
     }
 
@@ -211,7 +211,7 @@ class LocalDateTime protected constructor(
             is Minute -> return Factory.init(this).build(minute - time).complete()
             is Hour -> return Factory.init(this).build(hour - time).complete()
             is Day -> return Factory.init(this).build(day - time).complete()
-            else -> throw Error("Illegal type of time")
+            else -> throw IllegalTypeOfTimeException()
         }
     }
 

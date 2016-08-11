@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.repository
 
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.kotlin.Time.LocalDateTime
+import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
 
 /**
  * Created by hmiyado on 2016/08/04.

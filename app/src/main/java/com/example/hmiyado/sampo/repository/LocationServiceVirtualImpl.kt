@@ -4,8 +4,8 @@ import android.location.LocationListener
 import android.os.Handler
 import android.util.Log
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.kotlin.Time.LocalDateTime
-import com.example.hmiyado.sampo.kotlin.Time.Second
+import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
+import com.example.hmiyado.sampo.domain.model.Time.Second
 import org.threeten.bp.LocalDate
 import rx.Observable
 import rx.subjects.PublishSubject

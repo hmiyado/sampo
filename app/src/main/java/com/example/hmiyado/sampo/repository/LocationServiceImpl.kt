@@ -6,11 +6,11 @@ import android.location.LocationManager
 import android.location.LocationProvider
 import android.os.Bundle
 import android.util.Log
-import com.example.hmiyado.sampo.kotlin.Time.*
-import com.example.hmiyado.sampo.kotlin.Time.LocalDateTime as SampoLocalDateTime
-import com.example.hmiyado.sampo.kotlin.Month.Month
-import com.example.hmiyado.sampo.kotlin.Time.Year.Year
-import com.example.hmiyado.sampo.kotlin.Time.ZonedDateTime
+import com.example.hmiyado.sampo.domain.model.Time.*
+import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime as SampoLocalDateTime
+import com.example.hmiyado.sampo.domain.model.Time.Month.Month
+import com.example.hmiyado.sampo.domain.model.Time.Year.Year
+import com.example.hmiyado.sampo.domain.model.Time.ZonedDateTime
 import org.threeten.bp.*
 import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
 import rx.Observable

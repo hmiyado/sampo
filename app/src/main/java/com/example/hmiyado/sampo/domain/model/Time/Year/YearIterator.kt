@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.kotlin.Time.Year
+package com.example.hmiyado.sampo.domain.model.Time.Year
 
 import rx.internal.operators.OperatorThrottleFirst
 

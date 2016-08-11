@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.presenter
 import android.util.Log
 import com.example.hmiyado.sampo.SampoModule
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.kotlin.Time.Second
+import com.example.hmiyado.sampo.domain.model.Time.Second
 import com.example.hmiyado.sampo.view.MapFragment
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers

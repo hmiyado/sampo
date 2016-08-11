@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.kotlin.Time
+package com.example.hmiyado.sampo.domain.model.Time
 
 /**
  * Created by hmiyado on 2016/07/29.

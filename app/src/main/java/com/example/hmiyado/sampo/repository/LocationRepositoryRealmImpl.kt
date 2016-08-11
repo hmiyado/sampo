@@ -2,9 +2,9 @@ package com.example.hmiyado.sampo.repository
 
 import android.content.Context
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.kotlin.Time.LocalDateTime
-import com.example.hmiyado.sampo.kotlin.Time.Second
-import com.example.hmiyado.sampo.kotlin.Time.Time
+import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
+import com.example.hmiyado.sampo.domain.model.Time.Second
+import com.example.hmiyado.sampo.domain.model.Time.Time
 import com.example.hmiyado.sampo.repository.model.LocationModel
 import io.realm.Realm
 import io.realm.RealmConfiguration

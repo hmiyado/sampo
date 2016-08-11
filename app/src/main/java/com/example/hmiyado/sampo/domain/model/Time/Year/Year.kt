@@ -1,8 +1,8 @@
-package com.example.hmiyado.sampo.kotlin.Time.Year
+package com.example.hmiyado.sampo.domain.model.Time.Year
 
-import com.example.hmiyado.sampo.kotlin.Time.Day
-import com.example.hmiyado.sampo.kotlin.Month.Month
-import com.example.hmiyado.sampo.kotlin.Time.Second
+import com.example.hmiyado.sampo.domain.model.Time.Day
+import com.example.hmiyado.sampo.domain.model.Time.Month.Month
+import com.example.hmiyado.sampo.domain.model.Time.Second
 
 /**
  * Created by hmiyado on 2016/07/29.

@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.kotlin.Month
+package com.example.hmiyado.sampo.domain.model.Time.Month
 
 /**
  * Created by hmiyado on 2016/08/02.
