@@ -18,9 +18,12 @@ class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) : FragmentPresenter {
     private val tempLocationList: MutableList<Location> = mutableListOf()
+    private val loadLocationList: List<Location>
     private val LOCATION_INTERVAL = Second(10)
 
     init {
+        loadLocationList = SampoModule.UseLocation.loadLocationList()
+
         SampoModule.UseLocation
                 .getLocationObservable()
                 .subscribeOn(Schedulers.newThread())
@@ -58,8 +61,8 @@ class MapFragmentPresenter(
     }
 
     fun saveLocationLog() {
-        Timber.d("Save Location ${tempLocationList.last()}")
-        SampoModule.UseLocation.saveLocation(tempLocationList.last())
+        Timber.d("Save Location ${tempLocationToString()}")
+        SampoModule.UseLocation.saveLocationList(tempLocationList.asReversed())
     }
 
     fun loadLocationLog() {

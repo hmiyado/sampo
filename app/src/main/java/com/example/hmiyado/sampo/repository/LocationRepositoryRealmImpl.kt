@@ -15,6 +15,7 @@ import timber.log.Timber
  * Created by hmiyado on 2016/08/10.
  */
 class LocationRepositoryRealmImpl(context: Context) : LocationRepository {
+
     companion object {
         fun convertToLocationFromModel(locationModel: LocationModel): Location {
             return Location(
@@ -38,15 +39,23 @@ class LocationRepositoryRealmImpl(context: Context) : LocationRepository {
     }
 
     override fun saveLocation(location: Location) {
+        // TODO 非同期に保存できるようにする
+        // executeTransactionAsync はあるが，何も考えずに使うとエラーをはく
         realm.executeTransaction {
             try {
                 var locationModel = realm.createObject(LocationModel::class.java)
                 locationModel.unixTime = location.localDateTime.toUnixTime().toLong()
                 locationModel.latitude = location.latitude
                 locationModel.longitude = location.longitude
-            }catch (realmPrimaryKeyConstraintException: RealmPrimaryKeyConstraintException) {
+            } catch (realmPrimaryKeyConstraintException: RealmPrimaryKeyConstraintException) {
                 Timber.e(realmPrimaryKeyConstraintException.message)
             }
+        }
+    }
+
+    override fun saveLocationList(locationList: List<Location>) {
+        locationList.forEach {
+            saveLocation(it)
         }
     }
 

@@ -8,6 +8,7 @@ import com.example.hmiyado.sampo.kotlin.Time.LocalDateTime
  */
 interface LocationRepository {
     fun saveLocation(location: Location)
+    fun saveLocationList(locationList: List<Location>)
     fun loadLocationList(): List<Location>
     fun loadLocationList(startLocalDateTimeInclusive: LocalDateTime, endLocalDateTimeInclusive: LocalDateTime): List<Location>
 }

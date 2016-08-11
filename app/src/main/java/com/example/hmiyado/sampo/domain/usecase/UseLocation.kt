@@ -32,6 +32,10 @@ class UseLocation (
         locationRepository.saveLocation(location)
     }
 
+    fun saveLocationList(locationList: List<Location>) {
+        locationRepository.saveLocationList(locationList)
+    }
+
     fun loadLocationList(): List<Location> {
         return locationRepository.loadLocationList()
     }
