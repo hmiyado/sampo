@@ -5,6 +5,9 @@ package com.example.hmiyado.sampo.kotlin.Time
  */
 
 class Second(value: Int) : Time(value) {
+    constructor(value: Long) : this(value.toInt()) {
+    }
+
     override fun toSecond(): Second {
         return Second(value)
     }
@@ -29,5 +32,9 @@ class Second(value: Int) : Time(value) {
 
     override fun toString(): String {
         return "Second($value)"
+    }
+
+    fun toLong(): Long {
+        return value.toLong()
     }
 }

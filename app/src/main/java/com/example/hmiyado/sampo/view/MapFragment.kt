@@ -38,6 +38,9 @@ class MapFragment: Fragment(),FragmentWithPresenter,AnkoLogger {
 
     private var presenter: MapFragmentPresenter? = null
     private val textView: TextView by bindView(MapFragmentUi.textViewID)
+    var text: CharSequence
+        get() { return textView.text }
+        set(value: CharSequence) { textView.text = value}
 
     override fun getPresenter(): FragmentPresenter {
         return presenter!!
@@ -64,9 +67,5 @@ class MapFragment: Fragment(),FragmentWithPresenter,AnkoLogger {
     override fun onDestroy() {
         super.onDestroy()
         presenter = null
-    }
-
-    fun setText(text: String){
-        textView.text = text
     }
 }

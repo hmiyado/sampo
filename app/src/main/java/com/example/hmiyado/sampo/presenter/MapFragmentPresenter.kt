@@ -26,27 +26,25 @@ class MapFragmentPresenter(
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter {
-                    Timber.i("filter:observed item ${it.localDateTime.toString()}")
-                    Timber.i("tempLocationList size ${tempLocationList.size}")
-                    if (tempLocationList.isNotEmpty() ){
-                        Timber.i("filter:temp.last " + tempLocationList.last().toString())
-                    }
                     tempLocationList.isEmpty() || (it.localDateTime - tempLocationList.last().localDateTime).toSecond() >= LOCATION_INTERVAL
                 }
                 .subscribe { location: Location ->
-                    Timber.d("subscribe", location.toString())
-                    if ( tempLocationList.isNotEmpty()) {
-                        Timber.d("tempLocationList " + tempLocationList.joinToString { it.toString() })
-                    }
+                    Timber.d("subscribe " + location.toString())
                     tempLocationList.add(location)
-                    val text = tempLocationList.fold(""){ text: String, location: Location ->
-                        """
-                        $text
-                        ${location.toString()}
-                        """
+                    mapFragment.text = tempLocationToString()
+                    if (tempLocationList.isNotEmpty()) {
+                        Timber.d("tempLocationListSize=${tempLocationList.size}")
                     }
-                    mapFragment.setText(text)
                 }
+    }
+
+    private fun tempLocationToString(): String {
+        return tempLocationList.fold("") { text: String, location: Location ->
+            """
+            $text
+            ${location.toString()}
+            """
+        }
     }
 
     fun startLocationLogging() {
@@ -57,5 +55,21 @@ class MapFragmentPresenter(
     fun stopLocationLogging() {
         Timber.d("StopButton onclicked")
         SampoModule.UseLocation.stopLocationObserve()
+    }
+
+    fun saveLocationLog() {
+        Timber.d("Save Location ${tempLocationList.last()}")
+        SampoModule.UseLocation.saveLocation(tempLocationList.last())
+    }
+
+    fun loadLocationLog() {
+        Timber.d("Load Location")
+        tempLocationList.removeAll { true }
+        Timber.d("before load Location=${tempLocationToString()}")
+        tempLocationList.addAll(
+                SampoModule.UseLocation.loadLocationList()
+        )
+        Timber.d("after load Location=${tempLocationToString()}")
+        mapFragment.text = tempLocationToString()
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.location.LocationManager
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.example.hmiyado.sampo.repository.LocationRepositoryCsvImpl
+import com.example.hmiyado.sampo.repository.LocationRepositoryRealmImpl
 import com.example.hmiyado.sampo.repository.LocationServiceImpl
 import com.example.hmiyado.sampo.repository.LocationServiceVirtualImpl
 
@@ -12,17 +13,17 @@ import com.example.hmiyado.sampo.repository.LocationServiceVirtualImpl
  * Created by hmiyado on 2016/08/05.
  */
 object SampoModule {
-    private var useLocation: UseLocation? = null
-
-    val UseLocation: UseLocation
-        get() = useLocation!!
-
-    fun attachActivity(activity: MainActivity) {
-        useLocation = UseLocation(
+    private var context: Context? = null
+    val UseLocation: UseLocation by lazy {
+        UseLocation(
                 LocationServiceVirtualImpl(),
                 //LocationServiceImpl(activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager),
-                LocationRepositoryCsvImpl(activity.applicationContext)
+                LocationRepositoryRealmImpl(context!!)
         )
+    }
+
+    fun attachActivity(activity: MainActivity) {
+        context = activity.applicationContext
     }
 
 }

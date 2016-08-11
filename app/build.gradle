@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 24
@@ -31,6 +32,7 @@ dependencies {
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     compile 'com.jakewharton.timber:timber:4.1.2'
     compile group: 'io.reactivex', name: 'rxkotlin', version: '0.60.0'

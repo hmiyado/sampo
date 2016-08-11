@@ -28,9 +28,18 @@ class MapFragmentUi(
                     mapFragmentPresenter.stopLocationLogging()
                 }
             }
+            button("Save") {
+                onClick {
+                    mapFragmentPresenter.saveLocationLog()
+                }
+            }
+            button("Load All") {
+                onClick {
+                    mapFragmentPresenter.loadLocationLog()
+                }
+            }
             textView("please start") {
                 id = textViewID
-                inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
             }
         }
     }
