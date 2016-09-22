@@ -4,11 +4,11 @@ import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.repository.LocationRepository
 import com.example.hmiyado.sampo.repository.LocationService
 import rx.Observable
-import java.util.*
 
 
 /**
  * Created by hmiyado on 2016/07/28.
+ * アプリケーションがロケーションを使うためのもろもろ
  */
 class UseLocation (
         private val locationService: LocationService,
@@ -38,5 +38,9 @@ class UseLocation (
 
     fun loadLocationList(): List<Location> {
         return locationRepository.loadLocationList()
+    }
+
+    fun determineDistance(location1: Location, location2: Location): Double {
+        return locationService.determineDistance(location1, location2)
     }
 }

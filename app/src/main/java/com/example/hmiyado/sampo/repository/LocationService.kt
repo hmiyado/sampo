@@ -5,8 +5,9 @@ import rx.Observable
 
 /**
  * Created by hmiyado on 2016/07/27.
+ * 状態をもたずに位置情報を扱う方法を提供する
  */
-interface LocationService {
+interface LocationService : LocationDistanceInterface {
     fun getLocationObservable(): Observable<Location>
     fun startLocationObserve(): Unit
     fun stopLocationObserve(): Unit
