@@ -10,7 +10,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SampoModule.attachActivity(this)
 
         val ui = MainActivityUi()
         ui.setContentView(this)
