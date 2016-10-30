@@ -1,10 +1,11 @@
 package com.example.hmiyado.sampo.presenter
 
 import android.util.Log
-import com.example.hmiyado.sampo.SampoModule
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.Second
+import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.example.hmiyado.sampo.view.MapFragment
+import com.github.salomonbrys.kodein.instance
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import timber.log.Timber
@@ -20,11 +21,12 @@ class MapFragmentPresenter(
     private val tempLocationList: MutableList<Location> = mutableListOf()
     private val loadLocationList: List<Location>
     private val LOCATION_INTERVAL = Second(10)
+    private val UseLocation: UseLocation by mapFragment.injector.instance<UseLocation>()
 
     init {
-        loadLocationList = SampoModule.UseLocation.loadLocationList()
+        loadLocationList = UseLocation.loadLocationList()
 
-        SampoModule.UseLocation
+        UseLocation
                 .getLocationObservable()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,17 +54,17 @@ class MapFragmentPresenter(
 
     fun startLocationLogging() {
         Timber.d("StartButton onClicked")
-        SampoModule.UseLocation.startLocationObserve()
+        UseLocation.startLocationObserve()
     }
 
     fun stopLocationLogging() {
         Timber.d("StopButton onclicked")
-        SampoModule.UseLocation.stopLocationObserve()
+        UseLocation.stopLocationObserve()
     }
 
     fun saveLocationLog() {
         Timber.d("Save Location ${tempLocationToString()}")
-        SampoModule.UseLocation.saveLocationList(tempLocationList.asReversed())
+        UseLocation.saveLocationList(tempLocationList.asReversed())
     }
 
     fun loadLocationLog() {
@@ -70,7 +72,7 @@ class MapFragmentPresenter(
         tempLocationList.removeAll { true }
         Timber.d("before load Location=${tempLocationToString()}")
         tempLocationList.addAll(
-                SampoModule.UseLocation.loadLocationList()
+                UseLocation.loadLocationList()
         )
         Timber.d("after load Location=${tempLocationToString()}")
         mapFragment.text = tempLocationToString()

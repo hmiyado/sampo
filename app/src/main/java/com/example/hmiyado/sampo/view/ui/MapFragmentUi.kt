@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.view.MapFragment
+import com.example.hmiyado.sampo.view.custom.mapView
 import org.jetbrains.anko.*
 
 /**
@@ -16,9 +17,12 @@ class MapFragmentUi(
     companion object {
         val textViewID = View.generateViewId()
     }
+
     override fun createView(ui: AnkoContext<MapFragment>) = with(ui) {
-        // TODO スクロール可能にする
         verticalLayout {
+            mapView {
+
+            }
             button("Start") {
                 onClick {
                     mapFragmentPresenter.startLocationLogging()

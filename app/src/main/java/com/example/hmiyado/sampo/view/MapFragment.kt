@@ -19,6 +19,9 @@ import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.repository.LocationService
 import com.example.hmiyado.sampo.repository.LocationServiceImpl
 import com.example.hmiyado.sampo.view.ui.MapFragmentUi
+import com.github.salomonbrys.kodein.KodeinInjected
+import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.android.appKodein
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
@@ -28,7 +31,8 @@ import org.jetbrains.anko.support.v4.ctx
  * Created by hmiyado on 2016/07/26.
  */
 
-class MapFragment: Fragment(),FragmentWithPresenter,AnkoLogger {
+class MapFragment: Fragment(),FragmentWithPresenter,AnkoLogger,KodeinInjected {
+    override val injector = KodeinInjector()
 
     companion object{
         fun getInstance(): MapFragment{
@@ -48,6 +52,7 @@ class MapFragment: Fragment(),FragmentWithPresenter,AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        inject(appKodein())
         presenter = MapFragmentPresenter(this)
     }
 

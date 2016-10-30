@@ -12,8 +12,3 @@ import com.github.salomonbrys.kodein.*
 /**
  * Created by hmiyado on 2016/08/05.
  */
-object SampoModule: KodeinInjected {
-    override val injector = KodeinInjector()
-
-    val UseLocation: UseLocation by instance()
-}
