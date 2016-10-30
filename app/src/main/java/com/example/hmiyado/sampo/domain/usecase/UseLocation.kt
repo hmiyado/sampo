@@ -21,6 +21,9 @@ class UseLocation (
         return locationService.getLocationObservable()
     }
 
+    /**
+     * Observe 開始する
+     */
     fun startLocationObserve() {
         locationService.startLocationObserve()
     }
