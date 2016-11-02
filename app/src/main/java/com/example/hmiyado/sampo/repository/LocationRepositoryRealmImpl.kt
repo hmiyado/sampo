@@ -8,13 +8,14 @@ import com.example.hmiyado.sampo.domain.model.Time.Time
 import com.example.hmiyado.sampo.repository.model.LocationModel
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.RealmConfiguration.Builder
 import io.realm.exceptions.RealmPrimaryKeyConstraintException
 import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/08/10.
  */
-class LocationRepositoryRealmImpl(context: Context) : LocationRepository {
+class LocationRepositoryRealmImpl() : LocationRepository {
 
     companion object {
         fun convertToLocationFromModel(locationModel: LocationModel): Location {
@@ -31,7 +32,7 @@ class LocationRepositoryRealmImpl(context: Context) : LocationRepository {
     val realm: Realm
 
     init {
-        val realmConfig = RealmConfiguration.Builder(context)
+        val realmConfig = Builder()
                 .name("Location.realm")
                 .schemaVersion(1)
                 .build()

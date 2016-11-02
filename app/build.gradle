@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'realm-android'
 
 android {
@@ -9,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.example.hmiyado.sampo"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -33,6 +34,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
+
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     compile 'com.jakewharton.timber:timber:4.1.2'
     compile group: 'io.reactivex', name: 'rxkotlin', version: '0.60.0'

@@ -9,6 +9,7 @@ import com.github.salomonbrys.kodein.android.activityScope
 import com.github.salomonbrys.kodein.android.androidModule
 import com.github.salomonbrys.kodein.android.autoActivitySingleton
 import com.jakewharton.threetenabp.AndroidThreeTen
+import io.realm.Realm
 import timber.log.Timber
 import timber.log.Timber.Tree
 
@@ -21,7 +22,7 @@ class SampoApplication: Application(), KodeinAware {
 
         bind<UseLocation>() with provider { UseLocation(instance(), instance()) }
         bind<LocationService>() with provider { LocationServiceVirtualImpl() }
-        bind<LocationRepository>() with autoActivitySingleton { LocationRepositoryRealmImpl(it.applicationContext)}
+        bind<LocationRepository>() with autoActivitySingleton { LocationRepositoryRealmImpl()}
     }
 
 
@@ -29,6 +30,7 @@ class SampoApplication: Application(), KodeinAware {
         super.onCreate()
         AndroidThreeTen.init(this)
         registerActivityLifecycleCallbacks(activityScope.lifecycleManager)
+        Realm.init(baseContext)
 
         Timber.plant(Timber.DebugTree())
     }
