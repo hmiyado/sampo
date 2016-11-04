@@ -10,7 +10,7 @@ package com.example.hmiyado.sampo.domain.math
  * @param d ゼロ判定する値
  * @return ゼロならtrue
  */
-fun Double.isZero(): Boolean = Math.abs(this) < Double.MIN_VALUE
+fun Float.isZero(): Boolean = Math.abs(this) < Float.MIN_VALUE
 
 /**
  * @return 2乗
@@ -26,4 +26,4 @@ fun Double.cube(): Double = this * this * this
  * 弧度法(radian) から度数法(degree) に変換する
  * @return 変換後の値
  */
-fun Double.toDegree(): Double = 360 * this / (2 * Math.PI)
+fun Float.toDegree(): Float = (360 * this / (2 * Math.PI)).toFloat()

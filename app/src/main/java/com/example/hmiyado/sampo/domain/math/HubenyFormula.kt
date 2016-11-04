@@ -37,6 +37,13 @@ object HubenyFormula : LocationDistanceInterface {
         return numeratorOfM / W.cube()
     }
 
+    /**
+     * 地点p1 と 地点p2 の距離を計算する．
+     * 単位はメートル
+     *
+     * @param p1 地点１
+     * @param p2 地点２
+     */
     override fun determineDistance(p1: Location, p2: Location): Double {
         val dX = p1.longitude - p2.longitude
         val dY = p1.latitude - p2.latitude
