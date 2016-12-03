@@ -1,45 +1,51 @@
 package com.example.hmiyado.sampo.presenter
 
-import android.util.Log
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Time.Second
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
+import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.view.MapFragment
 import com.github.salomonbrys.kodein.instance
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import timber.log.Timber
-
-import org.jetbrains.anko.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by hmiyado on 2016/07/26.
+ * 地図フラグメントのプレゼンター
  */
 class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) : FragmentPresenter {
     private val tempLocationList: MutableList<Location> = mutableListOf()
     private val loadLocationList: List<Location>
-    private val LOCATION_INTERVAL = Second(10)
-    private val UseLocation: UseLocation by mapFragment.injector.instance<UseLocation>()
+    val UseLocation: UseLocation by mapFragment.injector.instance()
+    val CompassService: CompassService by mapFragment.injector.instance()
 
     init {
         loadLocationList = UseLocation.loadLocationList()
 
         UseLocation
                 .getLocationObservable()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter {
-                    tempLocationList.isEmpty() || (it.localDateTime - tempLocationList.last().localDateTime).toSecond() >= LOCATION_INTERVAL
-                }
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .throttleLast(10, TimeUnit.SECONDS)
+                .filter { tempLocationList.isEmpty() }
                 .subscribe { location: Location ->
                     Timber.d("subscribe " + location.toString())
-                    tempLocationList.add(location)
-                    mapFragment.text = tempLocationToString()
+                    //tempLocationList.add(location)
+                    //mapFragment.text = tempLocationToString()
                     if (tempLocationList.isNotEmpty()) {
                         Timber.d("tempLocationListSize=${tempLocationList.size}")
                     }
+                }
+
+        CompassService
+                .getCompassService()
+                .throttleLast(5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { orientation ->
+                    Timber.e("$orientation")
                 }
     }
 

@@ -1,7 +1,12 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.example.hmiyado.sampo.view.custom
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PointF
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.OnScaleGestureListener
@@ -14,14 +19,11 @@ import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
-import com.github.salomonbrys.kodein.android.withContext
 import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.with
 import org.jetbrains.anko.custom.ankoView
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import timber.log.Timber
-import java.util.*
 
 
 // settings for anko custom view
@@ -35,18 +37,26 @@ inline fun ViewManager.mapView(theme: Int = 0, init: MapView.() -> Unit) = ankoV
  */
 class MapView(context: Context): View(context), LazyKodeinAware {
     override val kodein = LazyKodein(appKodein)
-    private val paintMapPoint: Paint = Paint()
     private val UseLocation: UseLocation by kodein.instance<UseLocation>()
+
+    private val paintMapPoint: Paint = Paint()
+
+    /**
+     * 倍率１のときの，100 px あたりの地図上の距離（メートル）
+     */
+    private val SCALE_UNIT = 100f
+
     private var location: Location? = null
     private var scaleFactor: Float = 1.0f
     private var rotateAngleDegree: Float = 0f
+
 
     /**
      * 地図の縮尺．
      * 100 px あたりの地図上の距離(メートル)を表す．
      */
-    private var mapScale: Float = 100f
-        get() = 100f * scaleFactor
+    private val mapScale: Float
+        get() = SCALE_UNIT * scaleFactor
 
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(context, createGestureDetector())
 

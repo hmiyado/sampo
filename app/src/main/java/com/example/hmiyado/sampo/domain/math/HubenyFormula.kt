@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.domain.math
 
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.repository.LocationDistanceInterface
+import com.example.hmiyado.sampo.repository.location.LocationDistanceInterface
 
 /**
  * Created by hmiyado on 2016/09/22.

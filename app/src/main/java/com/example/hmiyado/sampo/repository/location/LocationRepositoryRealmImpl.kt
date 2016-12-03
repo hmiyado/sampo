@@ -1,19 +1,17 @@
-package com.example.hmiyado.sampo.repository
+package com.example.hmiyado.sampo.repository.location
 
-import android.content.Context
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
 import com.example.hmiyado.sampo.domain.model.Time.Second
-import com.example.hmiyado.sampo.domain.model.Time.Time
 import com.example.hmiyado.sampo.repository.model.LocationModel
 import io.realm.Realm
-import io.realm.RealmConfiguration
 import io.realm.RealmConfiguration.Builder
 import io.realm.exceptions.RealmPrimaryKeyConstraintException
 import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/08/10.
+ * Realmを使った位置情報レポジトリの実装
  */
 class LocationRepositoryRealmImpl() : LocationRepository {
 
@@ -44,7 +42,7 @@ class LocationRepositoryRealmImpl() : LocationRepository {
         // executeTransactionAsync はあるが，何も考えずに使うとエラーをはく
         realm.executeTransaction {
             try {
-                var locationModel = realm.createObject(LocationModel::class.java)
+                val locationModel = realm.createObject(LocationModel::class.java)
                 locationModel.unixTime = location.localDateTime.toUnixTime().toLong()
                 locationModel.latitude = location.latitude
                 locationModel.longitude = location.longitude

@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.repository
+package com.example.hmiyado.sampo.repository.location
 
 import com.example.hmiyado.sampo.domain.math.HubenyFormula
 import com.example.hmiyado.sampo.domain.model.Location

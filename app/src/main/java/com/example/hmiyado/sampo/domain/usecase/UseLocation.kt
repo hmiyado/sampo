@@ -1,8 +1,8 @@
 package com.example.hmiyado.sampo.domain.usecase
 
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.repository.LocationRepository
-import com.example.hmiyado.sampo.repository.LocationService
+import com.example.hmiyado.sampo.repository.location.LocationRepository
+import com.example.hmiyado.sampo.repository.location.LocationService
 import rx.Observable
 
 

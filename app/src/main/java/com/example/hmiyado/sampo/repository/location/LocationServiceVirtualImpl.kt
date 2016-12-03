@@ -1,30 +1,25 @@
-package com.example.hmiyado.sampo.repository
+package com.example.hmiyado.sampo.repository.location
 
-import android.location.LocationListener
 import android.os.Handler
-import android.util.Log
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
 import com.example.hmiyado.sampo.domain.model.Time.Second
-import org.threeten.bp.LocalDate
 import rx.Observable
 import rx.subjects.PublishSubject
-import java.util.*
-import kotlin.concurrent.timer
-import kotlin.concurrent.schedule
 
 /**
  * Created by hmiyado on 2016/08/06.
+ * 仮想の位置情報を取得するサービス
  */
-class LocationServiceVirtualImpl : LocationService{
+class LocationServiceVirtualImpl : LocationService {
     private val locationSubject: PublishSubject<Location>
-    private var handler: Handler
+    private val handler: Handler
     private var nextLocation: Location
     private val delayTimeMs:Long = 1000
 
     init {
         locationSubject = PublishSubject.create()
-        nextLocation = Location(0.0, 0.0, LocalDateTime.UnixEpoch)
+        nextLocation = Location(0.0, 0.0, LocalDateTime.Companion.UnixEpoch)
         handler = Handler()
     }
 
