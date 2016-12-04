@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
  */
 class MapFragmentPresenter(
         private val mapFragment: MapFragment
-) : FragmentPresenter {
+) {
     private val tempLocationList: MutableList<Location> = mutableListOf()
     private val loadLocationList: List<Location>
     val UseLocation: UseLocation by mapFragment.injector.instance()
