@@ -10,6 +10,7 @@ import android.view.ViewManager
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.android.appKodein
 import com.jakewharton.rxbinding.view.RxView
 import org.jetbrains.anko.custom.ankoView
 import rx.Observable
@@ -28,6 +29,10 @@ class MapView(context: Context) : View(context), KodeinInjected {
     override val injector: KodeinInjector = KodeinInjector()
     val presenter: MapViewPresenter by kotlin.lazy {
         MapViewPresenter(this)
+    }
+
+    init {
+        injector.inject(appKodein())
     }
 
     override fun onDraw(canvas: Canvas?) {

@@ -43,7 +43,6 @@ class CompassServiceImpl(val sensorManager: SensorManager) : CompassService {
 
     override fun stopCompassService() {
         sensorManager.unregisterListener(sensorEventListener)
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 

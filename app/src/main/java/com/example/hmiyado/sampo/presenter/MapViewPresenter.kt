@@ -9,12 +9,17 @@ import android.view.ScaleGestureDetector
 import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Orientation
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
+import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.view.custom.MapView
 import com.github.salomonbrys.kodein.instance
+import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by hmiyado on 2016/12/04.
@@ -25,7 +30,7 @@ class MapViewPresenter(
 ) {
 
     private val UseLocation: UseLocation by mapView.injector.instance()
-
+    private val CompassService: CompassService by mapView.injector.instance()
     private val paintMapPoint: Paint = Paint()
 
     /**
@@ -52,8 +57,9 @@ class MapViewPresenter(
 
     init {
         settingPaintMapPoint()
-        createLocationObservable().subscribe()
-        getOnTouchEventSignal().subscribe()
+        createLocationObservable().bindToLifecycle(mapView).subscribe()
+        createCompassServiceObservable().bindToLifecycle(mapView).subscribe()
+        getOnTouchEventSignal().bindToLifecycle(mapView).subscribe()
         UseLocation.startLocationObserve()
     }
 
@@ -70,6 +76,15 @@ class MapViewPresenter(
                     Timber.e(it, "error on get location")
                     createLocationObservable()
                 }
+    }
+
+    private fun createCompassServiceObservable(): Observable<Orientation> {
+        return CompassService
+                .getCompassService()
+                .throttleLast(5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .doOnNext { orientation -> Timber.e(orientation.toString()) }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     private fun settingPaintMapPoint() {
