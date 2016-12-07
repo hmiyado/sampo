@@ -83,7 +83,7 @@ class MapViewPresenter(
                 .getCompassService()
                 .throttleLast(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
-                .doOnNext { orientation -> Timber.e(orientation.toString()) }
+                .doOnNext { orientation -> Timber.e(orientation.toDegreeString()) }
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -130,6 +130,16 @@ class MapViewPresenter(
                 }
     }
 
+    fun startGeometricalLogging() {
+        UseLocation.startLocationObserve()
+        CompassService.startCompassService()
+    }
+
+    fun stopGeometricalLogging() {
+        UseLocation.stopLocationObserve()
+        CompassService.stopCompassService()
+    }
+
     private fun determineRotateAngleDegree(event: MotionEvent): Float {
         if (event.pointerCount != 2) {
             // ちょうど２点タッチしていなければ，回転を検知することはできない
@@ -137,7 +147,7 @@ class MapViewPresenter(
         }
         if (event.eventTime - time > 100) {
             // イベント間の時間は１００ｍｓ空いていたなら，それは新たなタッチイベントだと考えられる
-            // envet.action == MotionEvent.ACTION_DOWN はタッチ点が２点以外のときも発生し，上のif文でリジェクトされてしまう
+            // event.action == MotionEvent.ACTION_DOWN はタッチ点が２点以外のときも発生し，上のif文でリジェクトされてしまう
             // そのため，イベント種別ではなく時間をみて判断する
             point1 = PointF(event.getX(0), event.getY(0))
             point2 = PointF(event.getX(1), event.getY(1))

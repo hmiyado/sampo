@@ -18,7 +18,8 @@ import rx.Observable
 
 // settings for anko custom view
 inline fun ViewManager.mapView(theme: Int = 0) = mapView(theme) {}
-inline fun ViewManager.mapView(theme: Int = 0, init: MapView.() -> Unit) = ankoView({ MapView(it) }, theme, init)
+
+inline fun ViewManager.mapView(theme: Int = 0, init: MapView.() -> Unit) = ankoView(::MapView, theme, init)
 
 /**
  * Created by hmiyado on 2016/09/23.

@@ -20,9 +20,9 @@ class MapFragmentUi(
 
     override fun createView(ui: AnkoContext<MapFragment>) = with(ui) {
         verticalLayout {
-            mapView().lparams(width = matchParent, height = wrapContent) {
+            mapView {
                 id = mapViewId
-            }
+            }.lparams(width = matchParent, height = wrapContent)
             button("Start") {
                 onClick {
                     mapFragmentPresenter.startLocationLogging()

@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.model
 
+import com.example.hmiyado.sampo.domain.math.toDegree
 import timber.log.Timber
 
 /**
@@ -32,6 +33,10 @@ class Orientation(
 
             return Orientation(azimuth = array[0], pitch = array[1], roll = array[2])
         }
+    }
+
+    fun toDegreeString(): String {
+        return "Orientation(azimuth=${azimuth.toDegree()}, pitch=${pitch.toDegree()},, roll=${roll.toDegree()})"
     }
 
     override fun toString(): String {

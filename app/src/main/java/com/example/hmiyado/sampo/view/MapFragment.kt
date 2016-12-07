@@ -17,8 +17,8 @@ import com.github.salomonbrys.kodein.android.appKodein
 import com.trello.rxlifecycle.components.RxFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.debug
 import org.jetbrains.anko.find
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/07/26.
@@ -61,17 +61,17 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        debug { "on create view" }
-        return MapFragmentUi(presenter).createView(AnkoContext.Companion.create(context, this))
+        Timber.e("on create view")
+        return MapFragmentUi(presenter).createView(AnkoContext.Companion.create(activity.baseContext, this))
     }
 
     override fun onResume() {
         super.onResume()
-        presenter
+        presenter.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter
+        presenter.onPause()
     }
 }

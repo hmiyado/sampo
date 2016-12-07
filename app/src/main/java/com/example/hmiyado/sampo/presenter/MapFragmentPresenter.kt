@@ -2,7 +2,6 @@ package com.example.hmiyado.sampo.presenter
 
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
-import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.view.MapFragment
 import com.github.salomonbrys.kodein.instance
 import timber.log.Timber
@@ -16,9 +15,8 @@ class MapFragmentPresenter(
 ) {
     private val tempLocationList: MutableList<Location> = mutableListOf()
     val UseLocation: UseLocation by mapFragment.injector.instance()
-    val CompassService: CompassService by mapFragment.injector.instance()
-
-    init {
+    val mapViewPresenter: MapViewPresenter by lazy {
+        mapFragment.mapViewPresenter
     }
 
     private fun tempLocationToString(): String {
@@ -28,6 +26,14 @@ class MapFragmentPresenter(
             ${location.toString()}
             """
         }
+    }
+
+    fun onResume() {
+        mapViewPresenter.startGeometricalLogging()
+    }
+
+    fun onPause() {
+        mapViewPresenter.stopGeometricalLogging()
     }
 
     fun startLocationLogging() {
