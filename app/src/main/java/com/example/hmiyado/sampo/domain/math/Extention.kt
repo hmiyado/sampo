@@ -6,9 +6,7 @@ package com.example.hmiyado.sampo.domain.math
  */
 
 /**
- * 実装は |d| < Double.MIN_VALUE ならtrue
- * @param d ゼロ判定する値
- * @return ゼロならtrue
+ * @return |d| < Double.MIN_VALUE ならtrue
  */
 fun Float.isZero(): Boolean = Math.abs(this) < Float.MIN_VALUE
 

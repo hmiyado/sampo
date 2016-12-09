@@ -15,7 +15,7 @@ class LocationServiceVirtualImpl : LocationService {
     private val locationSubject: PublishSubject<Location>
     private val handler: Handler
     private var nextLocation: Location
-    private val delayTimeMs:Long = 1000
+    private val delayTimeMs: Long = 1000
 
     init {
         locationSubject = PublishSubject.create()
@@ -29,12 +29,12 @@ class LocationServiceVirtualImpl : LocationService {
     }
 
     override fun startLocationObserve() {
-        handler.postDelayed(object: Runnable{
+        handler.postDelayed(object : Runnable {
             override fun run() {
                 onNextLocation()
                 handler.postDelayed(this, delayTimeMs)
             }
-        },delayTimeMs)
+        }, delayTimeMs)
     }
 
     override fun stopLocationObserve() {
@@ -44,8 +44,8 @@ class LocationServiceVirtualImpl : LocationService {
     private fun updateNextLocation() {
         nextLocation = Location(
                 nextLocation.latitude + 1,
-                nextLocation.longitude +1,
-                nextLocation.localDateTime + Second((delayTimeMs/1000).toInt())
+                nextLocation.longitude + 1,
+                nextLocation.localDateTime + Second((delayTimeMs / 1000).toInt())
         )
     }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
+import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.activityScope
@@ -27,7 +28,8 @@ class SampoApplication: Application(), KodeinAware {
         bind<LocationService>() with singleton { LocationServiceVirtualImpl() }
         bind<LocationService>("real") with singleton { LocationServiceImpl(instance()) }
         bind<LocationRepository>() with autoActivitySingleton { LocationRepositoryRealmImpl() }
-        bind<CompassService>() with singleton { CompassServiceImpl(sensorManager) }
+        bind<CompassService>("real") with singleton { CompassServiceImpl(sensorManager) }
+        bind<CompassService>() with singleton { CompassServiceVirtualImpl() }
     }
 
 

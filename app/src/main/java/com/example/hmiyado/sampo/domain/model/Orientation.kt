@@ -1,7 +1,6 @@
 package com.example.hmiyado.sampo.domain.model
 
 import com.example.hmiyado.sampo.domain.math.toDegree
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/01.
@@ -10,9 +9,9 @@ import timber.log.Timber
  * 端末の画面に対して垂直な直線をz軸，端末の上端と下端を結ぶ直線をy軸，端末の右端と左端を結ぶ直線をx軸とする．
  * 端末が地面と並行でかつ画面が地面と反対側にあり，端末上端が北側，下端が南側にあるとき，azimuth=0, pitch=0, roll=0．
  *
- * @param azimuth 端末のz軸を中心とする回転角．北向きのとき0．東向きのとき90度．南向きのとき180度．値域は0から360度．
- * @param pitch 端末のx軸を中心とする回転角．端末上端が地面を向いているとき180度,端末が水平のとき0，端末下端が地面を向いているとき-180度．値域は-180度から180度．
- * @param roll 端末のy軸を中心とする回転角．端末左端が地面側にあるとき-90度，端末が地面と平行なとき0，端末右端が地面側にあるとき90度．値域は-90度から90度
+ * @param azimuth 端末のz軸を中心とする回転角(弧度法)．北向きのとき0．東向きのとき90度．南向きのとき180度．値域は0から360度．
+ * @param pitch 端末のx軸を中心とする回転角(弧度法)．端末上端が地面を向いているとき180度,端末が水平のとき0，端末下端が地面を向いているとき-180度．値域は-180度から180度．
+ * @param roll 端末のy軸を中心とする回転角(弧度法)．端末左端が地面側にあるとき-90度，端末が地面と平行なとき0，端末右端が地面側にあるとき90度．値域は-90度から90度
  */
 class Orientation(
         val azimuth: Float,
@@ -27,7 +26,6 @@ class Orientation(
          */
         fun fromFloatArray(array: FloatArray): Orientation {
             if (array.size < 3) {
-                Timber.e("c")
                 throw IllegalArgumentException("array size must be larger than 3 but ${array.size}")
             }
 
@@ -36,7 +34,7 @@ class Orientation(
     }
 
     fun toDegreeString(): String {
-        return "Orientation(azimuth=${azimuth.toDegree()}, pitch=${pitch.toDegree()},, roll=${roll.toDegree()})"
+        return "Orientation(azimuth=${azimuth.toDegree()}, pitch=${pitch.toDegree()}, roll=${roll.toDegree()})"
     }
 
     override fun toString(): String {
