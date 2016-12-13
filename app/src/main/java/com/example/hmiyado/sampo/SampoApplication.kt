@@ -1,7 +1,12 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
+import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.domain.usecase.UseLocation
+import com.example.hmiyado.sampo.domain.usecase.map.UseMapViewerInput
+import com.example.hmiyado.sampo.domain.usecase.map.UseMapViewerInteraction
+import com.example.hmiyado.sampo.domain.usecase.map.UseMapViewerOutput
+import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
 import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
@@ -20,7 +25,7 @@ import timber.log.Timber
  * Applicationクラス．
  * 実装を定義したり，Activityのライフサイクルに共通する処理を行ったりする．
  */
-class SampoApplication: Application(), KodeinAware {
+class SampoApplication : Application(), KodeinAware {
     override val kodein by Kodein.lazy {
         import(androidModule)
 
@@ -30,6 +35,15 @@ class SampoApplication: Application(), KodeinAware {
         bind<LocationRepository>() with autoActivitySingleton { LocationRepositoryRealmImpl() }
         bind<CompassService>("real") with singleton { CompassServiceImpl(sensorManager) }
         bind<CompassService>() with singleton { CompassServiceVirtualImpl() }
+
+        bind<UseMapViewerInteraction>() with factory { pair: Pair<MapViewPresenter, MapViewController> ->
+            UseMapViewerInteraction(
+                    factory<MapViewPresenter, UseMapViewerInput>()(pair.first),
+                    factory<MapViewController, UseMapViewerOutput>()(pair.second)
+            )
+        }
+        bind<UseMapViewerInput>() with factory { mapViewPresenter: MapViewPresenter -> UseMapViewerInput(mapViewPresenter) }
+        bind<UseMapViewerOutput>() with factory { mapViewController: MapViewController -> UseMapViewerOutput(mapViewController) }
     }
 
 

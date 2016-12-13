@@ -20,7 +20,7 @@ Kotlin,RxKotlin,Kodein
 Android Studioのリンタに従う
 
 ### 枠組み
-MVP+DDD
+MVP+DDD & Clean Architecture
 
 View と Presenter は1対1対応
 View を触れるのは対応するPresenterだけ
@@ -38,6 +38,26 @@ DDDっぽく，関心事に対していくつかのレイヤー分けをする
 | view |UI．UIへのイベント定義もここ（ロジックは当然プレゼンターから注入する）|プレゼンター|
 
 内部，外部ライブラリは必ずインターフェースに実装を注入する形でラップして使う．
+
+#### クリーンアーキテクチャ
+- 外の世界: ユーザー操作（view, touch イベント）
+    - 層１：presenter(view からのイベント)/controller(viewへの出力)
+    - 層２：domain
+- 外の世界：外部記憶
+    - 層１：repository
+    - 層２：domain
+- 外の世界：センサー
+    - 層１：service
+    - 層２：domain
+- 外の世界：通信（サーバー）
+    - 層１：service
+    - 層２：domain
+
+層の中で完結することはその中で完結させることは絶対してはならない．
+層をまたぐ処理は全部domain．
+domainが分厚くなりそう&状態をどこでもってどう更新するかの仕組みがない．
+
+-> domain層も，入力，出力，入出力結合の３つに分割する！
 
 ### テスト
 モデル，リポジトリ，ドメイン，サービスはテストを書く
