@@ -1,10 +1,13 @@
 package com.example.hmiyado.sampo.domain.usecase.map
 
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
+import rx.Observable
+import rx.Subscription
 import timber.log.Timber
 
 /**
@@ -44,7 +47,6 @@ class UseMapViewerOutput(
 
     init {
         settingPaintMapPoint()
-        drawMap()
     }
 
     private fun settingPaintMapPoint() {
@@ -53,9 +55,8 @@ class UseMapViewerOutput(
         paintMapPoint.strokeWidth = 20f
     }
 
-    fun drawMap() {
-        mapViewController
-                .getOnDrawObservable()
+    fun setOnDrawSignal(onDrawSignal: Observable<Canvas>) {
+        onDrawSignal
                 .doOnNext { canvas ->
                     Timber.e("on canvas drawing")
                     // デバッグ用位置情報出力
@@ -79,7 +80,25 @@ class UseMapViewerOutput(
                     // 位置情報出力
                     canvas.drawCircle(-500f, 0f, 75f, paintMapPoint)
                 }
-                .subscribe { canvas ->
+                .bindMapViewAndSubscribe()
+    }
+
+    fun setOnRotateSignal(onRotateSignal: Observable<Float>) {
+        onRotateSignal
+                .doOnNext {
+                    rotateAngleDegree = it
                 }
+                .bindMapViewAndSubscribe()
+    }
+
+    fun setOnScaleSignal(onScaleSignal: Observable<Float>) {
+        onScaleSignal
+                .doOnNext { scaleFactor = it }
+                .bindMapViewAndSubscribe()
+    }
+
+    private fun <T> rx.Observable<T>.bindMapViewAndSubscribe(): Subscription {
+        return mapViewController.bindMapViewAndSubscribe(this)
     }
 }
+

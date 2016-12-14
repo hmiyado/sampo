@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.usecase.map
 
+import android.graphics.Canvas
 import android.graphics.PointF
 import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.toDegree
@@ -66,5 +67,9 @@ class UseMapViewerInput(
                     scaleFactor *= it.scaleFactor
                     scaleFactor
                 }
+    }
+
+    fun getOnDrawSignal(): Observable<Canvas> {
+        return mapViewPresenter.getOnDrawSignal()
     }
 }

@@ -25,20 +25,19 @@ class UseMapViewerInteraction(
     init {
         rotationInteraction()
         scaleInteraction()
+        drawInteraction()
     }
 
     private fun rotationInteraction() {
-        useMapViewerInput.getOnRotateSignal()
-                .doOnNext {
-                    useMapViewerOutput.rotateAngleDegree = it
-                }
-                .subscribe()
+        useMapViewerOutput.setOnRotateSignal(useMapViewerInput.getOnRotateSignal())
 
     }
 
     private fun scaleInteraction() {
-        useMapViewerInput.getOnScaleSignal()
-                .doOnNext { useMapViewerOutput.scaleFactor = it }
-                .subscribe()
+        useMapViewerOutput.setOnScaleSignal(useMapViewerInput.getOnScaleSignal())
+    }
+
+    private fun drawInteraction() {
+        useMapViewerOutput.setOnDrawSignal(useMapViewerInput.getOnDrawSignal())
     }
 }

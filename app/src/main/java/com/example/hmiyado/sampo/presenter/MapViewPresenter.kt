@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.presenter
 
+import android.graphics.Canvas
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import com.example.hmiyado.sampo.view.custom.MapView
@@ -57,5 +58,9 @@ class MapViewPresenter(
 
     fun getOnScaleBeginSignal(): Observable<ScaleGestureDetector> {
         return onScaleBeginSignalSubject.share()
+    }
+
+    fun getOnDrawSignal(): Observable<Canvas> {
+        return mapView.getOnDrawSignal()
     }
 }

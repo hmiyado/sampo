@@ -1,8 +1,9 @@
 package com.example.hmiyado.sampo.controller
 
-import android.graphics.Canvas
 import com.example.hmiyado.sampo.view.custom.MapView
+import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
+import rx.Subscription
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -10,7 +11,7 @@ import rx.Observable
  */
 class MapViewController(private val mapView: MapView) {
 
-    fun getOnDrawObservable(): Observable<Canvas> {
-        return mapView.getOnDrawSignal()
+    fun bindMapViewAndSubscribe(observable: Observable<*>): Subscription {
+        return observable.bindToLifecycle(mapView).subscribe()
     }
 }
