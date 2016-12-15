@@ -4,8 +4,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.controller.MapViewController
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
+import com.example.hmiyado.sampo.domain.math.toDegree
+import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
 import rx.Subscription
 import timber.log.Timber
@@ -26,24 +26,8 @@ import timber.log.Timber
 class UseMapViewerOutput(
         private val mapViewController: MapViewController
 ) {
-
-    private val location = Location(0.0, 0.0, LocalDateTime.UnixEpoch)
     private val paintMapPoint: Paint = Paint()
-
-    /**
-     * 倍率１のときの，100 px あたりの地図上の距離（メートル）
-     */
-    private val SCALE_UNIT = 100f
-
-    var scaleFactor: Float = 1.0f
-    var rotateAngleDegree: Float = 0f
-
-    /**
-     * 地図の縮尺．
-     * 100 px あたりの地図上の距離(メートル)を表す．
-     */
-    private val mapScale: Float
-        get() = SCALE_UNIT * scaleFactor
+    private var map = Map.empty()
 
     init {
         settingPaintMapPoint()
@@ -60,16 +44,16 @@ class UseMapViewerOutput(
                 .doOnNext { canvas ->
                     Timber.e("on canvas drawing")
                     // デバッグ用位置情報出力
-                    canvas.drawText(location.toString(), 0f, canvas.height - 100f, paintMapPoint)
+                    canvas.drawText(map.originalLocation.toString(), 0f, canvas.height - 100f, paintMapPoint)
                     // デバッグ用縮尺出力
                     canvas.drawLine(50f, canvas.height - 50f, 150f, canvas.height - 50f, paintMapPoint) // 縮尺定規
-                    canvas.drawText("$mapScale [m]", 250f, canvas.height - 50f, paintMapPoint) // 縮尺倍率
+                    canvas.drawText("${map.scale} [m]", 250f, canvas.height - 50f, paintMapPoint) // 縮尺倍率
 
                     // canvasの中心を画面の中心に移動する
                     canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
 
                     // canvas を回転する
-                    canvas.rotate(rotateAngleDegree)
+                    canvas.rotate(map.rotateAngle.toDegree())
 
                     Timber.e("on canvas drawing")
                     canvas.drawLine(-600f, 0f, 600f, 0f, paintMapPoint)
@@ -83,17 +67,9 @@ class UseMapViewerOutput(
                 .bindMapViewAndSubscribe()
     }
 
-    fun setOnRotateSignal(onRotateSignal: Observable<Float>) {
-        onRotateSignal
-                .doOnNext {
-                    rotateAngleDegree = it
-                }
-                .bindMapViewAndSubscribe()
-    }
-
-    fun setOnScaleSignal(onScaleSignal: Observable<Float>) {
-        onScaleSignal
-                .doOnNext { scaleFactor = it }
+    fun setOnUpdateMapSignal(onUpdateMapSignal: Observable<Map>) {
+        onUpdateMapSignal
+                .doOnNext { map = it }
                 .bindMapViewAndSubscribe()
     }
 

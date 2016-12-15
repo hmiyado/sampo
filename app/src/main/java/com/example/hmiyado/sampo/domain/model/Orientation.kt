@@ -31,6 +31,10 @@ class Orientation(
 
             return Orientation(azimuth = array[0], pitch = array[1], roll = array[2])
         }
+
+        fun empty(): Orientation {
+            return Orientation(0f, 0f, 0f)
+        }
     }
 
     fun toDegreeString(): String {
