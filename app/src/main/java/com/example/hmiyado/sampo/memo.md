@@ -42,16 +42,21 @@ DDDっぽく，関心事に対していくつかのレイヤー分けをする
 #### クリーンアーキテクチャ
 - 外の世界: ユーザー操作（view, touch イベント）
     - 層１：presenter(view からのイベント)/controller(viewへの出力)
-    - 層２：domain
+    - 層２：UseCase
 - 外の世界：外部記憶
     - 層１：repository
-    - 層２：domain
+    - 層２：UseCase
 - 外の世界：センサー
     - 層１：service
-    - 層２：domain
+    - 層２：UseCase
 - 外の世界：通信（サーバー）
     - 層１：service
-    - 層２：domain
+    - 層２：UseCase
+- 中の世界：状態
+    - 状態：State
+    - 状態の保持と更新: Store
+- 中の世界：入出力結合
+    - Interaction(入力ユースケース, 出力ユースケース)
 
 層の中で完結することはその中で完結させることは絶対してはならない．
 層をまたぐ処理は全部domain．
