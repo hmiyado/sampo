@@ -17,7 +17,7 @@ class StoreAndMapViewerInputToMapViewerOutputInteraction(
     }
 
     private fun drawInteraction() {
-        useMapViewerOutput.setOnDrawSignal(store.getOnUpdateMapSignal(), useMapViewerInput.getOnDrawSignal())
+        useMapViewerOutput.setOnDrawSignal(store.getMapSignal(), useMapViewerInput.getOnDrawSignal())
     }
 
 }

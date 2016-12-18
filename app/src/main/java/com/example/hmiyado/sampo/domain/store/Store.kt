@@ -13,28 +13,61 @@ import rx.lang.kotlin.PublishSubject
  */
 class Store {
 
-    // TODO map は変数ではなく，Observableの中にラップされた値としてもつように変更する
-    // 変更に応じたSubjectからmapを取りまとめるSubjectに適宜更新後のmapを流すようにすればできるはず
     private var map: Map = Map(Location.Companion.empty(), Orientation(0f, 0f, 0f), 0f, 0f)
 
-    private val onUpdateOriginalLocationSignal = PublishSubject<Map>()
-    private val onUpdateOrientationSignal = PublishSubject<Map>()
-    private val onUpdateScaleFactorSignal = PublishSubject<Map>()
-    private val onUpdateRotateAngleSignal = PublishSubject<Map>()
+    private val mapSubject = PublishSubject<Map>()
+
+    private val onUpdateOriginalLocationSignal = PublishSubject<Location>()
+    private val onUpdateOrientationSignal = PublishSubject<Orientation>()
+    private val onUpdateScaleFactorSignal = PublishSubject<Float>()
+    private val onUpdateRotateAngleSignal = PublishSubject<Float>()
+
+    init {
+        mapSubject.onNext(Map.empty())
+    }
+
+    private fun getMapSignalUpdatedOriginalLocation(): Observable<Map> {
+        return onUpdateOriginalLocationSignal
+                .withLatestFrom(mapSubject, { location, map ->
+                    Map.Builder(map).setOriginalLocation(location).build()
+                })
+                .share()
+    }
+
+    private fun getMapSignalUpdatedOrientation(): Observable<Map> {
+        return onUpdateOrientationSignal
+                .withLatestFrom(mapSubject, { orientation, map ->
+                    Map.Builder(map).setOrientation(orientation).build()
+                })
+                .share()
+    }
+
+    private fun getMapSignalUpdatedScaleFactor(): Observable<Map> {
+        return onUpdateScaleFactorSignal
+                .withLatestFrom(mapSubject, { scaleFactor, map ->
+                    Map.Builder(map).setScaleFactor(scaleFactor).build()
+                })
+                .share()
+    }
+
+    private fun getMapSignalUpdatedRotateAngle(): Observable<Map> {
+        return onUpdateScaleFactorSignal
+                .withLatestFrom(mapSubject, { rotateAngle, map ->
+                    Map.Builder(map).setRotateAngle(rotateAngle).build()
+                })
+                .share()
+    }
 
     fun setOriginalLocation(originalLocation: Location) {
-        map = Map.Builder(map).setOriginalLocation(originalLocation).build()
-        onUpdateOriginalLocationSignal.onNext(map)
+        onUpdateOriginalLocationSignal.onNext(originalLocation)
     }
 
     fun setOrientation(orientation: Orientation) {
-        map = Map.Builder(map).setOrientation(orientation).build()
-        onUpdateOrientationSignal.onNext(map)
+        onUpdateOrientationSignal.onNext(orientation)
     }
 
     fun setScaleFactor(scaleFactor: Float) {
-        map = Map.Builder(map).setScaleFactor(scaleFactor).build()
-        onUpdateScaleFactorSignal.onNext(map)
+        onUpdateScaleFactorSignal.onNext(scaleFactor)
     }
 
     fun productScaleFactor(scaleFactor: Float) {
@@ -42,36 +75,19 @@ class Store {
     }
 
     fun setRotateAngle(rotateAngle: Float) {
-        map = Map.Builder(map).setRotateAngle(rotateAngle).build()
-        onUpdateRotateAngleSignal.onNext(map)
+        onUpdateRotateAngleSignal.onNext(rotateAngle)
     }
 
     fun addRotateAngle(rotateAngle: Float) {
         setRotateAngle(rotateAngle + map.rotateAngle)
     }
 
-    fun getOnUpdateOriginalLocationSignal(): Observable<Map> {
-        return onUpdateOriginalLocationSignal.share()
-    }
-
-    fun getOnUpdateOrientationSignal(): Observable<Map> {
-        return onUpdateOrientationSignal.share()
-    }
-
-    fun getOnUpdateScaleFactorSignal(): Observable<Map> {
-        return onUpdateScaleFactorSignal.share()
-    }
-
-    fun getOnUpdateRotateAngleSignal(): Observable<Map> {
-        return onUpdateRotateAngleSignal.share()
-    }
-
-    fun getOnUpdateMapSignal(): Observable<Map> {
+    fun getMapSignal(): Observable<Map> {
         return Observable.merge(
-                getOnUpdateOriginalLocationSignal(),
-                getOnUpdateRotateAngleSignal(),
-                getOnUpdateOrientationSignal(),
-                getOnUpdateScaleFactorSignal()
+                getMapSignalUpdatedOriginalLocation(),
+                getMapSignalUpdatedOrientation(),
+                getMapSignalUpdatedScaleFactor(),
+                getMapSignalUpdatedRotateAngle()
         )
     }
 

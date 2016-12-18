@@ -16,6 +16,6 @@ class StoreToMapViewerOutputInteraction(
     }
 
     private fun mapInteraction() {
-        useMapViewerOutput.setOnUpdateMapSignal(store.getOnUpdateMapSignal())
+        useMapViewerOutput.setOnUpdateMapSignal(store.getMapSignal())
     }
 }
