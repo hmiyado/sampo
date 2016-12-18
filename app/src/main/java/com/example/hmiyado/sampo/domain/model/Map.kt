@@ -21,7 +21,7 @@ class Map(
 ) {
     companion object {
         fun empty(): Map {
-            return Map(Location.empty(), Orientation.empty(), 0f, 0f)
+            return Map(Location.empty(), Orientation.empty(), 1f, 0f)
         }
     }
 

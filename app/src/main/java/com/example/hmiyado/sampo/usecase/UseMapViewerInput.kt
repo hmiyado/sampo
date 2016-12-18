@@ -7,7 +7,7 @@ import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
-import timber.log.Timber
+import rx.lang.kotlin.PublishSubject
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -21,54 +21,55 @@ class UseMapViewerInput(
         private val mapViewPresenter: MapViewPresenter
 ) {
     /**
-     * @return 地図が北から何度傾いているかのシグナル
+     * @return 地図をどれだけ回転させたかのシグナル
      */
     fun getOnRotateSignal(): Observable<Float> {
-        var rotateAngleDegree: Float = 0f
-        // TODO ローカル変数で一時変数をもたないように変更する
-        var point1: PointF = PointF(0f, 0f)
-        var point2: PointF = PointF(0f, 0f)
+        val previousPointsSubject = PublishSubject<Pair<PointF, PointF>>()
+
+        previousPointsSubject.subscribe()
 
         mapViewPresenter.getOnTouchEventSignal()
                 .zipWith(mapViewPresenter.getOnScaleBeginSignal(), { event, scaleGestureDetector ->
                     event
                 })
+                .doOnNext {
+                    val point1 = PointF(it.getX(0), it.getY(0))
+                    val point2 = PointF(it.getX(0), it.getY(0))
+                    previousPointsSubject.onNext(Pair(point1, point2))
+                }
                 .bindToLifecycle(mapViewPresenter.mapView)
                 // ScaleGestureがBeginするたびにpointを初期化し直す
                 .subscribe {
-                    point1 = PointF(it.getX(0), it.getY(0))
-                    point2 = PointF(it.getX(0), it.getY(0))
                 }
 
         return mapViewPresenter.getOnTouchEventSignal()
                 // ２点タップしていなければ，回転をとることはない
                 .filter { it.pointerCount == 2 }
+                .withLatestFrom(previousPointsSubject, { event, previousPoints ->
+                    val nextPoint1 = PointF(event.getX(0), event.getY(0))
+                    val nextPoint2 = PointF(event.getX(1), event.getY(1))
+                    Pair(previousPoints, Pair(nextPoint1, nextPoint2))
+                })
                 .map {
-                    val nextPoint1 = PointF(it.getX(0), it.getY(0))
-                    val nextPoint2 = PointF(it.getX(1), it.getY(1))
+                    val previousPoints = it.first
+                    val nextPoints = it.second
 
-                    // TODO rotate angle dgree は前のイベントとの差分のみ流すように変更する
-                    rotateAngleDegree += Geometry.determineAngle(point1, point2, nextPoint1, nextPoint2).toDegree()
-                    Timber.d("rotate angle degree = $rotateAngleDegree")
+                    previousPointsSubject.onNext(nextPoints)
 
-                    point1 = nextPoint1
-                    point2 = nextPoint2
-
-                    rotateAngleDegree
+                    Geometry.determineAngle(
+                            previousPoints.first,
+                            previousPoints.second,
+                            nextPoints.first,
+                            nextPoints.second).toDegree()
                 }
     }
 
     /**
-     * @return 地図の初期状態に対する拡大率のシグナル
+     * @return 拡大率のシグナル
      */
     fun getOnScaleSignal(): Observable<Float> {
-        var scaleFactor: Float = 1.0f
-
         return mapViewPresenter.getOnScaleSignal()
-                .map {
-                    scaleFactor *= it.scaleFactor
-                    scaleFactor
-                }
+                .map { it.scaleFactor }
     }
 
     fun getOnDrawSignal(): Observable<Canvas> {

@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase
 
 import com.example.hmiyado.sampo.domain.store.Store
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -26,6 +27,7 @@ class MapViewerInputToStoreInteraction(
 
     private fun scaleInteraction() {
         useMapViewerInput.getOnScaleSignal()
+                .throttleLast(100, TimeUnit.MILLISECONDS)
                 .doOnNext { store.productScaleFactor(it) }
                 .subscribe()
     }

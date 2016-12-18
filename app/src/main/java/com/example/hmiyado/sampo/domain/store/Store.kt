@@ -5,6 +5,7 @@ import com.example.hmiyado.sampo.domain.model.Map
 import com.example.hmiyado.sampo.domain.model.Orientation
 import rx.Observable
 import rx.lang.kotlin.PublishSubject
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -13,9 +14,9 @@ import rx.lang.kotlin.PublishSubject
  */
 class Store {
 
-    private var map: Map = Map(Location.Companion.empty(), Orientation(0f, 0f, 0f), 0f, 0f)
+    private var map: Map = Map.empty()
 
-    private val mapSubject = PublishSubject<Map>()
+//    private val mapSubject = PublishSubject<Map>()
 
     private val onUpdateOriginalLocationSignal = PublishSubject<Location>()
     private val onUpdateOrientationSignal = PublishSubject<Orientation>()
@@ -23,38 +24,54 @@ class Store {
     private val onUpdateRotateAngleSignal = PublishSubject<Float>()
 
     init {
-        mapSubject.onNext(Map.empty())
+//        mapSubject.subscribe()
+//        mapSubject.onNext(Map.empty())
     }
 
     private fun getMapSignalUpdatedOriginalLocation(): Observable<Map> {
         return onUpdateOriginalLocationSignal
-                .withLatestFrom(mapSubject, { location, map ->
-                    Map.Builder(map).setOriginalLocation(location).build()
-                })
+                .map {
+                    Map.Builder(map).setOriginalLocation(it).build()
+                }
+//                .withLatestFrom(mapSubject, { location, map ->
+//                    Map.Builder(map).setOriginalLocation(location).build()
+//                })
                 .share()
     }
 
     private fun getMapSignalUpdatedOrientation(): Observable<Map> {
         return onUpdateOrientationSignal
-                .withLatestFrom(mapSubject, { orientation, map ->
-                    Map.Builder(map).setOrientation(orientation).build()
-                })
+                .map {
+                    Map.Builder(map).setOrientation(it).build()
+                }
+//                .withLatestFrom(mapSubject, { orientation, map ->
+//                    Map.Builder(map).setOrientation(orientation).build()
+//                })
                 .share()
     }
 
     private fun getMapSignalUpdatedScaleFactor(): Observable<Map> {
         return onUpdateScaleFactorSignal
-                .withLatestFrom(mapSubject, { scaleFactor, map ->
-                    Map.Builder(map).setScaleFactor(scaleFactor).build()
-                })
+                .doOnNext { Timber.d("update scale factor by $it") }
+                .map {
+                    Map.Builder(map).setScaleFactor(map.scaleFactor * it).build()
+                }
+//                .withLatestFrom(mapSubject, { scaleFactor, map ->
+//                    Timber.d("scaleFactor=$scaleFactor")
+//                    Map.Builder(map).setScaleFactor(scaleFactor).build()
+//                })
                 .share()
     }
 
     private fun getMapSignalUpdatedRotateAngle(): Observable<Map> {
-        return onUpdateScaleFactorSignal
-                .withLatestFrom(mapSubject, { rotateAngle, map ->
-                    Map.Builder(map).setRotateAngle(rotateAngle).build()
-                })
+        return onUpdateRotateAngleSignal
+                .doOnNext { Timber.d("update rotate angle by $it") }
+                .map {
+                    Map.Builder(map).setRotateAngle(map.rotateAngle + it).build()
+                }
+//                .withLatestFrom(mapSubject, { rotateAngle, map ->
+//                    Map.Builder(map).setRotateAngle(rotateAngle).build()
+//                })
                 .share()
     }
 
@@ -71,7 +88,7 @@ class Store {
     }
 
     fun productScaleFactor(scaleFactor: Float) {
-        setScaleFactor(scaleFactor * map.scaleFactor)
+        setScaleFactor(scaleFactor)
     }
 
     fun setRotateAngle(rotateAngle: Float) {
@@ -79,7 +96,7 @@ class Store {
     }
 
     fun addRotateAngle(rotateAngle: Float) {
-        setRotateAngle(rotateAngle + map.rotateAngle)
+        setRotateAngle(rotateAngle)
     }
 
     fun getMapSignal(): Observable<Map> {
@@ -89,6 +106,8 @@ class Store {
                 getMapSignalUpdatedScaleFactor(),
                 getMapSignalUpdatedRotateAngle()
         )
+                .doOnNext { map = it }
+                .share()
     }
 
 }
