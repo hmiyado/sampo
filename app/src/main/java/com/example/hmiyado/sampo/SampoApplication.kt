@@ -1,10 +1,6 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
-import com.example.hmiyado.sampo.controller.MapViewController
-import com.example.hmiyado.sampo.domain.store.Store
-import com.example.hmiyado.sampo.domain.usecase.map.*
-import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
 import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
@@ -32,27 +28,6 @@ class SampoApplication : Application(), KodeinAware {
         bind<LocationRepository>() with autoActivitySingleton { LocationRepositoryRealmImpl() }
         bind<CompassService>("real") with singleton { CompassServiceImpl(sensorManager) }
         bind<CompassService>() with singleton { CompassServiceVirtualImpl() }
-
-        bind<StoreToMapViewerOutputInteraction>() with factory { pair: Pair<Store, MapViewController> ->
-            StoreToMapViewerOutputInteraction(
-                    pair.first,
-                    factory<MapViewController, UseMapViewerOutput>()(pair.second)
-            )
-        }
-        bind<MapViewerInputToMapViewerOutputInteraction>() with factory { pair: Pair<MapViewPresenter, MapViewController> ->
-            MapViewerInputToMapViewerOutputInteraction(
-                    factory<MapViewPresenter, UseMapViewerInput>()(pair.first),
-                    factory<MapViewController, UseMapViewerOutput>()(pair.second)
-            )
-        }
-        bind<MapViewerInputToStoreInteraction>() with factory { pair: Pair<MapViewPresenter, Store> ->
-            MapViewerInputToStoreInteraction(
-                    factory<MapViewPresenter, UseMapViewerInput>()(pair.first),
-                    pair.second
-            )
-        }
-        bind<UseMapViewerInput>() with factory { mapViewPresenter: MapViewPresenter -> UseMapViewerInput(mapViewPresenter) }
-        bind<UseMapViewerOutput>() with factory { mapViewController: MapViewController -> UseMapViewerOutput(mapViewController) }
     }
 
 

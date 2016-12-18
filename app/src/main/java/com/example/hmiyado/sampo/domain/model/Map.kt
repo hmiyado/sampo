@@ -1,5 +1,7 @@
 package com.example.hmiyado.sampo.domain.model
 
+import timber.log.Timber
+
 /**
  * Created by hmiyado on 2016/12/15.
  *
@@ -34,11 +36,15 @@ class Map(
      */
     val SCALE_UNIT = 100
 
+    override fun toString(): String {
+        return "Map(originalLocation=$originalLocation), orientation=$orientation, scaleFactor=$scaleFactor, rotateAngle=$rotateAngle"
+    }
+
     class Builder(map: Map) {
-        var originalLocation = map.originalLocation
-        var orientation = map.orientation
-        var scaleFactor = map.scaleFactor
-        var rotateAngle = map.rotateAngle
+        private var originalLocation = map.originalLocation
+        private var orientation = map.orientation
+        private var scaleFactor = map.scaleFactor
+        private var rotateAngle = map.rotateAngle
 
         fun build(): Map {
             return Map(
@@ -66,6 +72,7 @@ class Map(
 
         fun setRotateAngle(rotateAngle: Float): Builder {
             this.rotateAngle = rotateAngle
+            Timber.d("rotateAngle(this; arg)=(${this.rotateAngle}; $rotateAngle)")
             return this
         }
     }

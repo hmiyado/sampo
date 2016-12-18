@@ -14,4 +14,8 @@ class MapViewController(private val mapView: MapView) {
     fun bindMapViewAndSubscribe(observable: Observable<*>): Subscription {
         return observable.bindToLifecycle(mapView).subscribe()
     }
+
+    fun invalidate() {
+        mapView.postInvalidate()
+    }
 }

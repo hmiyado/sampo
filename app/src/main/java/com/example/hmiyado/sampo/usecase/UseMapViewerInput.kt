@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.domain.usecase.map
+package com.example.hmiyado.sampo.usecase
 
 import android.graphics.Canvas
 import android.graphics.PointF
@@ -25,6 +25,7 @@ class UseMapViewerInput(
      */
     fun getOnRotateSignal(): Observable<Float> {
         var rotateAngleDegree: Float = 0f
+        // TODO ローカル変数で一時変数をもたないように変更する
         var point1: PointF = PointF(0f, 0f)
         var point2: PointF = PointF(0f, 0f)
 
@@ -46,6 +47,7 @@ class UseMapViewerInput(
                     val nextPoint1 = PointF(it.getX(0), it.getY(0))
                     val nextPoint2 = PointF(it.getX(1), it.getY(1))
 
+                    // TODO rotate angle dgree は前のイベントとの差分のみ流すように変更する
                     rotateAngleDegree += Geometry.determineAngle(point1, point2, nextPoint1, nextPoint2).toDegree()
                     Timber.d("rotate angle degree = $rotateAngleDegree")
 

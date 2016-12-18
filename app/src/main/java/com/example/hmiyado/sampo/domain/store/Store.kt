@@ -13,6 +13,8 @@ import rx.lang.kotlin.PublishSubject
  */
 class Store {
 
+    // TODO map は変数ではなく，Observableの中にラップされた値としてもつように変更する
+    // 変更に応じたSubjectからmapを取りまとめるSubjectに適宜更新後のmapを流すようにすればできるはず
     private var map: Map = Map(Location.Companion.empty(), Orientation(0f, 0f, 0f), 0f, 0f)
 
     private val onUpdateOriginalLocationSignal = PublishSubject<Map>()

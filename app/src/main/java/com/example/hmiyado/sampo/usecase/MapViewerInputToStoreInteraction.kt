@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.domain.usecase.map
+package com.example.hmiyado.sampo.usecase
 
 import com.example.hmiyado.sampo.domain.store.Store
 

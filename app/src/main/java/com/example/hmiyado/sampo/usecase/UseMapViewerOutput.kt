@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.domain.usecase.map
+package com.example.hmiyado.sampo.usecase
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -26,8 +26,8 @@ import timber.log.Timber
 class UseMapViewerOutput(
         private val mapViewController: MapViewController
 ) {
+    // TODO 「どんなふうに描画するか？」はmapViewControllerに移譲するようにする
     private val paintMapPoint: Paint = Paint()
-    private var map = Map.empty()
 
     init {
         settingPaintMapPoint()
@@ -39,10 +39,15 @@ class UseMapViewerOutput(
         paintMapPoint.strokeWidth = 20f
     }
 
-    fun setOnDrawSignal(onDrawSignal: Observable<Canvas>) {
+    fun setOnDrawSignal(onUpdateMapSignal: Observable<Map>, onDrawSignal: Observable<Canvas>) {
         onDrawSignal
-                .doOnNext { canvas ->
-                    Timber.e("on canvas drawing")
+                .withLatestFrom(onUpdateMapSignal, { canvas, map -> Pair(canvas, map) })
+                .doOnNext { pairOfCanvasMap ->
+                    val map = pairOfCanvasMap.second
+                    val canvas = pairOfCanvasMap.first
+
+                    Timber.d("on canvas drawing")
+                    Timber.d("$map")
                     // デバッグ用位置情報出力
                     canvas.drawText(map.originalLocation.toString(), 0f, canvas.height - 100f, paintMapPoint)
                     // デバッグ用縮尺出力
@@ -53,6 +58,7 @@ class UseMapViewerOutput(
                     canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
 
                     // canvas を回転する
+                    Timber.d("map rotate degree: ${map.rotateAngle.toDegree()}")
                     canvas.rotate(map.rotateAngle.toDegree())
 
                     Timber.e("on canvas drawing")
@@ -69,11 +75,11 @@ class UseMapViewerOutput(
 
     fun setOnUpdateMapSignal(onUpdateMapSignal: Observable<Map>) {
         onUpdateMapSignal
-                .doOnNext { map = it }
+                .doOnNext { mapViewController.invalidate() }
                 .bindMapViewAndSubscribe()
     }
 
-    private fun <T> rx.Observable<T>.bindMapViewAndSubscribe(): Subscription {
+    private fun <T> Observable<T>.bindMapViewAndSubscribe(): Subscription {
         return mapViewController.bindMapViewAndSubscribe(this)
     }
 }
