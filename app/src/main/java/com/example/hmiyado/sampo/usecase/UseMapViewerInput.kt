@@ -2,12 +2,13 @@ package com.example.hmiyado.sampo.usecase
 
 import android.graphics.Canvas
 import android.graphics.PointF
+import android.view.MotionEvent
 import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
-import rx.lang.kotlin.PublishSubject
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -24,18 +25,21 @@ class UseMapViewerInput(
      * @return 地図をどれだけ回転させたかのシグナル
      */
     fun getOnRotateSignal(): Observable<Float> {
-        val previousPointsSubject = PublishSubject<Pair<PointF, PointF>>()
+        val getPointPairByEvent = { event: MotionEvent ->
+            Pair(
+                    PointF(event.getX(0), event.getY(0)),
+                    PointF(event.getX(1), event.getY(1))
+            )
+        }
 
-        previousPointsSubject.subscribe()
+        var isScaleBegin = true
+        var previousPoints = Pair(PointF(0f, 0f), PointF(0f, 0f))
 
-        mapViewPresenter.getOnTouchEventSignal()
-                .zipWith(mapViewPresenter.getOnScaleBeginSignal(), { event, scaleGestureDetector ->
-                    event
-                })
+        mapViewPresenter.getOnScaleBeginSignal()
+                .doOnNext { Timber.d("on scale begin") }
+                .doOnNext { Timber.d("with latest from: $it") }
                 .doOnNext {
-                    val point1 = PointF(it.getX(0), it.getY(0))
-                    val point2 = PointF(it.getX(0), it.getY(0))
-                    previousPointsSubject.onNext(Pair(point1, point2))
+                    isScaleBegin = true
                 }
                 .bindToLifecycle(mapViewPresenter.mapView)
                 // ScaleGestureがBeginするたびにpointを初期化し直す
@@ -43,24 +47,30 @@ class UseMapViewerInput(
                 }
 
         return mapViewPresenter.getOnTouchEventSignal()
+                .doOnNext { Timber.d("onTouchSignal") }
                 // ２点タップしていなければ，回転をとることはない
                 .filter { it.pointerCount == 2 }
-                .withLatestFrom(previousPointsSubject, { event, previousPoints ->
-                    val nextPoint1 = PointF(event.getX(0), event.getY(0))
-                    val nextPoint2 = PointF(event.getX(1), event.getY(1))
-                    Pair(previousPoints, Pair(nextPoint1, nextPoint2))
-                })
+                .doOnNext { Timber.d("filtered") }
+                .doOnNext { Timber.d("latest from $it") }
+                .filter {
+                    if (isScaleBegin) {
+                        previousPoints = getPointPairByEvent(it)
+                        isScaleBegin = false
+                        false
+                    } else true
+                }
                 .map {
-                    val previousPoints = it.first
-                    val nextPoints = it.second
+                    val nextPoints = getPointPairByEvent(it)
 
-                    previousPointsSubject.onNext(nextPoints)
-
-                    Geometry.determineAngle(
+                    val angle = Geometry.determineAngle(
                             previousPoints.first,
                             previousPoints.second,
                             nextPoints.first,
                             nextPoints.second).toDegree()
+
+                    previousPoints = nextPoints
+
+                    angle
                 }
     }
 

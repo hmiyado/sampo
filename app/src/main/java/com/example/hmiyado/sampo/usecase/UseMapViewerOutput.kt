@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.controller.MapViewController
-import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
 import rx.Subscription
@@ -58,8 +57,8 @@ class UseMapViewerOutput(
                     canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
 
                     // canvas を回転する
-                    Timber.d("map rotate degree: ${map.rotateAngle.toDegree()}")
-                    canvas.rotate(map.rotateAngle.toDegree())
+                    Timber.d("map rotate degree: ${map.rotateAngle}")
+                    canvas.rotate(map.rotateAngle)
 
                     Timber.e("on canvas drawing")
                     canvas.drawLine(-600f, 0f, 600f, 0f, paintMapPoint)

@@ -47,6 +47,7 @@ class MapViewPresenter(
     fun getOnTouchEventSignal(): Observable<MotionEvent> {
         return mapView.getOnTouchSignal()
                 .doOnNext {
+                    Timber.d("on touch signal")
                     scaleGestureDetector.onTouchEvent(it)
                 }
                 .share()

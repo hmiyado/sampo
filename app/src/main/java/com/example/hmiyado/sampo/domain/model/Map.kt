@@ -1,7 +1,5 @@
 package com.example.hmiyado.sampo.domain.model
 
-import timber.log.Timber
-
 /**
  * Created by hmiyado on 2016/12/15.
  *
@@ -10,7 +8,7 @@ import timber.log.Timber
  * @param originalLocation 地図の原点．普通はユーザーの位置？
  * @param orientation ユーザーの向いている方向
  * @param scaleFactor 地図の縮尺倍率
- * @param rotateAngle 地図が北からどれだけ回転して表示されているかを表す回転角
+ * @param rotateAngle 地図が北からどれだけ回転して表示されているかを表す回転角(度数法)
  */
 class Map(
         val originalLocation: Location,
@@ -72,7 +70,6 @@ class Map(
 
         fun setRotateAngle(rotateAngle: Float): Builder {
             this.rotateAngle = rotateAngle
-            Timber.d("rotateAngle(this; arg)=(${this.rotateAngle}; $rotateAngle)")
             return this
         }
     }
