@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 class LocationServiceVirtualImpl : LocationService {
     private val locationSubject: PublishSubject<Location>
     private var nextLocation: Location
-    private val delayTimeMs: Long = 1000
+    private val delayTimeMs: Long = 5000
     private var nextLocationSubscription: Subscription? = null
 
     init {
