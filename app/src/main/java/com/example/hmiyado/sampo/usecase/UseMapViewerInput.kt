@@ -6,7 +6,6 @@ import android.view.MotionEvent
 import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
-import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import rx.Observable
 import timber.log.Timber
 
@@ -32,33 +31,26 @@ class UseMapViewerInput(
             )
         }
 
-        var isScaleBegin = true
+        var isRotating = false
         var previousPoints = Pair(PointF(0f, 0f), PointF(0f, 0f))
-
-        mapViewPresenter.getOnScaleBeginSignal()
-                .doOnNext { Timber.d("on scale begin") }
-                .doOnNext { Timber.d("with latest from: $it") }
-                .doOnNext {
-                    isScaleBegin = true
-                }
-                .bindToLifecycle(mapViewPresenter.mapView)
-                // ScaleGestureがBeginするたびにpointを初期化し直す
-                .subscribe {
-                }
 
         return mapViewPresenter.getOnTouchEventSignal()
                 .doOnNext { Timber.d("onTouchSignal") }
                 // ２点タップしていなければ，回転をとることはない
-                .filter { it.pointerCount == 2 }
+                .filter {
+                    if (it.pointerCount == 2) {
+                        if (!isRotating) {
+                            previousPoints = getPointPairByEvent(it)
+                            isRotating = true
+                        }
+                        true
+                    } else {
+                        isRotating = false
+                        false
+                    }
+                }
                 .doOnNext { Timber.d("filtered") }
                 .doOnNext { Timber.d("latest from $it") }
-                .filter {
-                    if (isScaleBegin) {
-                        previousPoints = getPointPairByEvent(it)
-                        isScaleBegin = false
-                        false
-                    } else true
-                }
                 .map {
                     val nextPoints = getPointPairByEvent(it)
 
