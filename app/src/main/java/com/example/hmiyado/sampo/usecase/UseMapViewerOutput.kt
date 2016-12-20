@@ -60,7 +60,6 @@ class UseMapViewerOutput(
                     Timber.d("map rotate degree: ${map.rotateAngle}")
                     canvas.rotate(map.rotateAngle)
 
-                    Timber.e("on canvas drawing")
                     canvas.drawLine(-600f, 0f, 600f, 0f, paintMapPoint)
                     canvas.drawLine(0f, -1000f, 0f, 1000f, paintMapPoint)
 

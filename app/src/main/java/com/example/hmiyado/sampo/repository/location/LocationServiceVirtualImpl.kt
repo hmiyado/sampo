@@ -1,11 +1,12 @@
 package com.example.hmiyado.sampo.repository.location
 
-import android.os.Handler
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
 import com.example.hmiyado.sampo.domain.model.Time.Second
 import rx.Observable
+import rx.Subscription
 import rx.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by hmiyado on 2016/08/06.
@@ -13,14 +14,13 @@ import rx.subjects.PublishSubject
  */
 class LocationServiceVirtualImpl : LocationService {
     private val locationSubject: PublishSubject<Location>
-    private val handler: Handler
     private var nextLocation: Location
     private val delayTimeMs: Long = 1000
+    private var nextLocationSubscription: Subscription? = null
 
     init {
         locationSubject = PublishSubject.create()
         nextLocation = Location(0.0, 0.0, LocalDateTime.Companion.UnixEpoch)
-        handler = Handler()
     }
 
 
@@ -29,28 +29,26 @@ class LocationServiceVirtualImpl : LocationService {
     }
 
     override fun startLocationObserve() {
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                onNextLocation()
-                handler.postDelayed(this, delayTimeMs)
-            }
-        }, delayTimeMs)
+        nextLocationSubscription = Observable
+                .interval(delayTimeMs, TimeUnit.MILLISECONDS)
+                .doOnNext { onNextLocation(it) }
+                .subscribe()
     }
 
     override fun stopLocationObserve() {
-        handler.removeCallbacksAndMessages(null)
+        nextLocationSubscription?.unsubscribe()
     }
 
-    private fun updateNextLocation() {
+    private fun updateNextLocation(num: Long) {
         nextLocation = Location(
                 nextLocation.latitude + 1,
                 nextLocation.longitude + 1,
-                nextLocation.localDateTime + Second((delayTimeMs / 1000).toInt())
+                nextLocation.localDateTime + Second(num.toInt())
         )
     }
 
-    private fun onNextLocation() {
+    private fun onNextLocation(num: Long) {
         locationSubject.onNext(nextLocation)
-        updateNextLocation()
+        updateNextLocation(num)
     }
 }

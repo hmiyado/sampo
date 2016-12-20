@@ -66,9 +66,11 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
 
     override fun onResume() {
         super.onResume()
+        presenter.onResume()
     }
 
     override fun onPause() {
         super.onPause()
+        presenter.onPause()
     }
 }
