@@ -1,5 +1,7 @@
 package com.example.hmiyado.sampo.domain.model
 
+import com.example.hmiyado.sampo.domain.math.Degree
+
 /**
  * Created by hmiyado on 2016/12/15.
  *
@@ -14,12 +16,12 @@ class Map(
         val originalLocation: Location,
         val orientation: Orientation,
         val scaleFactor: Float,
-        val rotateAngle: Float
+        val rotateAngle: Degree
 
 ) {
     companion object {
         fun empty(): Map {
-            return Map(Location.empty(), Orientation.empty(), 1f, 0f)
+            return Map(Location.empty(), Orientation.empty(), 1f, Degree(0.0))
         }
     }
 
@@ -68,7 +70,7 @@ class Map(
             return this
         }
 
-        fun setRotateAngle(rotateAngle: Float): Builder {
+        fun setRotateAngle(rotateAngle: Degree): Builder {
             this.rotateAngle = rotateAngle
             return this
         }

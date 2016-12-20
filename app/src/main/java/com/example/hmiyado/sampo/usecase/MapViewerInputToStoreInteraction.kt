@@ -20,7 +20,7 @@ class MapViewerInputToStoreInteraction(
 
     private fun rotationInteraction() {
         useMapViewerInput.getOnRotateSignal()
-                .doOnNext { store.addRotateAngle(it) }
+                .doOnNext { store.addRotateAngle(it.toDegree()) }
                 .subscribe()
 
     }

@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.repository.compass
 
+import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Orientation
 import rx.Observable
 import rx.Subscription
@@ -16,7 +17,7 @@ class CompassServiceVirtualImpl : CompassService {
     private val virtualCompassSubject: Subject<Orientation, Orientation> = PublishSubject<Orientation>()
     private val timerObservable = Observable.interval(5, TimeUnit.SECONDS)
     private var timerSubscription: Subscription = timerObservable.subscribe()
-    private var nextOrientation = Orientation(0f, 0f, 0f)
+    private var nextOrientation = Orientation.empty()
 
     override fun getCompassService(): Observable<Orientation> {
         return virtualCompassSubject.share()
@@ -30,11 +31,11 @@ class CompassServiceVirtualImpl : CompassService {
     }
 
     private fun updateNextOrientation() {
-        val diff = (Math.PI / 16).toFloat()
+        val diff = Math.PI / 16
         nextOrientation = Orientation(
-                nextOrientation.azimuth + diff,
-                nextOrientation.pitch + diff,
-                nextOrientation.roll + diff
+                nextOrientation.azimuth + diff.toDegree(),
+                nextOrientation.pitch + diff.toDegree(),
+                nextOrientation.roll + diff.toDegree()
         )
     }
 

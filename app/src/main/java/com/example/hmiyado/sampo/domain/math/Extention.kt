@@ -24,4 +24,4 @@ fun Double.cube(): Double = this * this * this
  * 弧度法(radian) から度数法(degree) に変換する
  * @return 変換後の値
  */
-fun Float.toDegree(): Float = (360 * this / (2 * Math.PI)).toFloat()
+fun Double.toDegree(): Degree = Degree(360 * this / (2 * Math.PI))

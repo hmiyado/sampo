@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.domain.model
 
-import com.example.hmiyado.sampo.domain.math.toDegree
+import com.example.hmiyado.sampo.domain.math.Degree
 
 /**
  * Created by hmiyado on 2016/12/01.
@@ -14,9 +14,9 @@ import com.example.hmiyado.sampo.domain.math.toDegree
  * @param roll 端末のy軸を中心とする回転角(弧度法)．端末左端が地面側にあるとき-90度，端末が地面と平行なとき0，端末右端が地面側にあるとき90度．値域は-90度から90度
  */
 class Orientation(
-        val azimuth: Float,
-        val pitch: Float,
-        val roll: Float
+        val azimuth: Degree,
+        val pitch: Degree,
+        val roll: Degree
 ) {
 
     companion object {
@@ -29,16 +29,12 @@ class Orientation(
                 throw IllegalArgumentException("array size must be larger than 3 but ${array.size}")
             }
 
-            return Orientation(azimuth = array[0], pitch = array[1], roll = array[2])
+            return Orientation(azimuth = Degree(array[0].toDouble()), pitch = Degree(array[1].toDouble()), roll = Degree(array[2].toDouble()))
         }
 
         fun empty(): Orientation {
-            return Orientation(0f, 0f, 0f)
+            return Orientation(Degree(0.0), Degree(0.0), Degree(0.0))
         }
-    }
-
-    fun toDegreeString(): String {
-        return "Orientation(azimuth=${azimuth.toDegree()}, pitch=${pitch.toDegree()}, roll=${roll.toDegree()})"
     }
 
     override fun toString(): String {

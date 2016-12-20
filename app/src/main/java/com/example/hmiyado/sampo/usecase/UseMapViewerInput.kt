@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.PointF
 import android.view.MotionEvent
 import com.example.hmiyado.sampo.domain.math.Geometry
-import com.example.hmiyado.sampo.domain.math.toDegree
+import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import rx.Observable
 import timber.log.Timber
@@ -21,9 +21,9 @@ class UseMapViewerInput(
         private val mapViewPresenter: MapViewPresenter
 ) {
     /**
-     * @return 地図をどれだけ回転させたかのシグナル
+     * @return 地図をどれだけ回転させたか(radian)のシグナル
      */
-    fun getOnRotateSignal(): Observable<Float> {
+    fun getOnRotateSignal(): Observable<Radian> {
         val getPointPairByEvent = { event: MotionEvent ->
             Pair(
                     PointF(event.getX(0), event.getY(0)),
@@ -58,7 +58,7 @@ class UseMapViewerInput(
                             previousPoints.first,
                             previousPoints.second,
                             nextPoints.first,
-                            nextPoints.second).toDegree()
+                            nextPoints.second)
 
                     previousPoints = nextPoints
 

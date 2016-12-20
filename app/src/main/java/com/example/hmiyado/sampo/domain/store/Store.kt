@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.store
 
+import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Map
 import com.example.hmiyado.sampo.domain.model.Orientation
@@ -21,7 +22,7 @@ class Store {
     private val onUpdateOriginalLocationSignal = PublishSubject<Location>()
     private val onUpdateOrientationSignal = PublishSubject<Orientation>()
     private val onUpdateScaleFactorSignal = PublishSubject<Float>()
-    private val onUpdateRotateAngleSignal = PublishSubject<Float>()
+    private val onUpdateRotateAngleSignal = PublishSubject<Degree>()
 
     init {
 //        mapSubject.subscribe()
@@ -91,11 +92,11 @@ class Store {
         setScaleFactor(scaleFactor)
     }
 
-    fun setRotateAngle(rotateAngle: Float) {
+    fun setRotateAngle(rotateAngle: Degree) {
         onUpdateRotateAngleSignal.onNext(rotateAngle)
     }
 
-    fun addRotateAngle(rotateAngle: Float) {
+    fun addRotateAngle(rotateAngle: Degree) {
         setRotateAngle(rotateAngle)
     }
 

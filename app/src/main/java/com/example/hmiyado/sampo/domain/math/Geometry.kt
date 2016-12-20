@@ -1,6 +1,5 @@
 package com.example.hmiyado.sampo.domain.math
 
-import android.graphics.Point
 import android.graphics.PointF
 
 /**
@@ -19,7 +18,7 @@ object Geometry {
      * @return 角 ¥theta
      *
      */
-    fun determineAngle(point11: PointF, point12: PointF, point21: PointF, point22: PointF): Float {
+    fun determineAngle(point11: PointF, point12: PointF, point21: PointF, point22: PointF): Radian {
         // 求める角¥theta は，点１１と１２を通る直線と平行な原点を通る直線から，点２１と点２２を通る直線と平行な原点を通る直線へのなす角に等しい
         // なので，点１１を原点となるように点１２を移動すればよい(点２１と点２２に関しても同様)
         return determineAngle(
@@ -38,7 +37,7 @@ object Geometry {
      *
      * @return ¥theta
      */
-    private fun determineAngle(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+    private fun determineAngle(x1: Float, y1: Float, x2: Float, y2: Float): Radian {
         val theta1 = determineAngle(x1, y1)
         val theta2 = determineAngle(x2, y2)
 
@@ -50,10 +49,10 @@ object Geometry {
      * 値域は `-pi/2 < ¥theta <= pi/2`
      * @return ¥theta
      */
-    private fun determineAngle(x: Float, y: Float): Float {
+    private fun determineAngle(x: Float, y: Float): Radian {
         if ( x.isZero() ) {
-            return (Math.PI / 2).toFloat()
+            return Radian(Math.PI / 2)
         }
-        return Math.atan((y / x).toDouble()).toFloat()
+        return Radian(Math.atan((y / x).toDouble()))
     }
 }
