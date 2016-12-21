@@ -1,6 +1,7 @@
-package com.example.hmiyado.sampo.usecase
+package com.example.hmiyado.sampo.usecase.interaction.to_store
 
 import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.usecase.MapView.UseMapViewInput
 import java.util.concurrent.TimeUnit
 
 /**
@@ -9,7 +10,7 @@ import java.util.concurrent.TimeUnit
  * 地図の入力と出力をつなぐ．
  */
 class MapViewerInputToStoreInteraction(
-        private val useMapViewerInput: UseMapViewerInput,
+        private val useMapViewInput: UseMapViewInput,
         private val store: Store
 ) {
 
@@ -19,14 +20,14 @@ class MapViewerInputToStoreInteraction(
     }
 
     private fun rotationInteraction() {
-        useMapViewerInput.getOnRotateSignal()
+        useMapViewInput.getOnRotateSignal()
                 .doOnNext { store.addRotateAngle(it.toDegree()) }
                 .subscribe()
 
     }
 
     private fun scaleInteraction() {
-        useMapViewerInput.getOnScaleSignal()
+        useMapViewInput.getOnScaleSignal()
                 .throttleLast(100, TimeUnit.MILLISECONDS)
                 .doOnNext { store.productScaleFactor(it) }
                 .subscribe()

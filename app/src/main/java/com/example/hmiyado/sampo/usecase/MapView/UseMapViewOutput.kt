@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase
+package com.example.hmiyado.sampo.usecase.MapView
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -22,7 +22,7 @@ import timber.log.Timber
  *  - 現在地
  *  - その他の地点情報
  */
-class UseMapViewerOutput(
+class UseMapViewOutput(
         private val mapViewController: MapViewController
 ) {
     // TODO 「どんなふうに描画するか？」はmapViewControllerに移譲するようにする

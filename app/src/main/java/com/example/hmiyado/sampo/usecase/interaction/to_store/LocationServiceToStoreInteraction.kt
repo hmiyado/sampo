@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase
+package com.example.hmiyado.sampo.usecase.interaction.to_store
 
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.repository.location.LocationService

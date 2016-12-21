@@ -6,23 +6,16 @@ import android.content.Context
 import android.graphics.Canvas
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewManager
 import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.appKodein
 import com.jakewharton.rxbinding.view.RxView
-import org.jetbrains.anko.custom.ankoView
 import rx.Observable
 import rx.lang.kotlin.PublishSubject
 import timber.log.Timber
 
-
-// settings for anko custom view
-inline fun ViewManager.mapView(theme: Int = 0) = mapView(theme) {}
-
-inline fun ViewManager.mapView(theme: Int = 0, init: MapView.() -> Unit) = ankoView(::MapView, theme, init)
 
 /**
  * Created by hmiyado on 2016/09/23.

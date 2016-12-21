@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.hmiyado.sampo.controller.CompassViewController
 import com.example.hmiyado.sampo.controller.MapViewController
+import com.example.hmiyado.sampo.presenter.CompassViewPresenter
 import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
+import com.example.hmiyado.sampo.view.custom.CompassView
 import com.example.hmiyado.sampo.view.custom.MapView
 import com.example.hmiyado.sampo.view.ui.MapFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
@@ -33,17 +36,13 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
         }
     }
 
-    val presenter: MapFragmentPresenter by lazy {
-        MapFragmentPresenter(this)
-    }
+    val presenter: MapFragmentPresenter by lazy { MapFragmentPresenter(this) }
 
-    val mapViewPresenter: MapViewPresenter by lazy {
-        find<MapView>(MapFragmentUi.mapViewId).presenter
-    }
+    val mapViewPresenter: MapViewPresenter by lazy { find<MapView>(MapFragmentUi.mapViewId).presenter }
+    val mapViewController: MapViewController by lazy { find<MapView>(MapFragmentUi.mapViewId).controller }
 
-    val mapViewController: MapViewController by lazy {
-        find<MapView>(MapFragmentUi.mapViewId).controller
-    }
+    val compassViewPresenter: CompassViewPresenter by lazy { find<CompassView>(MapFragmentUi.compassViewId).presenter }
+    val compassViewController: CompassViewController by lazy { find<CompassView>(MapFragmentUi.compassViewId).controller }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -31,7 +31,6 @@ class Store {
 
     private fun getMapSignalUpdatedOriginalLocation(): Observable<Map> {
         return onUpdateOriginalLocationSignal
-                .doOnNext { Timber.d("update original location by $it") }
                 .map {
                     Map.Builder(map).setOriginalLocation(it).build()
                 }

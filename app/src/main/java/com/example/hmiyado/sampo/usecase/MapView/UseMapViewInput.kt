@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase
+package com.example.hmiyado.sampo.usecase.MapView
 
 import android.graphics.Canvas
 import android.graphics.PointF
@@ -17,7 +17,7 @@ import timber.log.Timber
  * - 回転角の変化
  * - 縮尺の変化
  */
-class UseMapViewerInput(
+class UseMapViewInput(
         private val mapViewPresenter: MapViewPresenter
 ) {
     /**
