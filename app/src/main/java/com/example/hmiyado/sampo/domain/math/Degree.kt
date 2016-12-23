@@ -6,14 +6,20 @@ package com.example.hmiyado.sampo.domain.math
  * 度数法による角度の値を表す
  */
 class Degree(
-        private val value: Double
+        value: Double
 ) {
+    private val value: Double
+
+    init {
+        this.value = value % 360
+    }
+
     operator fun minus(degree: Degree): Degree {
-        return Degree(value - degree.value)
+        return Degree(value - degree.value % 360)
     }
 
     operator fun plus(degree: Degree): Degree {
-        return Degree(value + degree.value)
+        return Degree(value + degree.value % 360)
     }
 
     override fun equals(other: Any?): Boolean {

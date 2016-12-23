@@ -24,7 +24,14 @@ class UseCompassViewOutput(
     fun setOnDrawSignal(orientationSignal: Observable<Orientation>, onDrawSignal: Observable<Canvas>) {
         onDrawSignal
                 .withLatestFrom(orientationSignal, { canvas, orientation -> Pair(canvas, orientation) })
-                .doOnNext { Timber.d(it.second.toString()) }
+                .doOnNext {
+                    val canvas = it.first
+                    val orientation = it.second
+
+                    compassViewController.drawCompass(canvas, orientation)
+
+                    Timber.d(it.second.toString())
+                }
                 .bindToCompassView()
                 .subscribe()
     }

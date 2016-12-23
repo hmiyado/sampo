@@ -7,7 +7,6 @@ import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import rx.Observable
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -35,7 +34,6 @@ class UseMapViewInput(
         var previousPoints = Pair(PointF(0f, 0f), PointF(0f, 0f))
 
         return mapViewPresenter.getOnTouchEventSignal()
-                .doOnNext { Timber.d("onTouchSignal") }
                 // ２点タップしていなければ，回転をとることはない
                 .filter {
                     if (it.pointerCount == 2) {
@@ -49,8 +47,6 @@ class UseMapViewInput(
                         false
                     }
                 }
-                .doOnNext { Timber.d("filtered") }
-                .doOnNext { Timber.d("latest from $it") }
                 .map {
                     val nextPoints = getPointPairByEvent(it)
 

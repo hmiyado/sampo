@@ -7,7 +7,6 @@ import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
 import rx.Subscription
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -45,8 +44,6 @@ class UseMapViewOutput(
                     val map = pairOfCanvasMap.second
                     val canvas = pairOfCanvasMap.first
 
-                    Timber.d("on canvas drawing")
-                    Timber.d("$map")
                     // デバッグ用位置情報出力
                     canvas.drawText(map.originalLocation.toString(), 0f, canvas.height - 100f, paintMapPoint)
                     // デバッグ用縮尺出力
@@ -57,7 +54,6 @@ class UseMapViewOutput(
                     canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
 
                     // canvas を回転する
-                    Timber.d("map rotate degree: ${map.rotateAngle}")
                     canvas.rotate(map.rotateAngle.toFloat())
 
                     canvas.drawLine(-600f, 0f, 600f, 0f, paintMapPoint)
