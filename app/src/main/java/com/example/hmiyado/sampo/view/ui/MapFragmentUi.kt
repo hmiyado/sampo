@@ -17,13 +17,16 @@ class MapFragmentUi() : AnkoComponent<MapFragment> {
     }
 
     override fun createView(ui: AnkoContext<MapFragment>) = with(ui) {
-        verticalLayout {
-            compassView {
-                id = compassViewId
-            }.lparams(width = matchParent, height = dip(100))
+        relativeLayout {
             mapView {
                 id = mapViewId
-            }.lparams(width = matchParent, height = wrapContent)
+            }.lparams(width = matchParent, height = matchParent)
+            compassView {
+                id = compassViewId
+            }.lparams(width = dip(100), height = dip(100)) {
+                alignParentTop()
+                alignParentLeft()
+            }
         }
     }
 }
