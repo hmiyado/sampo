@@ -1,8 +1,6 @@
 package com.example.hmiyado.sampo.usecase.MapView
 
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
@@ -24,19 +22,6 @@ import rx.Subscription
 class UseMapViewOutput(
         private val mapViewController: MapViewController
 ) {
-    // TODO 「どんなふうに描画するか？」はmapViewControllerに移譲するようにする
-    private val paintMapPoint: Paint = Paint()
-
-    init {
-        settingPaintMapPoint()
-    }
-
-    private fun settingPaintMapPoint() {
-        paintMapPoint.color = Color.BLUE
-        paintMapPoint.isAntiAlias = true
-        paintMapPoint.strokeWidth = 20f
-    }
-
     fun setOnDrawSignal(onUpdateMapSignal: Observable<Map>, onDrawSignal: Observable<Canvas>) {
         onDrawSignal
                 .withLatestFrom(onUpdateMapSignal, { canvas, map -> Pair(canvas, map) })
@@ -44,25 +29,17 @@ class UseMapViewOutput(
                     val map = pairOfCanvasMap.second
                     val canvas = pairOfCanvasMap.first
 
-                    // デバッグ用位置情報出力
-                    canvas.drawText(map.originalLocation.toString(), 0f, canvas.height - 100f, paintMapPoint)
-                    // デバッグ用縮尺出力
-                    canvas.drawLine(50f, canvas.height - 50f, 150f, canvas.height - 50f, paintMapPoint) // 縮尺定規
-                    canvas.drawText("${map.scale} [m]", 250f, canvas.height - 50f, paintMapPoint) // 縮尺倍率
-
                     // canvasの中心を画面の中心に移動する
                     canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
+
+                    // デバッグ用縮尺出力
+                    mapViewController.drawScale(canvas, map.scale)
 
                     // canvas を回転する
                     canvas.rotate(map.rotateAngle.toFloat())
 
-                    canvas.drawLine(-600f, 0f, 600f, 0f, paintMapPoint)
-                    canvas.drawLine(0f, -1000f, 0f, 1000f, paintMapPoint)
-
-                    canvas.drawRect(-100f, 200f, 300f, 400f, paintMapPoint)
-
-                    // 位置情報出力
-                    canvas.drawCircle(-500f, 0f, 75f, paintMapPoint)
+                    mapViewController.drawMesh(canvas)
+                    mapViewController.drawOriginalLocation(canvas)
                 }
                 .bindMapViewAndSubscribe()
     }
