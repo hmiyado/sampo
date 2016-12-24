@@ -5,12 +5,11 @@ import com.example.hmiyado.sampo.view.custom.CompassView
 /**
  * Created by hmiyado on 2016/12/21.
  *
- * @see CompassView の Presenter
+ * @see CompassView の ViewPresenter
  */
 class CompassViewPresenter(
-        private val compassView: CompassView
-) {
+        compassView: CompassView
+) : ViewPresenter<CompassView>(compassView) {
 
-    fun getOnDrawSignal() = compassView.getOnDrawSignal()
-
+    fun getOnDrawSignal() = view.getOnDrawSignal()
 }

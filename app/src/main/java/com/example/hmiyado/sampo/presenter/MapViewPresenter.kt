@@ -13,8 +13,8 @@ import timber.log.Timber
  * {@link MapView }に対応するPresenter
  */
 class MapViewPresenter(
-        val mapView: MapView
-) {
+        mapView: MapView
+) : ViewPresenter<MapView>(mapView) {
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(mapView.context, createGestureDetector())
     private val onScaleBeginSignalSubject = PublishSubject<ScaleGestureDetector>()
     private val onScaleSignalSubject = PublishSubject<ScaleGestureDetector>()
@@ -45,7 +45,7 @@ class MapViewPresenter(
     }
 
     fun getOnTouchEventSignal(): Observable<MotionEvent> {
-        return mapView.getOnTouchSignal()
+        return view.getOnTouchSignal()
                 .doOnNext {
                     Timber.d("on touch signal")
                     scaleGestureDetector.onTouchEvent(it)
@@ -62,6 +62,6 @@ class MapViewPresenter(
     }
 
     fun getOnDrawSignal(): Observable<Canvas> {
-        return mapView.getOnDrawSignal()
+        return view.getOnDrawSignal()
     }
 }

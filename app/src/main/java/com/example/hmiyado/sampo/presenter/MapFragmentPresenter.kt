@@ -11,9 +11,12 @@ import com.example.hmiyado.sampo.usecase.interaction.to_compassview.StoreAndComp
 import com.example.hmiyado.sampo.usecase.interaction.to_compassview.StoreToCompassViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_mapview.StoreAndMapViewInputToMapViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_mapview.StoreToMapViewOutputInteraction
+import com.example.hmiyado.sampo.usecase.interaction.to_scaleview.StoreAndScaleViewInputToScaleViewOutput
 import com.example.hmiyado.sampo.usecase.interaction.to_store.CompassServiceToStoreInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_store.LocationServiceToStoreInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_store.MapViewerInputToStoreInteraction
+import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewInput
+import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewOutput
 import com.example.hmiyado.sampo.view.MapFragment
 import com.github.salomonbrys.kodein.instance
 
@@ -29,10 +32,13 @@ class MapFragmentPresenter(
     private val useMapViewOutput by lazy { UseMapViewOutput(mapFragment.mapViewController) }
     private val useCompassViewInput by lazy { UseCompassViewInput(mapFragment.compassViewPresenter) }
     private val useCompassViewOutput by lazy { UseCompassViewOutput(mapFragment.compassViewController) }
+    private val useScaleViewInput by lazy { UseScaleViewInput(mapFragment.scaleViewPresenter) }
+    private val useScaleViewOutput by lazy { UseScaleViewOutput(mapFragment.scaleViewController) }
     private val locationService: LocationService by mapFragment.injector.instance<LocationService>()
     private val compassService by mapFragment.injector.instance<CompassService>()
 
     fun onStart() {
+        // TODO 各InteractionのObservableをFragmentのライフサイクルにバインドする（回転したときに，Observableが複数回subscribeされてるっぽい）
         StoreAndMapViewInputToMapViewOutputInteraction(store, useMapViewInput, useMapViewOutput)
         MapViewerInputToStoreInteraction(useMapViewInput, store)
         StoreToMapViewOutputInteraction(store, useMapViewOutput)
@@ -40,6 +46,7 @@ class MapFragmentPresenter(
         CompassServiceToStoreInteraction(compassService, store)
         StoreAndCompassViewInputToCompassViewOutputInteraction(store, useCompassViewInput, useCompassViewOutput)
         StoreToCompassViewOutputInteraction(store, useCompassViewOutput)
+        StoreAndScaleViewInputToScaleViewOutput(store, useScaleViewInput, useScaleViewOutput)
     }
 
     fun onResume() {

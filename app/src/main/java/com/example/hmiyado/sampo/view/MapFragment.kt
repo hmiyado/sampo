@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.hmiyado.sampo.controller.CompassViewController
 import com.example.hmiyado.sampo.controller.MapViewController
+import com.example.hmiyado.sampo.controller.ScaleViewController
 import com.example.hmiyado.sampo.presenter.CompassViewPresenter
 import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
+import com.example.hmiyado.sampo.presenter.ScaleViewPresenter
 import com.example.hmiyado.sampo.view.custom.CompassView
 import com.example.hmiyado.sampo.view.custom.MapView
+import com.example.hmiyado.sampo.view.custom.ScaleView
 import com.example.hmiyado.sampo.view.ui.MapFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
@@ -43,6 +46,9 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
 
     val compassViewPresenter: CompassViewPresenter by lazy { find<CompassView>(MapFragmentUi.compassViewId).presenter }
     val compassViewController: CompassViewController by lazy { find<CompassView>(MapFragmentUi.compassViewId).controller }
+
+    val scaleViewPresenter: ScaleViewPresenter by lazy { find<ScaleView>(MapFragmentUi.scaleViewId).presenter }
+    val scaleViewController: ScaleViewController by lazy { find<ScaleView>(MapFragmentUi.scaleViewId).controller }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

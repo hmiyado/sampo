@@ -14,3 +14,6 @@ inline fun ViewManager.mapView(theme: Int = 0, init: MapView.() -> Unit) = ankoV
 
 // compass view
 inline fun ViewManager.compassView(theme: Int = 0, init: CompassView.() -> Unit) = ankoView(::CompassView, theme, init)
+
+// scale view
+inline fun ViewManager.scaleView(theme: Int = 0, init: ScaleView.() -> Unit) = ankoView(::ScaleView, theme, init)

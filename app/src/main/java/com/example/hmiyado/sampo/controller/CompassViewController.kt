@@ -20,9 +20,10 @@ class CompassViewController(
 
     fun drawCompass(canvas: Canvas, orientation: Orientation) {
         val bitmap = BitmapFactory.decodeResource(compassView.resources, android.R.drawable.arrow_up_float)
-        // canvasの中心を画面の中心に移動する
-        canvas.rotate(orientation.azimuth.toFloat())
-        canvas.drawBitmap(bitmap, 0f, 0f, null)
+        val centerX = canvas.width / 2f
+        val centerY = canvas.height / 2f
+        canvas.rotate(orientation.azimuth.toFloat(), centerX, centerY)
+        canvas.drawBitmap(bitmap, centerX, centerY, null)
     }
 
     fun <T> bindToCompassView(observable: Observable<T>) = observable.bindToLifecycle(compassView)
