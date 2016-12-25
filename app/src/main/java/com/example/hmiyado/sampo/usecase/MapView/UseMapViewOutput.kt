@@ -32,9 +32,6 @@ class UseMapViewOutput(
                     // canvasの中心を画面の中心に移動する
                     canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
 
-                    // デバッグ用縮尺出力
-                    mapViewController.drawScale(canvas, map.scale)
-
                     // canvas を回転する
                     canvas.rotate(map.rotateAngle.toFloat())
 

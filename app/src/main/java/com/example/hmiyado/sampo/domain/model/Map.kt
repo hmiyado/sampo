@@ -15,11 +15,22 @@ import com.example.hmiyado.sampo.domain.math.Degree
 class Map(
         val originalLocation: Location,
         val orientation: Orientation,
+        /**
+         * 地図の縮尺倍率
+         */
         val scaleFactor: Float,
+        /**
+         * 地図が北からどれだけ回転して表示されているかを表す回転角(度数法)
+         */
         val rotateAngle: Degree
 
 ) {
     companion object {
+        /**
+         * 倍率１のときの，100 px あたりの地図上の距離（メートル）
+         */
+        val SCALE_UNIT = 100
+
         fun empty(): Map {
             return Map(Location.empty(), Orientation.empty(), 1f, Degree(0.0))
         }
@@ -30,11 +41,6 @@ class Map(
      */
     val scale: Float
         get() = scaleFactor * SCALE_UNIT
-
-    /**
-     * 倍率１のときの，100 px あたりの地図上の距離（メートル）
-     */
-    val SCALE_UNIT = 100
 
     override fun toString(): String {
         return "Map(originalLocation=$originalLocation), orientation=$orientation, scaleFactor=$scaleFactor, rotateAngle=$rotateAngle"

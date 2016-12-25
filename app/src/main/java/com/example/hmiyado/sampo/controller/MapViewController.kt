@@ -54,12 +54,4 @@ class MapViewController(private val mapView: MapView) {
             canvas.drawLine(it.unaryMinus().toFloat(), bottom, it.unaryMinus().toFloat(), top, paint)
         }
     }
-
-    fun drawScale(canvas: Canvas, scale: Float) {
-        val paint = createPaint(Color.DKGRAY, 5f)
-
-        canvas.drawLine(50f, canvas.height - 50f, 150f, canvas.height - 50f, paint) // 縮尺定規
-        canvas.drawText("${scale} [m]", 250f, canvas.height - 50f, paint) // 縮尺倍率
-    }
-
 }

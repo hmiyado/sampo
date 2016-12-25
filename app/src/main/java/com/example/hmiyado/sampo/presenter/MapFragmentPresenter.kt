@@ -12,6 +12,7 @@ import com.example.hmiyado.sampo.usecase.interaction.to_compassview.StoreToCompa
 import com.example.hmiyado.sampo.usecase.interaction.to_mapview.StoreAndMapViewInputToMapViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_mapview.StoreToMapViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_scaleview.StoreAndScaleViewInputToScaleViewOutput
+import com.example.hmiyado.sampo.usecase.interaction.to_scaleview.StoreToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_store.CompassServiceToStoreInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_store.LocationServiceToStoreInteraction
 import com.example.hmiyado.sampo.usecase.interaction.to_store.MapViewerInputToStoreInteraction
@@ -47,6 +48,7 @@ class MapFragmentPresenter(
         StoreAndCompassViewInputToCompassViewOutputInteraction(store, useCompassViewInput, useCompassViewOutput)
         StoreToCompassViewOutputInteraction(store, useCompassViewOutput)
         StoreAndScaleViewInputToScaleViewOutput(store, useScaleViewInput, useScaleViewOutput)
+        StoreToScaleViewOutputInteraction(store, useScaleViewOutput)
     }
 
     fun onResume() {

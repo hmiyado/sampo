@@ -31,7 +31,7 @@ class MapFragmentUi() : AnkoComponent<MapFragment> {
             }
             scaleView {
                 id = scaleViewId
-            }.lparams(width = dip(500), height = dip(100)) {
+            }.lparams(width = dip(200), height = dip(50)) {
                 alignParentBottom()
                 alignParentLeft()
             }

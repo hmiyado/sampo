@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.ScaleViewController
 import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/24.
@@ -11,11 +12,21 @@ import rx.Observable
  * 縮尺のビューを描画する人
  */
 class UseScaleViewOutput(private val scaleViewController: ScaleViewController) {
+    fun setMapSignal(mapSignal: Observable<Map>) {
+        mapSignal
+                .doOnNext { scaleViewController.invalidate() }
+                .bindToViewLifecycle()
+                .subscribe()
+    }
+
     fun setOnDrawSignal(mapSignal: Observable<Map>, drawSignal: Observable<Canvas>) {
         drawSignal
                 .withLatestFrom(mapSignal, { canvas, map -> Pair(canvas, map) })
                 .doOnNext {
-
+                    val canvas = it.first
+                    val map = it.second
+                    Timber.d("$map")
+                    scaleViewController.drawScale(canvas, map.scale)
                 }
                 .bindToViewLifecycle()
                 .subscribe()
