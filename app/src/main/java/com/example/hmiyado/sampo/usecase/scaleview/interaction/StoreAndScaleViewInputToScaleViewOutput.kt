@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.interaction.to_scaleview
+package com.example.hmiyado.sampo.usecase.scaleview.interaction
 
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewInput

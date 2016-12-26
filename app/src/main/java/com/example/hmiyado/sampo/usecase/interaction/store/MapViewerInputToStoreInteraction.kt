@@ -1,7 +1,7 @@
-package com.example.hmiyado.sampo.usecase.interaction.to_store
+package com.example.hmiyado.sampo.usecase.interaction.store
 
 import com.example.hmiyado.sampo.domain.store.Store
-import com.example.hmiyado.sampo.usecase.MapView.UseMapViewInput
+import com.example.hmiyado.sampo.usecase.mapview.UseMapViewInput
 import java.util.concurrent.TimeUnit
 
 /**

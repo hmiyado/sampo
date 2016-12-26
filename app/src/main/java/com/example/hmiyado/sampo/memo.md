@@ -90,11 +90,11 @@ Fragmentを切り替えてなんとかする
 Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 
 ## TODO
-- [] CompassViewが見えるようにする
+- [x] CompassViewが見えるようにする
 - 拡大縮小の上限・下限を設定する
     - 単位操作あたたりの拡大縮小倍率の変化をいい感じにする
     - たぶん現状だと，拡大縮小倍率がすごく動きやすすぎる
-- 地点の経時変化をSubscribeする
+- [] 地点の経時変化をSubscribeする
     - Repositoryに反映されるようにする
     - Viewに反映されるようにする
 
