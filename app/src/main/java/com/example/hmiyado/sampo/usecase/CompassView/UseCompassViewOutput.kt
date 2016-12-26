@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.CompassView
+package com.example.hmiyado.sampo.usecase.compassview
 
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.CompassViewController

@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.MapView
+package com.example.hmiyado.sampo.usecase.mapview
 
 import android.graphics.Canvas
 import android.graphics.PointF
