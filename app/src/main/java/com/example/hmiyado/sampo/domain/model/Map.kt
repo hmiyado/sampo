@@ -11,6 +11,7 @@ import com.example.hmiyado.sampo.domain.math.Degree
  * @param orientation ユーザーの向いている方向
  * @param scaleFactor 地図の縮尺倍率
  * @param rotateAngle 地図が北からどれだけ回転して表示されているかを表す回転角(度数法)
+ * @param footmarks これまでに訪れた地点のリスト
  */
 class Map(
         val originalLocation: Location,
@@ -22,7 +23,11 @@ class Map(
         /**
          * 地図が北からどれだけ回転して表示されているかを表す回転角(度数法)
          */
-        val rotateAngle: Degree
+        val rotateAngle: Degree,
+        /**
+         * これまでに訪れた地点
+         */
+        val footmarks: List<Location>
 
 ) {
     companion object {
@@ -32,7 +37,7 @@ class Map(
         val SCALE_UNIT = 100
 
         fun empty(): Map {
-            return Map(Location.empty(), Orientation.empty(), 1f, Degree(0.0))
+            return Map(Location.empty(), Orientation.empty(), 1f, Degree(0.0), emptyList())
         }
     }
 
@@ -43,7 +48,7 @@ class Map(
         get() = scaleFactor * SCALE_UNIT
 
     override fun toString(): String {
-        return "Map(originalLocation=$originalLocation), orientation=$orientation, scaleFactor=$scaleFactor, rotateAngle=$rotateAngle"
+        return "Map(originalLocation=$originalLocation, orientation=$orientation, scaleFactor=$scaleFactor, rotateAngle=$rotateAngle, footmarks=${footmarks.size}marks)"
     }
 
     class Builder(map: Map) {
@@ -51,13 +56,15 @@ class Map(
         private var orientation = map.orientation
         private var scaleFactor = map.scaleFactor
         private var rotateAngle = map.rotateAngle
+        private var footmarks = map.footmarks
 
         fun build(): Map {
             return Map(
                     originalLocation,
                     orientation,
                     scaleFactor,
-                    rotateAngle
+                    rotateAngle,
+                    footmarks
             )
         }
 
@@ -78,6 +85,16 @@ class Map(
 
         fun setRotateAngle(rotateAngle: Degree): Builder {
             this.rotateAngle = rotateAngle
+            return this
+        }
+
+        fun setFootmarks(footmarks: List<Location>): Builder {
+            this.footmarks = footmarks
+            return this
+        }
+
+        fun addFootmark(footmark: Location): Builder {
+            this.footmarks += footmark
             return this
         }
     }

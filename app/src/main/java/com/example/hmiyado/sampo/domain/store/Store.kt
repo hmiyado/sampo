@@ -32,7 +32,7 @@ class Store {
     private fun getMapSignalUpdatedOriginalLocation(): Observable<Map> {
         return onUpdateOriginalLocationSignal
                 .map {
-                    Map.Builder(map).setOriginalLocation(it).build()
+                    Map.Builder(map).setOriginalLocation(it).addFootmark(map.originalLocation).build()
                 }
 //                .withLatestFrom(mapSubject, { location, map ->
 //                    Map.Builder(map).setOriginalLocation(location).build()
