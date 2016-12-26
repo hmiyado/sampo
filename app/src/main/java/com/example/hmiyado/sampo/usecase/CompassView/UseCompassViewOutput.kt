@@ -36,5 +36,5 @@ class UseCompassViewOutput(
                 .subscribe()
     }
 
-    private fun <T> rx.Observable<T>.bindToCompassView() = compassViewController.bindToCompassView(this)
+    private fun <T> rx.Observable<T>.bindToCompassView() = compassViewController.bindToViewLifecycle(this)
 }

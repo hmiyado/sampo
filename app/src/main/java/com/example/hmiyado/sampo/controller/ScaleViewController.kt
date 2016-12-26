@@ -5,11 +5,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.domain.model.Map
 import com.example.hmiyado.sampo.view.custom.ScaleView
-import com.trello.rxlifecycle.kotlin.bindToLifecycle
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.px2dip
 import org.jetbrains.anko.sp
-import rx.Observable
 
 /**
  * Created by hmiyado on 2016/12/24.
@@ -25,8 +23,6 @@ class ScaleViewController(scaleView: ScaleView) : ViewController<ScaleView>(scal
         return paintMapPoint
     }
 
-    fun invalidate() = view.postInvalidate()
-
     fun drawScale(canvas: Canvas, scale: Float) {
         val paint = createPaint(Color.BLUE, 5f)
 
@@ -35,9 +31,5 @@ class ScaleViewController(scaleView: ScaleView) : ViewController<ScaleView>(scal
         val text = createPaint(Color.BLUE, 20f)
         text.textSize = view.sp(14).toFloat()
         canvas.drawText("$scale [m]", view.dip(10).toFloat(), view.height / 2f + view.dip(15), text) // 縮尺倍率
-    }
-
-    fun <T> bindToViewLifecycle(observable: Observable<T>): Observable<T> {
-        return observable.bindToLifecycle(view)
     }
 }
