@@ -95,8 +95,35 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - 単位操作あたたりの拡大縮小倍率の変化をいい感じにする
     - たぶん現状だと，拡大縮小倍率がすごく動きやすすぎる
 - [] 地点の経時変化をSubscribeする
+    - [] Viewに反映されるようにする
     - Repositoryに反映されるようにする
-    - Viewに反映されるようにする
+
+## GNSS測地(GPS位置)情報からの距離・方位角の計算
+２点間の描画のためには，距離と方位角が必要．
+求め方には，いくつか種類がある．
+
+- 世界測地系
+    - 現在，国土地理院が使用している測地系
+    - http://www.gsi.go.jp/sokuchikijun/datum-main.html
+    - http://vldb.gsi.go.jp/sokuchi/surveycalc/surveycalc/algorithm/bl2st/bl2st.htm
+    - 実装が煩雑かつ多くの点に対して毎描画ごとに実行するにはおもすぎるのでは？　という気持ち
+- 平面直角座標系
+    - 国土地理院の定めによる
+    - http://vldb.gsi.go.jp/sokuchi/surveycalc/surveycalc/algorithm/bl2xy/bl2xy.htm
+    - 平面上に投影して計算する
+    - 世界測地系より簡便にみえる
+    - 130km四方を対象とするようだが，倍率とか工夫すれば，画面内を130kmに抑えることは十分可能だと思う（？）
+        - 新幹線とかで旅行したときに問題が起こりそうだが・・・
+        - そもそも，描画区域内に点がいっぱいあるときのことを考えてなかった
+        - 描画するときの，最小描画単位みたいなのを決めたほうがよさそうか？
+- 球面三角法
+    - 平面直角座標系よりさらに簡便
+    - http://www.orsj.or.jp/archive2/or60-12/or60_12_701.pdf
+    - http://www.astro.sci.yamaguchi-u.ac.jp/~kenta/eclipse/SphericalTriangle081106.pdf
+    - 東京福岡間で誤差0.3%(2km)
+    - まあ問題にならないレベルでは
+    - 方位角も球面三角法における正弦定理で導出できそう
+    - とりあえずこれを実装して，距離と方位角を計算できるようにしよう
 
 ## 記録の閲覧
 位置情報をキャンバスに打点する
