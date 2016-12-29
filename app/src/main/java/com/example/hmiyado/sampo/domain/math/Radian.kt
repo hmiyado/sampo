@@ -8,6 +8,11 @@ package com.example.hmiyado.sampo.domain.math
 class Radian(
         private val value: Double
 ) {
+    companion object {
+        val PI = Radian(Math.PI)
+        val ZERO = Radian(0.0)
+    }
+
     operator fun minus(radian: Radian): Radian {
         return Radian(value - radian.value)
     }
@@ -15,6 +20,14 @@ class Radian(
     operator fun plus(radian: Radian): Radian {
         return Radian(value + radian.value)
     }
+
+    operator fun times(x: Double) = Radian(value * x)
+
+    operator fun div(x: Double): Radian = Radian(value / x)
+
+    operator fun div(x: Int): Radian = Radian(value / x)
+
+    operator fun compareTo(radian: Radian): Int = (value - radian.value).toInt()
 
     override fun equals(other: Any?): Boolean {
         return other is Radian && value == other.value
@@ -34,5 +47,9 @@ class Radian(
 
     fun toFloat(): Float {
         return value.toFloat()
+    }
+
+    fun toDouble(): Double {
+        return value
     }
 }

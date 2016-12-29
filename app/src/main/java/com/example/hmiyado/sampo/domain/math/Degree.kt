@@ -42,4 +42,7 @@ class Degree(
         return value.toFloat()
     }
 
+    fun toDouble(): Double {
+        return value
+    }
 }
