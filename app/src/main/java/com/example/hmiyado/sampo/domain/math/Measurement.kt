@@ -17,8 +17,9 @@ interface Measurement {
         val b: Double = 6356752.31414 // 短半径(極半径)
         /**
          * 平均半径．単位はメートル．
+         * @see <a href="https://en.wikipedia.org/wiki/Earth_radius#Mean_radius">英語版Wiki</a>
          */
-        val AVERAGE = 6371000.0
+        val MEAN_RADIUS = (2 * a + b) / 3
     }
 
 

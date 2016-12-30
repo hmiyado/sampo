@@ -27,7 +27,7 @@ class Radian(
 
     operator fun div(x: Int): Radian = Radian(value / x)
 
-    operator fun compareTo(radian: Radian): Int = (value - radian.value).toInt()
+    operator fun compareTo(radian: Radian): Int = Math.signum(value - radian.value).toInt()
 
     override fun equals(other: Any?): Boolean {
         return other is Radian && value == other.value
@@ -37,9 +37,7 @@ class Radian(
         return value.hashCode()
     }
 
-    override fun toString(): String {
-        return "$value[rad]"
-    }
+    override fun toString() = "${value / Math.PI} PI[rad]"
 
     fun toDegree(): Degree {
         return value.toDegree()

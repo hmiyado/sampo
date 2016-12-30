@@ -7,7 +7,7 @@ package com.example.hmiyado.sampo.domain.math
  */
 object SphericalTrigonometry : Measurement {
     override fun determinePathwayDistance(departureLatitude: Radian, departureLongitude: Radian, destinationLatitude: Radian, destinationLongitude: Radian): Double {
-        return Measurement.AVERAGE * determinePathwayAngle(departureLatitude, departureLongitude, destinationLatitude, destinationLongitude).toDouble()
+        return Measurement.MEAN_RADIUS * determinePathwayAngle(departureLatitude, departureLongitude, destinationLatitude, destinationLongitude).toDouble()
     }
 
     override fun determineAzimuth(departureLatitude: Radian, departureLongitude: Radian, destinationLatitude: Radian, destinationLongitude: Radian): Radian {
@@ -15,20 +15,21 @@ object SphericalTrigonometry : Measurement {
         if (pathwayAngle == Radian.ZERO) {
             return Radian.ZERO
         }
-        val angle = acos(
-                (cos(Radian.PI / 2 - destinationLatitude) - cos(Radian.PI / 2 - departureLatitude) * cos(pathwayAngle))
-                        / (sin(Radian.PI / 2 - departureLatitude) * sin(pathwayAngle))
-        )
+        val a = pathwayAngle
+        val b = Radian.PI / 2 - destinationLatitude
+        val c = Radian.PI / 2 - departureLatitude
+        val angle = acos((cos(b) - cos(c) * cos(a)) / (sin(c) * sin(a)))
         return if (departureLongitude < destinationLongitude) {
             angle
         } else {
-            // 出発地が到着地より東にあるときは，求める角すなわち，緯線から経路への右回りの角の求め方が少し変わる
+            // 出発地が到着地より東にあるとき(つまり西へ向かっているとき)は，求める角すなわち，緯線から経路への右回りの角の求め方が少し変わる
             2 * Radian.PI - angle
         }
     }
 
     /**
-     * 出発地と到着地の経路が球の中心に対してなす角を求める
+     * 出発地と到着地の経路が球の中心に対してなす角を求める.
+     * 値域は0以上pi以下．
      */
     private fun determinePathwayAngle(departureLatitude: Radian, departureLongitude: Radian, destinationLatitude: Radian, destinationLongitude: Radian): Radian {
         return determineByCosineFormula(

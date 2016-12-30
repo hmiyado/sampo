@@ -37,6 +37,11 @@ class UseMapViewOutput(
 
                     mapViewController.drawMesh(canvas)
                     mapViewController.drawOriginalLocation(canvas)
+
+//                    map.footmarks.forEach {
+//                        val distance = HubenyFormula.determinePathwayDistance(it, map.originalLocation)
+//                        val
+//                    }
                 }
                 .bindMapViewAndSubscribe()
     }

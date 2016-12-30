@@ -47,4 +47,6 @@ fun asin(x: Double) = Math.asin(x).toRadian()
 
 fun acos(x: Double): Radian = Math.acos(x).toRadian()
 
+fun atan2(x: Double, y: Double): Radian = Math.atan2(x, y).toRadian()
+
 fun abs(radian: Radian) = Radian(Math.abs(radian.toDouble()))
