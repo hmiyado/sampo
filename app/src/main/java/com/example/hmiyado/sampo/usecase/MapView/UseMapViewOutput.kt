@@ -2,6 +2,9 @@ package com.example.hmiyado.sampo.usecase.mapview
 
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.MapViewController
+import com.example.hmiyado.sampo.domain.math.EquirectanglarApproximation
+import com.example.hmiyado.sampo.domain.math.cos
+import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
 import rx.Subscription
@@ -29,19 +32,23 @@ class UseMapViewOutput(
                     val map = pairOfCanvasMap.second
                     val canvas = pairOfCanvasMap.first
 
-                    // canvasの中心を画面の中心に移動する
-                    canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
-
-                    // canvas を回転する
-                    canvas.rotate(map.rotateAngle.toFloat())
+                    mapViewController.centeringCanvas(canvas)
+                    mapViewController.rotateCanvas(canvas, map.rotateAngle)
 
                     mapViewController.drawMesh(canvas)
                     mapViewController.drawOriginalLocation(canvas)
 
-//                    map.footmarks.forEach {
-//                        val distance = HubenyFormula.determinePathwayDistance(it, map.originalLocation)
-//                        val
-//                    }
+                    map.footmarks.forEach {
+                        val distance = EquirectanglarApproximation.determinePathwayDistance(map.originalLocation, it)
+                        val azimuth = EquirectanglarApproximation.determineAzimuth(map.originalLocation, it)
+                        val x = distance * cos(azimuth)
+                        val y = distance * sin(azimuth)
+                        if (x > map.scale * mapViewController.viewWidth || y > map.scale * mapViewController.viewHeight) {
+                            // 点が表示領域外
+                            return@forEach
+                        }
+                        mapViewController.drawFootmark(canvas, (x / map.scale).toFloat(), (y / map.scale).toFloat())
+                    }
                 }
                 .bindMapViewAndSubscribe()
     }
@@ -53,7 +60,7 @@ class UseMapViewOutput(
     }
 
     private fun <T> Observable<T>.bindMapViewAndSubscribe(): Subscription {
-        return mapViewController.bindMapViewAndSubscribe(this)
+        return mapViewController.bindToViewLifecycle(this).subscribe()
     }
 }
 

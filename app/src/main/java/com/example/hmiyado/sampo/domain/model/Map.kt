@@ -32,9 +32,9 @@ class Map(
 ) {
     companion object {
         /**
-         * 倍率１のときの，100 px あたりの地図上の距離（メートル）
+         * 倍率１のときの，1 dip あたりの地図上の距離（メートル）
          */
-        val SCALE_UNIT = 100
+        val SCALE_UNIT = 1
 
         fun empty(): Map {
             return Map(Location.empty(), Orientation.empty(), 1f, Degree(0.0), emptyList())
@@ -42,7 +42,7 @@ class Map(
     }
 
     /**
-     * 地図の縮尺
+     * 地図の縮尺．100 dip あたりの距離(メートル)
      */
     val scale: Float
         get() = scaleFactor * SCALE_UNIT

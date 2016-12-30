@@ -1,5 +1,7 @@
 package com.example.hmiyado.sampo.domain.math
 
+import com.example.hmiyado.sampo.domain.model.Location
+
 /**
  * Created by hmiyado on 2016/12/28.
  *
@@ -46,4 +48,22 @@ interface Measurement {
             destinationLatitude: Radian,
             destinationLongitude: Radian
     ): Radian
+
+    fun determinePathwayDistance(departure: Location, destination: Location): Double {
+        return determinePathwayDistance(
+                departure.latitude.toDegree().toRadian(),
+                departure.longitude.toDegree().toRadian(),
+                destination.latitude.toDegree().toRadian(),
+                destination.longitude.toDegree().toRadian()
+        )
+    }
+
+    fun determineAzimuth(departure: Location, destination: Location): Radian {
+        return determineAzimuth(
+                departure.latitude.toDegree().toRadian(),
+                departure.longitude.toDegree().toRadian(),
+                destination.latitude.toDegree().toRadian(),
+                destination.longitude.toDegree().toRadian()
+        )
+    }
 }
