@@ -110,6 +110,8 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - タッチ可能UIはマテリアルっぽくする
         - コンパスとか
 - [] CI(継続的インテグレーション)導入
+- [] Location のLat/LongをDegreeに変える
+    - Degreeは十進度数法だと明記する(度分秒法もあるので)
 
 ## 地点テストケース列挙
 - [x] 経路の方向

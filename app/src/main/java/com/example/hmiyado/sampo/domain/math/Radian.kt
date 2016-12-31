@@ -29,6 +29,8 @@ class Radian(
 
     operator fun compareTo(radian: Radian): Int = Math.signum(value - radian.value).toInt()
 
+    operator fun unaryMinus(): Radian = Radian(-value)
+
     override fun equals(other: Any?): Boolean {
         return other is Radian && value == other.value
     }

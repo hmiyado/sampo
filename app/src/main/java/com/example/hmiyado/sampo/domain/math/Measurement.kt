@@ -22,6 +22,13 @@ interface Measurement {
          * @see <a href="https://en.wikipedia.org/wiki/Earth_radius#Mean_radius">英語版Wiki</a>
          */
         val MEAN_RADIUS = (2 * a + b) / 3
+
+        /**
+         * @return 出発点から到着点までの経路が180度子午線を超えたら true
+         */
+        fun isOver180thMeridian(departureLongitude: Radian, destinationLongitude: Radian): Boolean {
+            return departureLongitude >= Radian.PI / 2 && destinationLongitude <= -Radian.PI / 2
+        }
     }
 
 

@@ -11,19 +11,36 @@ object SphericalTrigonometry : Measurement {
     }
 
     override fun determineAzimuth(departureLatitude: Radian, departureLongitude: Radian, destinationLatitude: Radian, destinationLongitude: Radian): Radian {
-        val pathwayAngle = determinePathwayAngle(departureLatitude, departureLongitude, destinationLatitude, destinationLongitude)
-        if (pathwayAngle == Radian.ZERO) {
-            return Radian.ZERO
+        if (departureLongitude == destinationLongitude ||
+                abs(departureLongitude) == Radian.PI && abs(departureLongitude) == abs(destinationLongitude)
+        ) {
+            // 経度が同じとき，北極点，出発点，到着点が一直線上に並ぶため，球面三角法を使用することができない
+            return if (departureLatitude <= destinationLatitude) {
+                Radian.ZERO
+            } else {
+                Radian.PI
+            }
         }
+        val pathwayAngle = determinePathwayAngle(departureLatitude, departureLongitude, destinationLatitude, destinationLongitude)
         val a = pathwayAngle
         val b = Radian.PI / 2 - destinationLatitude
         val c = Radian.PI / 2 - departureLatitude
         val angle = acos((cos(b) - cos(c) * cos(a)) / (sin(c) * sin(a)))
-        return if (departureLongitude < destinationLongitude) {
-            angle
+        return if (Measurement.isOver180thMeridian(departureLongitude, destinationLongitude)) {
+            if (departureLongitude < destinationLongitude) {
+                2 * Radian.PI - angle
+            } else {
+                // 出発地が到着地より東にあるとき(つまり西へ向かっているとき)は，求める角すなわち，緯線から経路への右回りの角の求め方が少し変わる
+                angle
+            }
         } else {
-            // 出発地が到着地より東にあるとき(つまり西へ向かっているとき)は，求める角すなわち，緯線から経路への右回りの角の求め方が少し変わる
-            2 * Radian.PI - angle
+            if (departureLongitude < destinationLongitude) {
+                angle
+            } else {
+                // 出発地が到着地より東にあるとき(つまり西へ向かっているとき)は，求める角すなわち，緯線から経路への右回りの角の求め方が少し変わる
+                2 * Radian.PI - angle
+            }
+
         }
     }
 

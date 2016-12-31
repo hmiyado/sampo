@@ -69,7 +69,7 @@ data class MeasurementTestData(
                 destinationLongitude = Degree(0).toRadian(),
                 expectedDistance = 110574.389,
                 expectedAzimuth = 180.0,
-                errorRate = 0.005
+                errorRate = 0.01
         )
         val testPathwayToSouthEast = MeasurementTestData(
                 departureLatitude = Degree(0).toRadian(),
@@ -123,7 +123,7 @@ data class MeasurementTestData(
                 destinationLongitude = Degree(0).toRadian(),
                 expectedDistance = 110574.389,
                 expectedAzimuth = 0.0,
-                errorRate = 0.005
+                errorRate = 0.01
         )
         val testPathwayToNorthEast = MeasurementTestData(
                 departureLatitude = Degree(0).toRadian(),
@@ -159,7 +159,7 @@ data class MeasurementTestData(
                 destinationLongitude = Degree(0).toRadian(),
                 expectedDistance = 110575.065,
                 expectedAzimuth = 0.0,
-                errorRate = 0.005
+                errorRate = 0.01
         )
         val testPathwayNegativeLatToNegativeLat = MeasurementTestData(
                 departureLatitude = Degree(-1).toRadian(),
@@ -168,7 +168,7 @@ data class MeasurementTestData(
                 destinationLongitude = Degree(0).toRadian(),
                 expectedDistance = 110575.065,
                 expectedAzimuth = 180.0,
-                errorRate = 0.005
+                errorRate = 0.01
         )
         val testPathwayLong180ToLongNegative180 = MeasurementTestData(
                 departureLatitude = Degree(0).toRadian(),
@@ -179,6 +179,17 @@ data class MeasurementTestData(
                 expectedAzimuth = 0.0,
                 errorRate = 0.005
         )
+
+        val testPathwayOver180thMeridian = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(180).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(-179).toRadian(),
+                expectedDistance = 111319.491,
+                expectedAzimuth = 90.0,
+                errorRate = 0.005
+        )
+
         /**
          * 国土地理院のAPIでは，北緯90度はIllegalArgumentになっていた
          */
