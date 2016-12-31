@@ -14,6 +14,8 @@ class Degree(
         this.value = value % 360
     }
 
+    constructor(value: Int) : this(value.toDouble())
+
     operator fun minus(degree: Degree): Degree {
         return Degree(value - degree.value % 360)
     }

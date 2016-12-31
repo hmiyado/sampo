@@ -41,8 +41,8 @@ class LocationServiceVirtualImpl : LocationService {
 
     private fun updateNextLocation(num: Long) {
         nextLocation = Location(
-                nextLocation.latitude + 0.001 * Math.sin(num.toDouble() * Math.PI / 16),
-                nextLocation.longitude + 0.001 * Math.cos(num.toDouble() * Math.PI / 16),
+                num * 0.001 * Math.sin(0.001 * num.toDouble() * Math.PI / 16),
+                num * 0.001 * Math.cos(0.001 * num.toDouble() * Math.PI / 16),
                 nextLocation.localDateTime + Second(num.toInt())
         )
     }

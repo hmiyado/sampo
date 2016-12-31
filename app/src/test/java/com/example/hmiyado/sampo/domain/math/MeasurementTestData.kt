@@ -53,6 +53,156 @@ data class MeasurementTestData(
                 expectedAzimuth = 89.9997,
                 errorRate = 0.005
         )
+        val testPathwayToSouthWest = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(-1).toRadian(),
+                destinationLongitude = Degree(-1).toRadian(),
+                expectedDistance = 156899.568,
+                expectedAzimuth = 225.188038888889,
+                errorRate = 0.005
+        )
+        val testPathwayToSouth = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(-1).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = 110574.389,
+                expectedAzimuth = 180.0,
+                errorRate = 0.005
+        )
+        val testPathwayToSouthEast = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(-1).toRadian(),
+                destinationLongitude = Degree(1).toRadian(),
+                expectedDistance = 156899.568,
+                expectedAzimuth = 134.811961111111,
+                errorRate = 0.005
+        )
+        val testPathwayToWest = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(-1).toRadian(),
+                expectedDistance = 111319.491,
+                expectedAzimuth = 270.0,
+                errorRate = 0.005
+        )
+        val testNoPathway = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = 0.0,
+                expectedAzimuth = 0.0,
+                errorRate = 0.005
+        )
+        val testPathwayToEast = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(1).toRadian(),
+                expectedDistance = 111319.491,
+                expectedAzimuth = 90.0,
+                errorRate = 0.005
+        )
+        val testPathwayToNorthWest = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(1).toRadian(),
+                destinationLongitude = Degree(-1).toRadian(),
+                expectedDistance = 156899.568,
+                expectedAzimuth = 314.811961111111,
+                errorRate = 0.005
+        )
+        val testPathwayToNorth = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(1).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = 110574.389,
+                expectedAzimuth = 0.0,
+                errorRate = 0.005
+        )
+        val testPathwayToNorthEast = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(1).toRadian(),
+                destinationLongitude = Degree(1).toRadian(),
+                expectedDistance = 156899.568,
+                expectedAzimuth = 45.1880388888889,
+                errorRate = 0.005
+        )
+        val testPathwayPositiveLongToPositiveLong = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(1).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(2).toRadian(),
+                expectedDistance = 111319.491,
+                expectedAzimuth = 90.0,
+                errorRate = 0.005
+        )
+        val testPathwayNegativeLongToNegativeLong = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(-1).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(-2).toRadian(),
+                expectedDistance = 111319.491,
+                expectedAzimuth = 270.0,
+                errorRate = 0.005
+        )
+        val testPathwayPositiveLatToPositiveLat = MeasurementTestData(
+                departureLatitude = Degree(1).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(2).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = 110575.065,
+                expectedAzimuth = 0.0,
+                errorRate = 0.005
+        )
+        val testPathwayNegativeLatToNegativeLat = MeasurementTestData(
+                departureLatitude = Degree(-1).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(-2).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = 110575.065,
+                expectedAzimuth = 180.0,
+                errorRate = 0.005
+        )
+        val testPathwayLong180ToLongNegative180 = MeasurementTestData(
+                departureLatitude = Degree(0).toRadian(),
+                departureLongitude = Degree(180).toRadian(),
+                destinationLatitude = Degree(0).toRadian(),
+                destinationLongitude = Degree(-180).toRadian(),
+                expectedDistance = 0.0,
+                expectedAzimuth = 0.0,
+                errorRate = 0.005
+        )
+        /**
+         * 国土地理院のAPIでは，北緯90度はIllegalArgumentになっていた
+         */
+        val testIllegalArgument1 = MeasurementTestData(
+                departureLatitude = Degree(90).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(89).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = -1e100,
+                expectedAzimuth = -1e10,
+                errorRate = 0.005
+        )
+        /**
+         * 国土地理院のAPIでは，北緯-90度はIllegalArgumentになっていた
+         */
+        val testIllegalArgument2 = MeasurementTestData(
+                departureLatitude = Degree(-90).toRadian(),
+                departureLongitude = Degree(0).toRadian(),
+                destinationLatitude = Degree(-89).toRadian(),
+                destinationLongitude = Degree(0).toRadian(),
+                expectedDistance = -1e100,
+                expectedAzimuth = -1e10,
+                errorRate = 0.005
+        )
 
     }
 
