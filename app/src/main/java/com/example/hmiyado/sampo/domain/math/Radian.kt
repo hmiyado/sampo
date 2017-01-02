@@ -11,6 +11,14 @@ class Radian(
     companion object {
         val PI = Radian(Math.PI)
         val ZERO = Radian(0.0)
+
+        fun min(r1: Radian, r2: Radian): Radian {
+            return if (r1 < r2) {
+                Radian(r1.value)
+            } else {
+                Radian(r2.value)
+            }
+        }
     }
 
     operator fun minus(radian: Radian): Radian {
@@ -26,6 +34,8 @@ class Radian(
     operator fun div(x: Double): Radian = Radian(value / x)
 
     operator fun div(x: Int): Radian = Radian(value / x)
+
+    operator fun div(x: Radian) = Radian(value / x.value)
 
     operator fun compareTo(radian: Radian): Int = Math.signum(value - radian.value).toInt()
 
