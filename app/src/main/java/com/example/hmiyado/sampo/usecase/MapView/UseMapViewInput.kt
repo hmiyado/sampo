@@ -67,7 +67,7 @@ class UseMapViewInput(
      */
     fun getOnScaleSignal(): Observable<Float> {
         return mapViewPresenter.getOnScaleSignal()
-                .map { it.scaleFactor }
+                .map { 1 / it.scaleFactor }
     }
 
     fun getOnDrawSignal(): Observable<Canvas> {
