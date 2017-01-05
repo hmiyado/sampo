@@ -2,6 +2,8 @@ package com.example.hmiyado.sampo.usecase.compassview.interaction
 
 import com.example.hmiyado.sampo.domain.model.Map
 import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.compassview.UseCompassViewInput
 import com.example.hmiyado.sampo.usecase.compassview.UseCompassViewOutput
 
@@ -14,12 +16,12 @@ class StoreAndCompassViewInputToCompassViewOutputInteraction(
         private val store: Store,
         private val useCompassViewInput: UseCompassViewInput,
         private val useCompassViewOutput: UseCompassViewOutput
-) {
+) : Interaction() {
     init {
-        drawInteraction()
+        subscriptions += drawInteraction()
     }
 
-    private fun drawInteraction() {
-        useCompassViewOutput.setOnDrawSignal(store.getMapSignal().map(Map::orientation), useCompassViewInput.getOnDrawSignal())
-    }
+    private fun drawInteraction() =
+            useCompassViewOutput.setOnDrawSignal(store.getMapSignal().map(Map::orientation), useCompassViewInput.getOnDrawSignal())
+
 }

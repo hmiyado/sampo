@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.presenter
 
 import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.location.LocationService
 import com.example.hmiyado.sampo.usecase.compassview.UseCompassViewInput
@@ -16,10 +17,12 @@ import com.example.hmiyado.sampo.usecase.mapview.interaction.StoreAndMapViewInpu
 import com.example.hmiyado.sampo.usecase.mapview.interaction.StoreToMapViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewInput
 import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewOutput
-import com.example.hmiyado.sampo.usecase.scaleview.interaction.StoreAndScaleViewInputToScaleViewOutput
+import com.example.hmiyado.sampo.usecase.scaleview.interaction.StoreAndScaleViewInputToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.scaleview.interaction.StoreToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.view.MapFragment
 import com.github.salomonbrys.kodein.instance
+import rx.Observable
+import rx.subscriptions.CompositeSubscription
 
 /**
  * Created by hmiyado on 2016/07/26.
@@ -28,6 +31,7 @@ import com.github.salomonbrys.kodein.instance
 class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) {
+    private val subscriptions = CompositeSubscription()
     private val store = Store()
     private val useMapViewInput by lazy { UseMapViewInput(mapFragment.mapViewPresenter) }
     private val useMapViewOutput by lazy { UseMapViewOutput(mapFragment.mapViewController) }
@@ -39,16 +43,22 @@ class MapFragmentPresenter(
     private val compassService by mapFragment.injector.instance<CompassService>()
 
     fun onStart() {
-        // TODO 各InteractionのObservableをFragmentのライフサイクルにバインドする（回転したときに，Observableが複数回subscribeされてるっぽい）
-        StoreAndMapViewInputToMapViewOutputInteraction(store, useMapViewInput, useMapViewOutput)
-        MapViewerInputToStoreInteraction(useMapViewInput, store)
-        StoreToMapViewOutputInteraction(store, useMapViewOutput)
-        LocationServiceToStoreInteraction(locationService, store)
-        CompassServiceToStoreInteraction(compassService, store)
-        StoreAndCompassViewInputToCompassViewOutputInteraction(store, useCompassViewInput, useCompassViewOutput)
-        StoreToCompassViewOutputInteraction(store, useCompassViewOutput)
-        StoreAndScaleViewInputToScaleViewOutput(store, useScaleViewInput, useScaleViewOutput)
-        StoreToScaleViewOutputInteraction(store, useScaleViewOutput)
+        Observable.from(
+                listOf(
+                        StoreAndMapViewInputToMapViewOutputInteraction(store, useMapViewInput, useMapViewOutput),
+                        MapViewerInputToStoreInteraction(useMapViewInput, store),
+                        StoreToMapViewOutputInteraction(store, useMapViewOutput),
+                        LocationServiceToStoreInteraction(locationService, store),
+                        CompassServiceToStoreInteraction(compassService, store),
+                        StoreAndCompassViewInputToCompassViewOutputInteraction(store, useCompassViewInput, useCompassViewOutput),
+                        StoreToCompassViewOutputInteraction(store, useCompassViewOutput),
+                        StoreAndScaleViewInputToScaleViewOutputInteraction(store, useScaleViewInput, useScaleViewOutput),
+                        StoreToScaleViewOutputInteraction(store, useScaleViewOutput)
+                )
+        ).forEach {
+            subscriptions += it.subscriptions
+        }
+
     }
 
     fun onResume() {
@@ -59,6 +69,10 @@ class MapFragmentPresenter(
     fun onPause() {
         locationService.stopLocationObserve()
         compassService.stopCompassService()
+    }
+
+    fun onStop() {
+        subscriptions.clear()
     }
 
 }

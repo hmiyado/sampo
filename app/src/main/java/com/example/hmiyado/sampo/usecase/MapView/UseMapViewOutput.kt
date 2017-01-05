@@ -25,8 +25,8 @@ import rx.Subscription
 class UseMapViewOutput(
         private val mapViewController: MapViewController
 ) {
-    fun setOnDrawSignal(onUpdateMapSignal: Observable<Map>, onDrawSignal: Observable<Canvas>) {
-        onDrawSignal
+    fun setOnDrawSignal(onUpdateMapSignal: Observable<Map>, onDrawSignal: Observable<Canvas>): Subscription {
+        return onDrawSignal
                 .withLatestFrom(onUpdateMapSignal, { canvas, map -> Pair(canvas, map) })
                 .doOnNext { pairOfCanvasMap ->
                     val map = pairOfCanvasMap.second
@@ -51,8 +51,8 @@ class UseMapViewOutput(
                 .bindMapViewAndSubscribe()
     }
 
-    fun setOnUpdateMapSignal(onUpdateMapSignal: Observable<Map>) {
-        onUpdateMapSignal
+    fun setOnUpdateMapSignal(onUpdateMapSignal: Observable<Map>): Subscription {
+        return onUpdateMapSignal
                 .doOnNext { mapViewController.invalidate() }
                 .bindMapViewAndSubscribe()
     }

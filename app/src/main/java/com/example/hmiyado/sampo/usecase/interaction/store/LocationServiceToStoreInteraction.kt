@@ -1,7 +1,9 @@
 package com.example.hmiyado.sampo.usecase.interaction.store
 
 import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationService
+import com.example.hmiyado.sampo.usecase.Interaction
 
 /**
  * Created by hmiyado on 2016/12/20.
@@ -10,14 +12,14 @@ import com.example.hmiyado.sampo.repository.location.LocationService
 class LocationServiceToStoreInteraction(
         private val locationService: LocationService,
         private val store: Store
-) {
+) : Interaction() {
     init {
-        updateOriginalLocation()
+        subscriptions += updateOriginalLocation()
     }
 
-    private fun updateOriginalLocation() {
-        locationService.getLocationObservable()
-                .doOnNext { store.setOriginalLocation(it) }
-                .subscribe()
-    }
+    private fun updateOriginalLocation() =
+            locationService.getLocationObservable()
+                    .doOnNext { store.setOriginalLocation(it) }
+                    .subscribe()
+
 }

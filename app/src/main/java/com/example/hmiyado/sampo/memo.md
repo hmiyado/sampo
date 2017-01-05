@@ -114,6 +114,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - https://firebase.googleblog.com/2017/01/BoostingAppQuality2017.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+FirebaseBlog+(The+Firebase+Blog)
 - [] Location のLat/LongをDegreeに変える
     - Degreeは十進度数法だと明記する(度分秒法もあるので)
+- [] onResume で何度も subscribe される問題
 
 ## 保存する量の概算
 1ヶ月間で30秒毎に1地点保存するとする

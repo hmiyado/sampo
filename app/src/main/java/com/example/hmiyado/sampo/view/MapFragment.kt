@@ -78,4 +78,9 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
         super.onPause()
         presenter.onPause()
     }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
+    }
 }
