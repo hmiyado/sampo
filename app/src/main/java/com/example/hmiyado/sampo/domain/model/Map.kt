@@ -42,7 +42,7 @@ class Map(
     }
 
     /**
-     * 地図の縮尺．100 dip あたりの距離(メートル)
+     * 地図の縮尺．1 dip あたりの距離(メートル)
      */
     val scale: Float
         get() = scaleFactor * SCALE_UNIT

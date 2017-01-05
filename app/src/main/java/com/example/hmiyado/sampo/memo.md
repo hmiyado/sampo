@@ -97,7 +97,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] Orientation
     - [] Orientation に OriginalLocation から逆算した値を入れて，北を示すようにする
     - [] Compass をタップしたら，北固定モードと自身の向き固定モードを切り替えられるようにする
-- [] 地点のテスト追加
+- [x] 地点のテスト追加
     - たぶんバグってる
     - 0, 境界値(経度はプラマイ180度，緯度はプラマイ90度，それぞれと超える場合)，例外値(経緯度が範囲外の場合)，経路の方向(8方向は入れたい)
 - [] 地点の経時変化をSubscribeする
@@ -110,8 +110,21 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - タッチ可能UIはマテリアルっぽくする
         - コンパスとか
 - [] CI(継続的インテグレーション)導入
+    - Firebase Test Lab for Android は無料？
+    - https://firebase.googleblog.com/2017/01/BoostingAppQuality2017.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+FirebaseBlog+(The+Firebase+Blog)
 - [] Location のLat/LongをDegreeに変える
     - Degreeは十進度数法だと明記する(度分秒法もあるので)
+
+## 保存する量の概算
+1ヶ月間で30秒毎に1地点保存するとする
+
+- 1分で2地点
+- 60分で120地点
+- 24時間で2880地点
+- 30日で86400地点
+- 1地点あたり数値3つ3バイト？
+- 10バイトとしても864KB．知れてる．
+- もう全部記録してもいいレベル．雑魚．
 
 ## 地点テストケース列挙
 - [x] 経路の方向

@@ -2,7 +2,7 @@ package com.example.hmiyado.sampo.usecase.mapview
 
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.MapViewController
-import com.example.hmiyado.sampo.domain.math.EquirectanglarApproximation
+import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Map
@@ -38,15 +38,13 @@ class UseMapViewOutput(
                     mapViewController.drawMesh(canvas)
                     mapViewController.drawOriginalLocation(canvas)
 
+                    val measurement = SphericalTrigonometry
+
                     map.footmarks.forEach {
-                        val distance = EquirectanglarApproximation.determinePathwayDistance(map.originalLocation, it)
-                        val azimuth = EquirectanglarApproximation.determineAzimuth(map.originalLocation, it)
+                        val distance = measurement.determinePathwayDistance(map.originalLocation, it)
+                        val azimuth = measurement.determineAzimuth(map.originalLocation, it)
                         val x = distance * cos(azimuth)
                         val y = distance * sin(azimuth)
-                        if (x > map.scale * mapViewController.viewWidth || y > map.scale * mapViewController.viewHeight) {
-                            // 点が表示領域外
-                            return@forEach
-                        }
                         mapViewController.drawFootmark(canvas, (x / map.scale).toFloat(), (y / map.scale).toFloat())
                     }
                 }

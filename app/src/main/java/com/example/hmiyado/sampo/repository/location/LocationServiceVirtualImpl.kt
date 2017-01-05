@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 class LocationServiceVirtualImpl : LocationService {
     private val locationSubject: PublishSubject<Location>
     private var nextLocation: Location
-    private val delayTimeMs: Long = 5000
+    private val delayTimeMs: Long = 1000
     private var nextLocationSubscription: Subscription? = null
 
     init {
@@ -40,9 +40,10 @@ class LocationServiceVirtualImpl : LocationService {
     }
 
     private fun updateNextLocation(num: Long) {
+        val value = num * Math.PI / 16
         nextLocation = Location(
-                num * 0.001 * Math.sin(0.001 * num.toDouble() * Math.PI / 16),
-                num * 0.001 * Math.cos(0.001 * num.toDouble() * Math.PI / 16),
+                0.01 * Math.cos(value),
+                0.01 * Math.sin(value),
                 nextLocation.localDateTime + Second(num.toInt())
         )
     }

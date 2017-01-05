@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.usecase.compassview.interaction
 
+import com.example.hmiyado.sampo.domain.model.Map
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.usecase.compassview.UseCompassViewOutput
 
@@ -17,6 +18,6 @@ class StoreToCompassViewOutputInteraction(
     }
 
     private fun orientationInteraction() {
-        useCompassViewOutput.setOnOrientationSignal(store.getMapSignal().map { it.orientation })
+        useCompassViewOutput.setOnOrientationSignal(store.getMapSignal().map(Map::orientation))
     }
 }
