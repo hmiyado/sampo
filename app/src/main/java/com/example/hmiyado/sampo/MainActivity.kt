@@ -14,9 +14,11 @@ class MainActivity : RxAppCompatActivity() {
         val ui = MainActivityUi()
         ui.setContentView(this)
 
-        fragmentManager
-                .beginTransaction()
-                .add(MainActivityUi.ROOT_VIEW_ID, MapFragment())
-                .commit()
+        if (fragmentManager.findFragmentById(MainActivityUi.ROOT_VIEW_ID) == null) {
+            fragmentManager
+                    .beginTransaction()
+                    .add(MainActivityUi.ROOT_VIEW_ID, MapFragment())
+                    .commit()
+        }
     }
 }

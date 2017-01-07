@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.view
 
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +57,7 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        Timber.e("on create view")
+//        Timber.d("on create view")
         return MapFragmentUi().createView(AnkoContext.Companion.create(activity.baseContext, this))
     }
 
@@ -64,23 +65,37 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        Timber.d("on configuration changed")
+        super.onConfigurationChanged(newConfig)
+    }
+
     override fun onStart() {
         super.onStart()
+        Timber.d("on start")
         presenter.onStart()
     }
 
     override fun onResume() {
         super.onResume()
+        Timber.d("on resume")
         presenter.onResume()
     }
 
     override fun onPause() {
         super.onPause()
+        Timber.d("on pause")
         presenter.onPause()
     }
 
     override fun onStop() {
         super.onStop()
+        Timber.d("on stop")
         presenter.onStop()
+    }
+
+    override fun onDestroy() {
+        Timber.d("on destroy")
+        super.onDestroy()
     }
 }
