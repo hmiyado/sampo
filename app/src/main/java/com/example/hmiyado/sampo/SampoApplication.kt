@@ -11,6 +11,7 @@ import com.github.salomonbrys.kodein.android.androidModule
 import com.github.salomonbrys.kodein.android.autoActivitySingleton
 import com.jakewharton.threetenabp.AndroidThreeTen
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import org.jetbrains.anko.sensorManager
 import timber.log.Timber
 
@@ -36,6 +37,12 @@ class SampoApplication : Application(), KodeinAware {
         AndroidThreeTen.init(this)
         registerActivityLifecycleCallbacks(activityScope.lifecycleManager)
         Realm.init(baseContext)
+        val realmConfig = RealmConfiguration.Builder()
+                .name("Location.realm")
+                .schemaVersion(1)
+                .build()
+        Realm.deleteRealm(realmConfig)
+        Realm.setDefaultConfiguration(realmConfig)
 
         Timber.plant(Timber.DebugTree())
     }

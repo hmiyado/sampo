@@ -102,7 +102,8 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - 0, 境界値(経度はプラマイ180度，緯度はプラマイ90度，それぞれと超える場合)，例外値(経緯度が範囲外の場合)，経路の方向(8方向は入れたい)
 - [] 地点の経時変化をSubscribeする
     - [x] Viewに反映されるようにする
-    - Repositoryに反映されるようにする
+    - [] Repositoryに反映されるようにする
+        - [] Realm に正しいスレッドからアクセスする
 - [] mesh のscaleを定義する
     - scaleに従って，meshがいい感じに変化する(100m単位，1km単位などで切り替えるとよさそう？)
     - メッシュ単位の表示
@@ -114,8 +115,9 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - https://firebase.googleblog.com/2017/01/BoostingAppQuality2017.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+FirebaseBlog+(The+Firebase+Blog)
 - [] Location のLat/LongをDegreeに変える
     - Degreeは十進度数法だと明記する(度分秒法もあるので)
+- [] バックグラウンドでLocationを取得する
 - [x] onResume で何度も subscribe される問題
-- [] 画面を回転するとぶっ壊れる問題
+- [x] 画面を回転するとぶっ壊れる問題
     - 回転するたびにフラグメントが再生成されているのが原因．
 
 ## 保存する量の概算
@@ -128,6 +130,20 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - 1地点あたり数値3つ3バイト？
 - 10バイトとしても864KB．知れてる．
 - もう全部記録してもいいレベル．雑魚．
+
+## Realm
+### Rx バージョン管理
+- Realm: ~1.1.x
+- RxKotlin: 1.1.5
+- RxAndroid:
+    - 1.2.1 -> RXJava 1.1.6
+    - 1.2.0 -> RxJava 1.1.4
+
+RxKotlin を使っている以上，ここに依存しなければどうしようもなさそうなのであった．
+
+### LocationRepository の実装不味すぎ問題
+realm オブジェクトは外から注入する形にするか，その場で取得する形にしないと，他の場所から使えない．
+少なくとも，realm の初期化は別の場所でやるべき
 
 ## 地点テストケース列挙
 - [x] 経路の方向

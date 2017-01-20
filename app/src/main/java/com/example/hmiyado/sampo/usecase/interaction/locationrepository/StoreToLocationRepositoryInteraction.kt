@@ -1,7 +1,10 @@
 package com.example.hmiyado.sampo.usecase.interaction.locationrepository
 
 import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
+import com.example.hmiyado.sampo.usecase.Interaction
+import rx.Subscription
 
 /**
  * Created by hmiyado on 2016/12/27.
@@ -11,12 +14,14 @@ import com.example.hmiyado.sampo.repository.location.LocationRepository
 class StoreToLocationRepositoryInteraction(
         private val store: Store,
         private val locationRepository: LocationRepository
-) {
+) : Interaction() {
     init {
-
+        subscriptions += saveLocationInteraction()
     }
 
-    private fun saveLocationInteraction() {
-        // TODO
+    private fun saveLocationInteraction(): Subscription {
+        return store.getMapSignal().doOnNext {
+            locationRepository.saveLocation(it.originalLocation)
+        }.subscribe()
     }
 }
