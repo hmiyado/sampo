@@ -5,6 +5,7 @@ import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.usecase.Interaction
 import rx.Subscription
+import rx.schedulers.Schedulers
 
 /**
  * Created by hmiyado on 2016/12/27.
@@ -20,8 +21,8 @@ class StoreToLocationRepositoryInteraction(
     }
 
     private fun saveLocationInteraction(): Subscription {
-        return store.getMapSignal().doOnNext {
-            locationRepository.saveLocation(it.originalLocation)
-        }.subscribe()
+        return store.getMapSignal()
+                .observeOn(Schedulers.newThread())
+                .subscribe({ locationRepository.saveLocation(it.originalLocation) })
     }
 }
