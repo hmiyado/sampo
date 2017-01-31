@@ -13,7 +13,7 @@ import timber.log.Timber
 
  * 状態の保持/更新方法の提供/状態の提供の責務を負うクラス．
  */
-class Store {
+object Store {
 
     private var map: Map = Map.empty()
 

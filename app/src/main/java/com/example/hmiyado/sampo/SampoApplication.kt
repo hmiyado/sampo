@@ -1,10 +1,12 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
+import android.content.Intent
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
 import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
+import com.example.hmiyado.sampo.service.LocationAndroidService
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.activityScope
 import com.github.salomonbrys.kodein.android.androidModule
@@ -45,6 +47,8 @@ class SampoApplication : Application(), KodeinAware {
         Realm.setDefaultConfiguration(realmConfig)
 
         Timber.plant(Timber.DebugTree())
+        startService(Intent(baseContext, LocationAndroidService::class.java))
+
     }
 
     override fun onTerminate() {

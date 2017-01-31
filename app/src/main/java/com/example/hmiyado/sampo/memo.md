@@ -103,7 +103,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] 地点の経時変化をSubscribeする
     - [x] Viewに反映されるようにする
     - [] Repositoryに反映されるようにする
-        - [] Realm に正しいスレッドからアクセスする
+        - [x] Realm に正しいスレッドからアクセスする
 - [] mesh のscaleを定義する
     - scaleに従って，meshがいい感じに変化する(100m単位，1km単位などで切り替えるとよさそう？)
     - メッシュ単位の表示
@@ -116,9 +116,16 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] Location のLat/LongをDegreeに変える
     - Degreeは十進度数法だと明記する(度分秒法もあるので)
 - [] バックグラウンドでLocationを取得する
+    - https://developer.android.com/guide/components/services.html?hl=ja
+    - フォアグラウンドサービス
+    - 通知領域で距離確認，位置情報取得の可否を設定できるように試用
 - [x] onResume で何度も subscribe される問題
 - [x] 画面を回転するとぶっ壊れる問題
     - 回転するたびにフラグメントが再生成されているのが原因．
+- [] 累計距離計算
+- [] エリア計算
+- [] twitter 連携
+- [] slack 連携
 
 ## 保存する量の概算
 1ヶ月間で30秒毎に1地点保存するとする

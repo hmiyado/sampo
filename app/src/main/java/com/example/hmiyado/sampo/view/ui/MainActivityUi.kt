@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.view.ui
 
 import android.view.View
-import com.example.hmiyado.sampo.MainActivity
+import com.example.hmiyado.sampo.activity.MainActivity
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.relativeLayout

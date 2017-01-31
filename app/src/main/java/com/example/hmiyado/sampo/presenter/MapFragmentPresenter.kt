@@ -34,7 +34,7 @@ class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) {
     private val subscriptions = CompositeSubscription()
-    private val store = Store()
+    private val store = Store
     private val useMapViewInput by lazy { UseMapViewInput(mapFragment.mapViewPresenter) }
     private val useMapViewOutput by lazy { UseMapViewOutput(mapFragment.mapViewController) }
     private val useCompassViewInput by lazy { UseCompassViewInput(mapFragment.compassViewPresenter) }

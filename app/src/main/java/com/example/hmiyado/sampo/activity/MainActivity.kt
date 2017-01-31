@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo
+package com.example.hmiyado.sampo.activity
 
 import android.os.Bundle
 import com.example.hmiyado.sampo.view.MapFragment
