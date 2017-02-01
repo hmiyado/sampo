@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.domain.model.Map
-import com.example.hmiyado.sampo.view.custom.ScaleView
+import com.example.hmiyado.sampo.view.map.custom.ScaleView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.px2dip
 import org.jetbrains.anko.sp

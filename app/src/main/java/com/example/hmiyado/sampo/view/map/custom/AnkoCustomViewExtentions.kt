@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.view.custom
+package com.example.hmiyado.sampo.view.map.custom
 
 import android.view.ViewManager
 import org.jetbrains.anko.custom.ankoView

@@ -21,7 +21,7 @@ import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewInput
 import com.example.hmiyado.sampo.usecase.scaleview.UseScaleViewOutput
 import com.example.hmiyado.sampo.usecase.scaleview.interaction.StoreAndScaleViewInputToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.scaleview.interaction.StoreToScaleViewOutputInteraction
-import com.example.hmiyado.sampo.view.MapFragment
+import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance
 import rx.Observable
 import rx.subscriptions.CompositeSubscription

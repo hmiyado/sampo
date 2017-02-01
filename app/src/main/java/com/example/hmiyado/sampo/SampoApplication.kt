@@ -47,7 +47,12 @@ class SampoApplication : Application(), KodeinAware {
         Realm.setDefaultConfiguration(realmConfig)
 
         Timber.plant(Timber.DebugTree())
-        startService(Intent(baseContext, LocationAndroidService::class.java))
+        startService(Intent(baseContext, LocationAndroidService::class.java)
+                .putExtra(
+                        LocationAndroidService.IntentType::class.simpleName,
+                        LocationAndroidService.IntentType.START
+                )
+        )
 
     }
 

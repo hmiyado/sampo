@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.presenter
 
-import com.example.hmiyado.sampo.view.custom.CompassView
+import com.example.hmiyado.sampo.view.map.custom.CompassView
 
 /**
  * Created by hmiyado on 2016/12/21.

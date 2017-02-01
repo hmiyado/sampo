@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.view
+package com.example.hmiyado.sampo.view.map
 
 
 import android.content.res.Configuration
@@ -13,10 +13,10 @@ import com.example.hmiyado.sampo.presenter.CompassViewPresenter
 import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.MapViewPresenter
 import com.example.hmiyado.sampo.presenter.ScaleViewPresenter
-import com.example.hmiyado.sampo.view.custom.CompassView
-import com.example.hmiyado.sampo.view.custom.MapView
-import com.example.hmiyado.sampo.view.custom.ScaleView
-import com.example.hmiyado.sampo.view.ui.MapFragmentUi
+import com.example.hmiyado.sampo.view.map.custom.CompassView
+import com.example.hmiyado.sampo.view.map.custom.MapView
+import com.example.hmiyado.sampo.view.map.custom.ScaleView
+import com.example.hmiyado.sampo.view.map.ui.MapFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.appKodein
@@ -58,7 +58,7 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 //        Timber.d("on create view")
-        return MapFragmentUi().createView(AnkoContext.Companion.create(activity.baseContext, this))
+        return MapFragmentUi().createView(AnkoContext.create(activity.baseContext, this))
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

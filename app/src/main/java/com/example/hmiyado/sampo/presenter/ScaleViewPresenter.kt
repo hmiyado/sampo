@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.presenter
 
 import android.graphics.Canvas
-import com.example.hmiyado.sampo.view.custom.ScaleView
+import com.example.hmiyado.sampo.view.map.custom.ScaleView
 import rx.Observable
 
 /**

@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.controller
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.domain.model.Orientation
-import com.example.hmiyado.sampo.view.custom.CompassView
+import com.example.hmiyado.sampo.view.map.custom.CompassView
 
 /**
  * Created by hmiyado on 2016/12/21.

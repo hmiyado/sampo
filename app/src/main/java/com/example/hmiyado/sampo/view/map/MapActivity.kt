@@ -1,23 +1,22 @@
-package com.example.hmiyado.sampo.activity
+package com.example.hmiyado.sampo.view.map
 
 import android.os.Bundle
-import com.example.hmiyado.sampo.view.MapFragment
-import com.example.hmiyado.sampo.view.ui.MainActivityUi
+import com.example.hmiyado.sampo.view.map.ui.MapActivityUi
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import org.jetbrains.anko.setContentView
 
-class MainActivity : RxAppCompatActivity() {
+class MapActivity : RxAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val ui = MainActivityUi()
+        val ui = MapActivityUi()
         ui.setContentView(this)
 
-        if (fragmentManager.findFragmentById(MainActivityUi.ROOT_VIEW_ID) == null) {
+        if (fragmentManager.findFragmentById(MapActivityUi.ROOT_VIEW_ID) == null) {
             fragmentManager
                     .beginTransaction()
-                    .add(MainActivityUi.ROOT_VIEW_ID, MapFragment())
+                    .add(MapActivityUi.ROOT_VIEW_ID, MapFragment())
                     .commit()
         }
     }

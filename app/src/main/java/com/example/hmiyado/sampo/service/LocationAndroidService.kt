@@ -1,12 +1,12 @@
 package com.example.hmiyado.sampo.service
 
-import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
-import com.example.hmiyado.sampo.activity.LocationAndroidServicePlayActivity
+import android.os.IBinder
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationService
@@ -22,7 +22,12 @@ import timber.log.Timber
 /**
  * Created by hmiyado on 2017/01/30.
  */
-class LocationAndroidService : IntentService("LocationAndroidService"), KodeinInjected {
+class LocationAndroidService : Service(), KodeinInjected {
+    enum class IntentType {
+        START,
+        CLOSE
+    }
+
     override val injector: KodeinInjector = KodeinInjector()
 
     private val notificationManagerFactory: (Context) -> NotificationManager by injector.factory()
@@ -36,27 +41,49 @@ class LocationAndroidService : IntentService("LocationAndroidService"), KodeinIn
         inject(appKodein())
         subscriptions += LocationServiceToStoreInteraction(locationService, store).subscriptions
 
-        val notifyIntent = Intent(baseContext, LocationAndroidServicePlayActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        val pendingIntent = PendingIntent.getActivity(baseContext, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val notification = Notification.Builder(baseContext)
-                .setVisibility(Notification.VISIBILITY_PUBLIC)
-                .addAction(Notification.Action.Builder(android.R.drawable.ic_media_play, "play", pendingIntent).build())
-                .setStyle(
-                        Notification.MediaStyle()
-                                .setShowActionsInCompactView(0)
-                )
-                .setContentTitle("content title")
-                .setContentText("content text")
-                .build()
-        notificationManagerFactory(baseContext).notify(notification.hashCode(), notification)
-        startForeground(notification.hashCode(), notification)
     }
 
-    override fun onHandleIntent(p0: Intent?) {
-        p0 ?: return
+    private fun createCloseAction(): Notification.Action {
+        val notifyIntent = Intent(this, LocationAndroidService::class.java)
+                .putExtra(IntentType::class.simpleName, IntentType.CLOSE)
+        val pendingIntent = PendingIntent.getService(this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return Notification.Action.Builder(
+                android.R.drawable.ic_menu_close_clear_cancel,
+                IntentType.CLOSE.name.toLowerCase(),
+                pendingIntent
+        ).build()
+    }
 
-        Timber.d("onHandleIntent: %s", p0.toString())
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intent ?: return super.onStartCommand(intent, flags, startId)
+
+        Timber.d("onStartCommand: %s", intent.toString())
+        val intentType = intent.getSerializableExtra(IntentType::class.simpleName) as IntentType
+        Timber.d("Intent: %s", intentType)
+        when (intentType) {
+            LocationAndroidService.IntentType.START -> {
+                val notification = Notification.Builder(applicationContext)
+                        .setVisibility(Notification.VISIBILITY_PUBLIC)
+                        .addAction(createCloseAction())
+                        .setStyle(
+                                Notification.MediaStyle()
+                                        .setShowActionsInCompactView(0)
+                        )
+                        .setContentTitle("content title")
+                        .setContentText("content text")
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .build()
+                Timber.d(notification.toString())
+                notificationManagerFactory(baseContext).notify(notification.hashCode(), notification)
+                startForeground(notification.hashCode(), notification)
+                return START_STICKY
+            }
+            LocationAndroidService.IntentType.CLOSE -> {
+                notificationManagerFactory(this).cancelAll()
+                stopSelf()
+                return START_NOT_STICKY
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -64,4 +91,9 @@ class LocationAndroidService : IntentService("LocationAndroidService"), KodeinIn
         Timber.d("onDestroy")
         subscriptions.unsubscribe()
     }
+
+    override fun onBind(p0: Intent?): IBinder {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }

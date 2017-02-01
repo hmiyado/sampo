@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.presenter
 import android.graphics.Canvas
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
-import com.example.hmiyado.sampo.view.custom.MapView
+import com.example.hmiyado.sampo.view.map.custom.MapView
 import rx.Observable
 import rx.lang.kotlin.PublishSubject
 import timber.log.Timber

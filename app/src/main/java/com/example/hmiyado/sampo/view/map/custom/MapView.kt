@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.example.hmiyado.sampo.view.custom
+package com.example.hmiyado.sampo.view.map.custom
 
 import android.content.Context
 import android.view.MotionEvent

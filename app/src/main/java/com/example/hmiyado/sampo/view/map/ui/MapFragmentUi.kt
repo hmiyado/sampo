@@ -1,10 +1,10 @@
-package com.example.hmiyado.sampo.view.ui
+package com.example.hmiyado.sampo.view.map.ui
 
 import android.view.View
-import com.example.hmiyado.sampo.view.MapFragment
-import com.example.hmiyado.sampo.view.custom.compassView
-import com.example.hmiyado.sampo.view.custom.mapView
-import com.example.hmiyado.sampo.view.custom.scaleView
+import com.example.hmiyado.sampo.view.map.MapFragment
+import com.example.hmiyado.sampo.view.map.custom.compassView
+import com.example.hmiyado.sampo.view.map.custom.mapView
+import com.example.hmiyado.sampo.view.map.custom.scaleView
 import org.jetbrains.anko.*
 
 /**

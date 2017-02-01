@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.domain.math.Degree
-import com.example.hmiyado.sampo.view.custom.MapView
+import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 
 /**
