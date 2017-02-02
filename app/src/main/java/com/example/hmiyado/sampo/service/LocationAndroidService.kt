@@ -9,7 +9,9 @@ import android.content.Intent
 import android.os.IBinder
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.location.LocationService
+import com.example.hmiyado.sampo.usecase.interaction.locationrepository.StoreToLocationRepositoryInteraction
 import com.example.hmiyado.sampo.usecase.interaction.store.LocationServiceToStoreInteraction
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
@@ -21,6 +23,9 @@ import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/01/30.
+ *
+ * バックグラウンドで位置情報を取得，更新してくれるサービス．
+ * 通知欄から操作できる．
  */
 class LocationAndroidService : Service(), KodeinInjected {
     enum class IntentType {
@@ -32,6 +37,7 @@ class LocationAndroidService : Service(), KodeinInjected {
 
     private val notificationManagerFactory: (Context) -> NotificationManager by injector.factory()
     private val locationService: LocationService by injector.instance()
+    private val locationRepository: LocationRepository by injector.instance()
     private val store = Store
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
@@ -40,7 +46,7 @@ class LocationAndroidService : Service(), KodeinInjected {
         Timber.d("onCreate")
         inject(appKodein())
         subscriptions += LocationServiceToStoreInteraction(locationService, store).subscriptions
-
+        subscriptions += StoreToLocationRepositoryInteraction(store, locationRepository).subscriptions
     }
 
     private fun createCloseAction(): Notification.Action {
@@ -76,10 +82,12 @@ class LocationAndroidService : Service(), KodeinInjected {
                 Timber.d(notification.toString())
                 notificationManagerFactory(baseContext).notify(notification.hashCode(), notification)
                 startForeground(notification.hashCode(), notification)
+                locationService.startLocationObserve()
                 return START_STICKY
             }
             LocationAndroidService.IntentType.CLOSE -> {
                 notificationManagerFactory(this).cancelAll()
+                locationService.stopLocationObserve()
                 stopSelf()
                 return START_NOT_STICKY
             }
