@@ -1,6 +1,8 @@
 package com.example.hmiyado.sampo.view.map.ui
 
 import android.view.View
+import android.widget.LinearLayout
+import com.example.hmiyado.sampo.view.common.sampoToolbar
 import com.example.hmiyado.sampo.view.map.MapFragment
 import com.example.hmiyado.sampo.view.map.custom.compassView
 import com.example.hmiyado.sampo.view.map.custom.mapView
@@ -13,28 +15,36 @@ import org.jetbrains.anko.*
  */
 class MapFragmentUi() : AnkoComponent<MapFragment> {
     companion object {
+        val toolbarId = View.generateViewId()
         val mapViewId = View.generateViewId()
         val compassViewId = View.generateViewId()
         val scaleViewId = View.generateViewId()
     }
 
     override fun createView(ui: AnkoContext<MapFragment>) = with(ui) {
-        relativeLayout {
-            mapView {
-                id = mapViewId
-            }.lparams(width = matchParent, height = matchParent)
-            compassView {
-                id = compassViewId
-            }.lparams(width = dip(100), height = dip(100)) {
-                alignParentTop()
-                alignParentLeft()
+        linearLayout {
+            orientation = LinearLayout.VERTICAL
+            sampoToolbar {
+                id = toolbarId
             }
-            scaleView {
-                id = scaleViewId
-            }.lparams(width = dip(200), height = dip(50)) {
-                alignParentBottom()
-                alignParentLeft()
+            relativeLayout {
+                mapView {
+                    id = mapViewId
+                }.lparams(width = matchParent, height = matchParent)
+                compassView {
+                    id = compassViewId
+                }.lparams(width = dip(100), height = dip(100)) {
+                    alignParentTop()
+                    alignParentLeft()
+                }
+                scaleView {
+                    id = scaleViewId
+                }.lparams(width = dip(200), height = dip(50)) {
+                    alignParentBottom()
+                    alignParentLeft()
+                }
             }
+
         }
     }
 }
