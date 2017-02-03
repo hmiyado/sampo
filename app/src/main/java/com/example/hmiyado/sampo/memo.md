@@ -122,8 +122,15 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [x] onResume で何度も subscribe される問題
 - [x] 画面を回転するとぶっ壊れる問題
     - 回転するたびにフラグメントが再生成されているのが原因．
+- [] 結果を表示できるActivity，Fragmentを作る
+    - [] Realm のリスト
+    - [] 距離計算結果
+    - [] エリア計算結果
 - [] 累計距離計算
 - [] エリア計算
+    - エリアの計算方法をどうする？
+        - 各点を中心とする円領域
+        - 地表面を分割した区画
 - [] twitter 連携
 - [] slack 連携
 
