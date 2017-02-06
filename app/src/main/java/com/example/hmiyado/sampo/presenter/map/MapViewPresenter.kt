@@ -1,8 +1,9 @@
-package com.example.hmiyado.sampo.presenter
+package com.example.hmiyado.sampo.presenter.map
 
 import android.graphics.Canvas
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import com.example.hmiyado.sampo.presenter.ViewPresenter
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import rx.Observable
 import rx.lang.kotlin.PublishSubject

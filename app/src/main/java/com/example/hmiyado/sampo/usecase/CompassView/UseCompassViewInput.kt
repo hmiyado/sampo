@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.usecase.compassview
 
 import android.graphics.Canvas
-import com.example.hmiyado.sampo.presenter.CompassViewPresenter
+import com.example.hmiyado.sampo.presenter.map.CompassViewPresenter
 import rx.Observable
 
 /**

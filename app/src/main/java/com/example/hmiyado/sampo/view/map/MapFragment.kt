@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import com.example.hmiyado.sampo.controller.CompassViewController
 import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.controller.ScaleViewController
-import com.example.hmiyado.sampo.presenter.CompassViewPresenter
-import com.example.hmiyado.sampo.presenter.MapFragmentPresenter
-import com.example.hmiyado.sampo.presenter.MapViewPresenter
-import com.example.hmiyado.sampo.presenter.ScaleViewPresenter
+import com.example.hmiyado.sampo.presenter.map.CompassViewPresenter
+import com.example.hmiyado.sampo.presenter.map.MapFragmentPresenter
+import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
+import com.example.hmiyado.sampo.presenter.map.ScaleViewPresenter
 import com.example.hmiyado.sampo.view.map.custom.CompassView
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import com.example.hmiyado.sampo.view.map.custom.ScaleView

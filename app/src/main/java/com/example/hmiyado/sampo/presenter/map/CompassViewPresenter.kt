@@ -1,5 +1,6 @@
-package com.example.hmiyado.sampo.presenter
+package com.example.hmiyado.sampo.presenter.map
 
+import com.example.hmiyado.sampo.presenter.ViewPresenter
 import com.example.hmiyado.sampo.view.map.custom.CompassView
 
 /**

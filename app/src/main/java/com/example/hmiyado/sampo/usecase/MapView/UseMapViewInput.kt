@@ -5,7 +5,7 @@ import android.graphics.PointF
 import android.view.MotionEvent
 import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.Radian
-import com.example.hmiyado.sampo.presenter.MapViewPresenter
+import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
 import rx.Observable
 
 /**

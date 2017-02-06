@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.presenter
+package com.example.hmiyado.sampo.presenter.map
 
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign
