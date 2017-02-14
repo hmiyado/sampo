@@ -115,7 +115,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - https://firebase.googleblog.com/2017/01/BoostingAppQuality2017.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+FirebaseBlog+(The+Firebase+Blog)
 - [] Location のLat/LongをDegreeに変える
     - Degreeは十進度数法だと明記する(度分秒法もあるので)
-- [] バックグラウンドでLocationを取得する
+- [x] バックグラウンドでLocationを取得する
     - https://developer.android.com/guide/components/services.html?hl=ja
     - フォアグラウンドサービス
     - 通知領域で距離確認，位置情報取得の可否を設定できるように試用
@@ -133,6 +133,13 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
         - 地表面を分割した区画
 - [] twitter 連携
 - [] slack 連携
+
+- 3月までの実装
+    - [] production/develop でビルド環境を変える
+        - 特に，Repository を変える
+    - [] Repository の確認をできるようにする
+        - see 結果を表示できるActivity，Fragmentを作る
+
 
 ## 保存する量の概算
 1ヶ月間で30秒毎に1地点保存するとする
