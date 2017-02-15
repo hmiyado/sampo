@@ -58,4 +58,9 @@ class ResultFragment : RxFragment(), KodeinInjected {
         super.onStart()
         presenter.onStart()
     }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
+    }
 }
