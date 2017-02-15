@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.interaction.store
+package com.example.hmiyado.sampo.usecase.map.interaction.store
 
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign

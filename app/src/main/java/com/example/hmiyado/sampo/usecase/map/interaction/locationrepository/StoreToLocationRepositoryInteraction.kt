@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.interaction.locationrepository
+package com.example.hmiyado.sampo.usecase.map.interaction.locationrepository
 
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign

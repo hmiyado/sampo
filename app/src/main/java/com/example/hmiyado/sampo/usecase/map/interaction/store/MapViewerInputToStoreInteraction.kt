@@ -1,9 +1,9 @@
-package com.example.hmiyado.sampo.usecase.interaction.store
+package com.example.hmiyado.sampo.usecase.map.interaction.store
 
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.mapview.UseMapViewInput
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
 import rx.Subscription
 import java.util.concurrent.TimeUnit
 

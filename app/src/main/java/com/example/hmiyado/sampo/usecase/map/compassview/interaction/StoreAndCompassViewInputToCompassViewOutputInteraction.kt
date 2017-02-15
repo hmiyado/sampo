@@ -1,11 +1,11 @@
-package com.example.hmiyado.sampo.usecase.compassview.interaction
+package com.example.hmiyado.sampo.usecase.map.compassview.interaction
 
 import com.example.hmiyado.sampo.domain.model.Map
 import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.compassview.UseCompassViewInput
-import com.example.hmiyado.sampo.usecase.compassview.UseCompassViewOutput
+import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewInput
+import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewOutput
 
 /**
  * Created by hmiyado on 2016/12/21.
