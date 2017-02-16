@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import com.example.hmiyado.sampo.controller.common.ListViewController
+import com.example.hmiyado.sampo.domain.result.ResultMenuItem
 import com.example.hmiyado.sampo.presenter.common.ListViewPresenter
 import com.example.hmiyado.sampo.presenter.result.ResultFragmentPresenter
 import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
@@ -36,10 +37,7 @@ class ResultFragment : RxFragment(), KodeinInjected {
         super.onCreate(savedInstanceState)
         inject(appKodein())
 
-        resultOptionItemListAdapter.addAll(listOf(
-                "Realm",
-                "Share"
-        ))
+        resultOptionItemListAdapter.addAll(ResultMenuItem.values().toList())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
