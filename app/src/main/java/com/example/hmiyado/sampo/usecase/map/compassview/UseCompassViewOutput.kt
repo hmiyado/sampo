@@ -5,7 +5,6 @@ import com.example.hmiyado.sampo.controller.CompassViewController
 import com.example.hmiyado.sampo.domain.model.Orientation
 import rx.Observable
 import rx.Subscription
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/21.
@@ -21,7 +20,7 @@ class UseCompassViewOutput(
                     .bindToCompassView()
                     .subscribe()
 
-    fun setOnDrawSignal(orientationSignal: Observable<Orientation>, onDrawSignal: Observable<Canvas>) =
+    fun setOnDrawSignal(orientationSignal: Observable<Orientation>, onDrawSignal: Observable<Canvas>): Subscription =
             onDrawSignal
                     .withLatestFrom(orientationSignal, { canvas, orientation -> Pair(canvas, orientation) })
                     .doOnNext {
@@ -30,7 +29,7 @@ class UseCompassViewOutput(
 
                         compassViewController.drawCompass(canvas, orientation)
 
-                        Timber.d(it.second.toString())
+//                        Timber.d(it.second.toString())
                     }
                     .bindToCompassView()
                     .subscribe()

@@ -5,7 +5,6 @@ import com.example.hmiyado.sampo.controller.ScaleViewController
 import com.example.hmiyado.sampo.domain.model.Map
 import rx.Observable
 import rx.Subscription
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/24.
@@ -26,7 +25,7 @@ class UseScaleViewOutput(private val scaleViewController: ScaleViewController) {
                     .doOnNext {
                         val canvas = it.first
                         val map = it.second
-                        Timber.d("$map")
+//                        Timber.d("$map")
                         scaleViewController.drawScale(canvas, map.scale)
                     }
                     .bindToViewLifecycle()

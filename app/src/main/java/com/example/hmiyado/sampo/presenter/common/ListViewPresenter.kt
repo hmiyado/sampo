@@ -5,18 +5,20 @@ import com.example.hmiyado.sampo.domain.result.ResultMenuItem
 import com.example.hmiyado.sampo.presenter.ViewPresenter
 import rx.Observable
 import rx.subjects.PublishSubject
+import rx.subjects.Subject
 
 /**
  * Created by hmiyado on 2017/02/08.
  */
 class ListViewPresenter(view: ListView) : ViewPresenter<ListView>(view) {
+    val onItemSelectedObservable: Subject<ResultMenuItem, ResultMenuItem> = PublishSubject.create<ResultMenuItem>()
+
     fun getItemSelectedObservable(): Observable<ResultMenuItem> {
-        val subject = PublishSubject.create<ResultMenuItem>()
 
         view.setOnItemClickListener { adapterView, view, i, l ->
             val item = adapterView.adapter.getItem(i) as ResultMenuItem
-            subject.onNext(item)
+            onItemSelectedObservable.onNext(item)
         }
-        return subject.asObservable().share()
+        return onItemSelectedObservable.asObservable().share()
     }
 }

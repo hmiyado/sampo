@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.view.result
 
 import com.trello.rxlifecycle.components.RxFragment
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/02/16.
@@ -10,5 +11,10 @@ class ResultRealmFragment : RxFragment() {
         fun newInstance(): ResultRealmFragment {
             return ResultRealmFragment()
         }
+    }
+
+    override fun onStart() {
+        Timber.d("onStart")
+        super.onStart()
     }
 }

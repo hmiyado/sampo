@@ -14,16 +14,17 @@ import rx.subscriptions.CompositeSubscription
 class ResultMenuFragmentPresenter(
         private val resultMenuFragment: ResultMenuFragment
 ) {
-    private val subscriptions = CompositeSubscription()
+    private var subscriptions = CompositeSubscription()
     private val fragmentRequester = PublishSubject<ResultFragmentType>()
 
     fun onStart() {
+        subscriptions = CompositeSubscription()
         Observable.from(
                 listOf(
-                        SelectResultMenuItem(resultMenuFragment.listViewPresenter, this).subscriptions
+                        SelectResultMenuItem(resultMenuFragment.listViewPresenter, this)
                 )
         ).forEach {
-            subscriptions += it
+            subscriptions += it.subscriptions
         }
     }
 

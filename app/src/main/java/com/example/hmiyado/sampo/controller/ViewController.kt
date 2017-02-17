@@ -9,7 +9,7 @@ import rx.Observable
  *
  * View の Controller
  */
-abstract class ViewController<out T : View>(protected val view: T) {
+abstract class ViewController<T : View>(var view: T) {
     fun invalidate() = view.postInvalidate()
     fun <T> bindToViewLifecycle(observable: Observable<T>) = observable.bindToLifecycle(view)
 }

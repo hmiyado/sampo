@@ -18,6 +18,7 @@ import com.trello.rxlifecycle.components.RxFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find
 import rx.Observable
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/02/05.
@@ -50,11 +51,16 @@ class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<Resul
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view ?: return
-        find<ListView>(ResultFragmentUi.listViewId).adapter = resultOptionItemListAdapter
+        find<ListView>(ResultFragmentUi.listViewId).let {
+            it.adapter = resultOptionItemListAdapter
+            listViewController.view = it
+            listViewPresenter.view = it
+        }
 
     }
 
     override fun onStart() {
+        Timber.d("onStart")
         super.onStart()
         presenter.onStart()
     }
@@ -65,5 +71,4 @@ class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<Resul
     }
 
     override fun getFragmentRequest(): Observable<ResultFragmentType> = presenter.getFragmentRequest()
-
 }
