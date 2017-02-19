@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ListView
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.presenter.common.ListViewPresenter
-import com.example.hmiyado.sampo.presenter.result.ResultRealmFragmentPresenter
+import com.example.hmiyado.sampo.presenter.result.ResultRepositoryFragmentPresenter
 import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
@@ -20,19 +20,19 @@ import timber.log.Timber
 /**
  * Created by hmiyado on 2017/02/16.
  */
-class ResultRealmFragment : RxFragment(), KodeinInjected {
+class ResultRepositoryFragment : RxFragment(), KodeinInjected {
     companion object {
-        fun newInstance(): ResultRealmFragment {
-            return ResultRealmFragment()
+        fun newInstance(): ResultRepositoryFragment {
+            return ResultRepositoryFragment()
         }
     }
 
     override val injector: KodeinInjector = KodeinInjector()
 
-    val presenter: ResultRealmFragmentPresenter by lazy { ResultRealmFragmentPresenter(this) }
+    val presenter: ResultRepositoryFragmentPresenter by lazy { ResultRepositoryFragmentPresenter(this) }
 
     val listViewPresenter: ListViewPresenter<Location> by lazy { ListViewPresenter<Location>(find<ListView>(ResultFragmentUi.listViewId)) }
-    val listViewAdapter: ResultRealmItemListAdapter by lazy { ResultRealmItemListAdapter(activity.baseContext) }
+    val listViewAdapter: ResultRepositoryItemListAdapter by lazy { ResultRepositoryItemListAdapter(activity.baseContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,20 +2,20 @@ package com.example.hmiyado.sampo.presenter.result
 
 import com.example.hmiyado.sampo.presenter.FragmentPresenter
 import com.example.hmiyado.sampo.repository.location.LocationRepository
-import com.example.hmiyado.sampo.view.result.ResultRealmFragment
+import com.example.hmiyado.sampo.view.result.ResultRepositoryFragment
 import com.github.salomonbrys.kodein.instance
 import rx.subscriptions.CompositeSubscription
 
 /**
  * Created by hmiyado on 2017/02/19.
  */
-class ResultRealmFragmentPresenter(
-        val resultRealmFragment: ResultRealmFragment
+class ResultRepositoryFragmentPresenter(
+        val resultRepositoryFragment: ResultRepositoryFragment
 ) : FragmentPresenter {
 
     private var subscriptions = CompositeSubscription()
 
-    private val locationRepository by resultRealmFragment.injector.instance<LocationRepository>()
+    private val locationRepository by resultRepositoryFragment.injector.instance<LocationRepository>()
 
     fun onStart() {
         refreshLocationList()
@@ -27,9 +27,9 @@ class ResultRealmFragmentPresenter(
     }
 
     private fun refreshLocationList() {
-        resultRealmFragment.listViewAdapter.locations.clear()
-        resultRealmFragment.listViewAdapter.locations.addAll(locationRepository.loadLocationList())
-        resultRealmFragment.listViewAdapter.notifyDataSetChanged()
+        resultRepositoryFragment.listViewAdapter.locations.clear()
+        resultRepositoryFragment.listViewAdapter.locations.addAll(locationRepository.loadLocationList())
+        resultRepositoryFragment.listViewAdapter.notifyDataSetChanged()
     }
 
     fun onStop() {

@@ -61,7 +61,7 @@ class ResultActivity : RxAppCompatActivity() {
                         Timber.d(resultFragmentType.toString())
                         when (resultFragmentType) {
                             ResultFragmentType.Menu  -> commitFragment(ResultMenuFragment())
-                            ResultFragmentType.Realm -> commitFragment(ResultRealmFragment())
+                            ResultFragmentType.Realm -> commitFragment(ResultRepositoryFragment())
                             else                     -> {
                             }
                         }

@@ -11,7 +11,7 @@ import java.util.*
 /**
  * Created by hmiyado on 2017/02/18.
  */
-class ResultRealmItemListAdapter(val context: Context) : BaseAdapter() {
+class ResultRepositoryItemListAdapter(val context: Context) : BaseAdapter() {
     val locations = ArrayList<Location>()
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
