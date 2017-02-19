@@ -12,7 +12,7 @@ import timber.log.Timber
  * Created by hmiyado on 2017/02/16.
  */
 class SelectResultMenuItem(
-        listViewPresenter: ListViewPresenter,
+        listViewPresenter: ListViewPresenter<ResultMenuItem>,
         resultMenuFragmentPresenter: ResultMenuFragmentPresenter
 ) : Interaction() {
     init {

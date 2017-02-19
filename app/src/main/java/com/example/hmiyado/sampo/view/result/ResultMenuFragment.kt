@@ -32,7 +32,7 @@ class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<Resul
 
     val presenter: ResultMenuFragmentPresenter = ResultMenuFragmentPresenter(this)
 
-    val listViewPresenter: ListViewPresenter by lazy { ListViewPresenter(find<ListView>(ResultFragmentUi.listViewId)) }
+    val listViewPresenter: ListViewPresenter<ResultMenuItem> by lazy { ListViewPresenter<ResultMenuItem>(find<ListView>(ResultFragmentUi.listViewId)) }
     val listViewController: ListViewController by lazy { ListViewController(find<ListView>(ResultFragmentUi.listViewId)) }
     val resultOptionItemListAdapter: ResultOptionItemListAdapter by lazy { ResultOptionItemListAdapter(activity.baseContext) }
 
@@ -53,8 +53,8 @@ class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<Resul
         view ?: return
         find<ListView>(ResultFragmentUi.listViewId).let {
             it.adapter = resultOptionItemListAdapter
-            listViewController.view = it
-            listViewPresenter.view = it
+            listViewController.set(it)
+            listViewPresenter.set(it)
         }
 
     }
