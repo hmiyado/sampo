@@ -1,7 +1,6 @@
 package com.example.hmiyado.sampo.domain.model.Time.Year
 
 import com.example.hmiyado.sampo.domain.model.Time.Day
-import com.example.hmiyado.sampo.domain.model.Time.Month.Month
 import com.example.hmiyado.sampo.domain.model.Time.Second
 
 /**
@@ -9,7 +8,7 @@ import com.example.hmiyado.sampo.domain.model.Time.Second
  */
 class Year(
         private val value: Int
-): Comparable<Year>{
+) : Comparable<Year> {
     companion object {
 
     }
@@ -17,7 +16,7 @@ class Year(
     /**
      * @return Second 西暦0年から西暦value-1年までに経過した秒数
      */
-//    override fun toSecond(): Second {
+    //    override fun toSecond(): Second {
 //        return (0..value - 1)
 //                .map {
 //                    val lastMonth = Month(12, Year(it))
@@ -39,8 +38,8 @@ class Year(
     }
 
     fun pastSecondsUntil(year: Year): Second {
-        if ( this > year) {
-            return Second( -1 * year.pastSecondsUntil(this).toInt())
+        if (this > year) {
+            return Second(-1 * year.pastSecondsUntil(this).toInt())
         }
 
         val secondsOfYears = (this..year)
@@ -53,6 +52,7 @@ class Year(
     operator fun plus(yearInterval: Interval): Year {
         return Year(value + yearInterval.value)
     }
+
     operator fun minus(yearInterval: Interval): Year {
         return Year(value - yearInterval.value)
     }
@@ -64,6 +64,7 @@ class Year(
     override operator fun compareTo(other: Year): Int {
         return value - other.value
     }
+
     operator fun rangeTo(other: Year): YearRange {
         return YearRange(this, other)
     }
@@ -71,6 +72,8 @@ class Year(
     fun isLeapYear(): Boolean {
         return value % 4 == 0 && value % 100 != 0 || value % 400 == 0
     }
+
+    fun getValue(): Int = value
 
     override fun toString(): String {
         return "Year($value)"

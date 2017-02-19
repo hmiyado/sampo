@@ -4,8 +4,6 @@ import com.example.hmiyado.sampo.domain.exception.IllegalValueOfMonthException
 import com.example.hmiyado.sampo.domain.model.Time.Day
 import com.example.hmiyado.sampo.domain.model.Time.Second
 import com.example.hmiyado.sampo.domain.model.Time.Year.Year
-import com.example.hmiyado.sampo.domain.model.Time.Year.YearProgression
-import com.example.hmiyado.sampo.domain.model.Time.Year.YearRange
 
 /**
  * Created by hmiyado on 2016/07/29.
@@ -24,12 +22,12 @@ sealed class Month constructor(
                     val month = value % MAX_NUM_MONTHS_IN_YEAR
                     Pair(month, yearNext)
                 }
-                value < 1 -> {
+                value < 1                      -> {
                     val yearNext = year - Year.Interval(value / MAX_NUM_MONTHS_IN_YEAR + 1)
                     val month = MAX_NUM_MONTHS_IN_YEAR - Math.abs(value) % MAX_NUM_MONTHS_IN_YEAR
                     Pair(month, yearNext)
                 }
-                else -> {
+                else                           -> {
                     val yearNext = year
                     val month = value
                     Pair(month, yearNext)
@@ -37,18 +35,18 @@ sealed class Month constructor(
 
             }
             when (month) {
-                1 -> return January(yearNext)
-                2 -> return February(yearNext)
-                3 -> return March(yearNext)
-                4 -> return April(yearNext)
-                5 -> return May(yearNext)
-                6 -> return June(yearNext)
-                7 -> return July(yearNext)
-                8 -> return August(yearNext)
-                9 -> return September(yearNext)
-                10 -> return October(yearNext)
-                11 -> return November(yearNext)
-                12 -> return December(yearNext)
+                1    -> return January(yearNext)
+                2    -> return February(yearNext)
+                3    -> return March(yearNext)
+                4    -> return April(yearNext)
+                5    -> return May(yearNext)
+                6    -> return June(yearNext)
+                7    -> return July(yearNext)
+                8    -> return August(yearNext)
+                9    -> return September(yearNext)
+                10   -> return October(yearNext)
+                11   -> return November(yearNext)
+                12   -> return December(yearNext)
                 else -> throw IllegalValueOfMonthException()
             }
         }
@@ -122,6 +120,8 @@ sealed class Month constructor(
 
     data class Interval(val value: Int)
 
+    fun getValue(): Int = value
+
     fun pastSecondsUntil(month: Month): Second {
         if (this > month) {
             return Second(month.pastSecondsUntil(this).toInt() * (-1))
@@ -138,7 +138,7 @@ sealed class Month constructor(
         when {
             year > other.year -> return 1
             year < other.year -> return -1
-            else -> return value - other.value
+            else              -> return value - other.value
         }
     }
 
