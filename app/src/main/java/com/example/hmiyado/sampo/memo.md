@@ -137,9 +137,21 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - 3月までの実装
     - [] production/develop でビルド環境を変える
         - 特に，Repository を変える
-    - [] Repository の確認をできるようにする
+    - [x] Repository の確認をできるようにする
         - see 結果を表示できるActivity，Fragmentを作る
 
+## ビルド環境を変える
+ビルド環境が変わると，repository が変わるようにする → repository の名前を変更したので大丈夫なはず
+
+ビルド環境を変えると，自動的に inject する実装が変わって欲しい
+
+debug: デバッグモード．ログがでる
+release: リリースモード．ログはでない
+
+flavor
+
+mock: モックされたデータが流れてくる
+real: モックされてないデータが流れてくる
 
 ## 保存する量の概算
 1ヶ月間で30秒毎に1地点保存するとする

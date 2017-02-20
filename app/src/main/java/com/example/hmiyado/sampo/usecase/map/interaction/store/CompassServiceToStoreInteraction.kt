@@ -4,6 +4,7 @@ import com.example.hmiyado.sampo.domain.store.Store
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.usecase.Interaction
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/21.
@@ -20,7 +21,9 @@ class CompassServiceToStoreInteraction(
 
     private fun compassInteraction() =
             compassService.getCompassService()
-                    .doOnNext { store.setOrientation(it) }
-                    .subscribe()
+                    .subscribe(
+                            { store.setOrientation(it) },
+                            { Timber.e(it, "error on get compass service") }
+                    )
 
 }

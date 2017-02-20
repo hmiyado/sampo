@@ -17,7 +17,7 @@ object Store {
 
     private var map: Map = Map.empty()
 
-//    private val mapSubject = PublishSubject<Map>()
+    //    private val mapSubject = PublishSubject<Map>()
 
     private val onUpdateOriginalLocationSignal = PublishSubject<Location>()
     private val onUpdateOrientationSignal = PublishSubject<Orientation>()
@@ -25,8 +25,8 @@ object Store {
     private val onUpdateRotateAngleSignal = PublishSubject<Degree>()
 
     init {
-//        mapSubject.subscribe()
-//        mapSubject.onNext(Map.empty())
+        //        mapSubject.subscribe()
+        //        mapSubject.onNext(Map.empty())
     }
 
     private fun getMapSignalUpdatedOriginalLocation(): Observable<Map> {
@@ -34,9 +34,9 @@ object Store {
                 .map {
                     Map.Builder(map).setOriginalLocation(it).addFootmark(map.originalLocation).build()
                 }
-//                .withLatestFrom(mapSubject, { location, map ->
-//                    Map.Builder(map).setOriginalLocation(location).build()
-//                })
+                //                .withLatestFrom(mapSubject, { location, map ->
+                //                    Map.Builder(map).setOriginalLocation(location).build()
+                //                })
                 .share()
     }
 
@@ -45,9 +45,9 @@ object Store {
                 .map {
                     Map.Builder(map).setOrientation(it).build()
                 }
-//                .withLatestFrom(mapSubject, { orientation, map ->
-//                    Map.Builder(map).setOrientation(orientation).build()
-//                })
+                //                .withLatestFrom(mapSubject, { orientation, map ->
+                //                    Map.Builder(map).setOrientation(orientation).build()
+                //                })
                 .share()
     }
 
@@ -57,10 +57,10 @@ object Store {
                 .map {
                     Map.Builder(map).setScaleFactor(map.scaleFactor * it).build()
                 }
-//                .withLatestFrom(mapSubject, { scaleFactor, map ->
-//                    Timber.d("scaleFactor=$scaleFactor")
-//                    Map.Builder(map).setScaleFactor(scaleFactor).build()
-//                })
+                //                .withLatestFrom(mapSubject, { scaleFactor, map ->
+                //                    Timber.d("scaleFactor=$scaleFactor")
+                //                    Map.Builder(map).setScaleFactor(scaleFactor).build()
+                //                })
                 .share()
     }
 
@@ -69,9 +69,9 @@ object Store {
                 .map {
                     Map.Builder(map).setRotateAngle(map.rotateAngle + it).build()
                 }
-//                .withLatestFrom(mapSubject, { rotateAngle, map ->
-//                    Map.Builder(map).setRotateAngle(rotateAngle).build()
-//                })
+                //                .withLatestFrom(mapSubject, { rotateAngle, map ->
+                //                    Map.Builder(map).setRotateAngle(rotateAngle).build()
+                //                })
                 .share()
     }
 
@@ -106,6 +106,7 @@ object Store {
                 getMapSignalUpdatedScaleFactor(),
                 getMapSignalUpdatedRotateAngle()
         )
+                .onBackpressureDrop()
                 .doOnNext { map = it }
                 .share()
     }
