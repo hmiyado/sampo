@@ -2,10 +2,11 @@ package com.example.hmiyado.sampo.usecase.map.mapview
 
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.MapViewController
+import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
-import com.example.hmiyado.sampo.domain.model.Map
+import com.example.hmiyado.sampo.domain.model.Location
 import rx.Observable
 import rx.Subscription
 
@@ -25,18 +26,36 @@ import rx.Subscription
 class UseMapViewOutput(
         private val mapViewController: MapViewController
 ) {
-    fun setOnDrawSignal(onUpdateMapSignal: Observable<Map>, onDrawSignal: Observable<Canvas>): Subscription {
+    private data class Map(
+            val canvas: Canvas,
+            val originalLocation: Location,
+            val scale: Float,
+            val rotateAngle: Degree,
+            val footmarks: List<Location>
+    )
+
+    fun setOnDrawSignal(
+            originalLocationSignal: Observable<Location>,
+            scaleSignal: Observable<Float>,
+            rotateAngleSignal: Observable<Degree>,
+            footmarksSignal: Observable<List<Location>>,
+            onDrawSignal: Observable<Canvas>
+    ): Subscription {
         return onDrawSignal
-                .withLatestFrom(onUpdateMapSignal, { canvas, map -> Pair(canvas, map) })
-                .doOnNext { pairOfCanvasMap ->
-                    val map = pairOfCanvasMap.second
-                    val canvas = pairOfCanvasMap.first
+                .withLatestFrom(
+                        originalLocationSignal,
+                        scaleSignal,
+                        rotateAngleSignal,
+                        footmarksSignal,
+                        ::Map
+                )
+                .bindMapView()
+                .subscribe({ map ->
+                    mapViewController.centeringCanvas(map.canvas)
+                    mapViewController.rotateCanvas(map.canvas, map.rotateAngle)
 
-                    mapViewController.centeringCanvas(canvas)
-                    mapViewController.rotateCanvas(canvas, map.rotateAngle)
-
-                    mapViewController.drawMesh(canvas)
-                    mapViewController.drawOriginalLocation(canvas)
+                    mapViewController.drawMesh(map.canvas)
+                    mapViewController.drawOriginalLocation(map.canvas)
 
                     val measurement = SphericalTrigonometry
 
@@ -45,20 +64,28 @@ class UseMapViewOutput(
                         val azimuth = measurement.determineAzimuth(map.originalLocation, it)
                         val x = distance * cos(azimuth)
                         val y = distance * sin(azimuth)
-                        mapViewController.drawFootmark(canvas, (x / map.scale).toFloat(), (y / map.scale).toFloat())
+                        mapViewController.drawFootmark(map.canvas, (x / map.scale).toFloat(), (y / map.scale).toFloat())
                     }
-                }
-                .bindMapViewAndSubscribe()
+
+                })
     }
 
-    fun setOnUpdateMapSignal(onUpdateMapSignal: Observable<Map>): Subscription {
-        return onUpdateMapSignal
-                .doOnNext { mapViewController.invalidate() }
-                .bindMapViewAndSubscribe()
+    fun setOnUpdateMapSignal(
+            originalLocationSignal: Observable<Location>,
+            scaleSignal: Observable<Float>,
+            rotateAngleSignal: Observable<Degree>
+    ): Subscription {
+        return Observable.merge(
+                originalLocationSignal,
+                scaleSignal,
+                rotateAngleSignal
+        )
+                .bindMapView()
+                .subscribe({ mapViewController.invalidate() })
     }
 
-    private fun <T> Observable<T>.bindMapViewAndSubscribe(): Subscription {
-        return mapViewController.bindToViewLifecycle(this).subscribe()
+    private fun <T> Observable<T>.bindMapView(): Observable<T> {
+        return mapViewController.bindToViewLifecycle(this)
     }
 }
 

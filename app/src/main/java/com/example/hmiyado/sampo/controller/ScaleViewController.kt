@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.controller
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.hmiyado.sampo.domain.model.Map
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.view.map.custom.ScaleView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.px2dip
@@ -26,7 +26,7 @@ class ScaleViewController(scaleView: ScaleView) : ViewController<ScaleView>(scal
     fun drawScale(canvas: Canvas, scale: Float) {
         val paint = createPaint(Color.BLUE, 5f)
 
-        canvas.drawLine(view.dip(10).toFloat(), view.height / 2f, view.dip(10 + view.px2dip(Map.SCALE_UNIT)).toFloat(), view.height / 2f, paint) // 縮尺定規
+        canvas.drawLine(view.dip(10).toFloat(), view.height / 2f, view.dip(10 + view.px2dip(MapStore.SCALE_UNIT)).toFloat(), view.height / 2f, paint) // 縮尺定規
 
         val text = createPaint(Color.BLUE, 20f)
         text.textSize = view.sp(14).toFloat()

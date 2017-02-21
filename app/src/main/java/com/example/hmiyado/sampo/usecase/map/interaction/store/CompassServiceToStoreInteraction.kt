@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.interaction.store
 
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.usecase.Interaction
@@ -13,7 +13,7 @@ import timber.log.Timber
  */
 class CompassServiceToStoreInteraction(
         private val compassService: CompassService,
-        private val store: Store
+        private val store: MapStore
 ) : Interaction() {
     init {
         subscriptions += compassInteraction()

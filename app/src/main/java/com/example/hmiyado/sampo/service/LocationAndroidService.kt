@@ -7,7 +7,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.location.LocationService
@@ -38,7 +38,7 @@ class LocationAndroidService : Service(), KodeinInjected {
     private val notificationManagerFactory: (Context) -> NotificationManager by injector.factory()
     private val locationService: LocationService by injector.instance()
     private val locationRepository: LocationRepository by injector.instance()
-    private val store = Store
+    private val store = MapStore
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
     override fun onCreate() {

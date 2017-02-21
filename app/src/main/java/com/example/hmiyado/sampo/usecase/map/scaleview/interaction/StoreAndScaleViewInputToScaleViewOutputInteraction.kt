@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.scaleview.interaction
 
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewInput
@@ -13,7 +13,7 @@ import rx.Subscription
  * 縮尺のビューへの相互作用．
  */
 class StoreAndScaleViewInputToScaleViewOutputInteraction(
-        private val store: Store,
+        private val store: MapStore,
         private val scaleViewInput: UseScaleViewInput,
         private val scaleViewOutput: UseScaleViewOutput
 ) : Interaction() {
@@ -23,7 +23,7 @@ class StoreAndScaleViewInputToScaleViewOutputInteraction(
 
     private fun drawInteraction(): Subscription =
             scaleViewOutput.setOnDrawSignal(
-                    store.getMapSignal(),
+                    store.getScaleFactor(),
                     scaleViewInput.getOnDrawCanvasSignal()
             )
 

@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.presenter.map
 
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewInput
@@ -30,7 +30,7 @@ class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) {
     private val subscriptions = CompositeSubscription()
-    private val store = Store
+    private val store = MapStore
     private val useMapViewInput by lazy { UseMapViewInput(mapFragment.mapViewPresenter) }
     private val useMapViewOutput by lazy { UseMapViewOutput(mapFragment.mapViewController) }
     private val useCompassViewInput by lazy { UseCompassViewInput(mapFragment.compassViewPresenter) }

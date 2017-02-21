@@ -2,7 +2,9 @@ package com.example.hmiyado.sampo.usecase.map.scaleview
 
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.ScaleViewController
-import com.example.hmiyado.sampo.domain.model.Map
+import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Orientation
 import rx.Observable
 import rx.Subscription
 
@@ -12,21 +14,31 @@ import rx.Subscription
  * 縮尺のビューを描画する人
  */
 class UseScaleViewOutput(private val scaleViewController: ScaleViewController) {
-    fun setMapSignal(mapSignal: Observable<Map>): Subscription =
-            mapSignal
-                    .doOnNext { scaleViewController.invalidate() }
+    fun setMapSignal(
+            locationSignal: Observable<Location>,
+            orientationSignal: Observable<Orientation>,
+            rotateAngleSignal: Observable<Degree>,
+            scaleSignal: Observable<Float>
+    ): Subscription =
+            Observable
+                    .merge(
+                            locationSignal,
+                            scaleSignal,
+                            orientationSignal,
+                            rotateAngleSignal
+                    )
                     .bindToViewLifecycle()
-                    .subscribe()
+                    .subscribe({ scaleViewController.invalidate() })
 
 
-    fun setOnDrawSignal(mapSignal: Observable<Map>, drawSignal: Observable<Canvas>): Subscription =
+    fun setOnDrawSignal(scaleSignal: Observable<Float>, drawSignal: Observable<Canvas>): Subscription =
             drawSignal
-                    .withLatestFrom(mapSignal, { canvas, map -> Pair(canvas, map) })
+                    .withLatestFrom(scaleSignal, { canvas, scale -> Pair(canvas, scale) })
                     .doOnNext {
                         val canvas = it.first
-                        val map = it.second
-//                        Timber.d("$map")
-                        scaleViewController.drawScale(canvas, map.scale)
+                        val scale = it.second
+                        //                        Timber.d("$map")
+                        scaleViewController.drawScale(canvas, scale)
                     }
                     .bindToViewLifecycle()
                     .subscribe()

@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.mapview.interaction
 
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
@@ -11,7 +11,7 @@ import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
  * ストアと地図ビューの入力から，地図ビューの出力する
  */
 class StoreAndMapViewInputToMapViewOutputInteraction(
-        private val store: Store,
+        private val store: MapStore,
         private val useMapViewInput: UseMapViewInput,
         private val useMapViewOutput: UseMapViewOutput
 ) : Interaction() {
@@ -21,7 +21,6 @@ class StoreAndMapViewInputToMapViewOutputInteraction(
     }
 
     private fun drawInteraction() {
-        subscriptions += useMapViewOutput.setOnDrawSignal(store.getMapSignal(), useMapViewInput.getOnDrawSignal())
+        subscriptions += useMapViewOutput.setOnDrawSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle(), store.getFootmarks(), useMapViewInput.getOnDrawSignal())
     }
-
 }

@@ -1,7 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.compassview.interaction
 
-import com.example.hmiyado.sampo.domain.model.Map
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewOutput
@@ -13,7 +12,7 @@ import rx.Subscription
  * 状態の変化に応じて方位磁針に出力する
  */
 class StoreToCompassViewOutputInteraction(
-        private val store: Store,
+        private val store: MapStore,
         private val useCompassViewOutput: UseCompassViewOutput
 ) : Interaction() {
     init {
@@ -21,6 +20,6 @@ class StoreToCompassViewOutputInteraction(
     }
 
     private fun orientationInteraction(): Subscription =
-            useCompassViewOutput.setOnOrientationSignal(store.getMapSignal().map(Map::orientation))
+            useCompassViewOutput.setOnOrientationSignal(store.getOrientation())
 
 }

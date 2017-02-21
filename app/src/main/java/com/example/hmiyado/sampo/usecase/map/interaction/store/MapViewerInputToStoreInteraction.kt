@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.interaction.store
 
-import com.example.hmiyado.sampo.domain.store.Store
+import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  */
 class MapViewerInputToStoreInteraction(
         private val useMapViewInput: UseMapViewInput,
-        private val store: Store
+        private val store: MapStore
 ) : Interaction() {
 
     init {
@@ -24,7 +24,7 @@ class MapViewerInputToStoreInteraction(
 
     private fun rotationInteraction(): Subscription {
         return useMapViewInput.getOnRotateSignal()
-                .doOnNext { store.addRotateAngle(it.toDegree()) }
+                .doOnNext { store.setRotateAngle(it.toDegree()) }
                 .subscribe()
 
     }
@@ -32,7 +32,7 @@ class MapViewerInputToStoreInteraction(
     private fun scaleInteraction(): Subscription {
         return useMapViewInput.getOnScaleSignal()
                 .throttleLast(100, TimeUnit.MILLISECONDS)
-                .doOnNext { store.productScaleFactor(it) }
+                .doOnNext { store.setScaleFactor(it) }
                 .subscribe()
     }
 
