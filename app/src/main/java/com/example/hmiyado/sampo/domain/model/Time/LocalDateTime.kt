@@ -30,18 +30,18 @@ class LocalDateTime protected constructor(
 
             private fun getUpperThresholdInclusive(time: Time): Int {
                 when (time) {
-                    is Day -> return month.LastDay
-                    is Hour -> return 23
+                    is Day               -> return month.LastDay
+                    is Hour              -> return 23
                     is Minute, is Second -> return 59
-                    else -> throw IllegalTypeOfTimeException()
+                    else                 -> throw IllegalTypeOfTimeException()
                 }
             }
 
             private fun getLowerThresholdInclusive(time: Time): Int {
                 when (time) {
-                    is Day -> return 1
+                    is Day                        -> return 1
                     is Hour, is Minute, is Second -> return 0
-                    else -> throw IllegalTypeOfTimeException()
+                    else                          -> throw IllegalTypeOfTimeException()
                 }
             }
 
@@ -84,26 +84,26 @@ class LocalDateTime protected constructor(
             fun build(day: Day): Factory {
                 var daysOfThisMonth = Day(month.LastDay)
                 when {
-                    day > daysOfThisMonth -> {
+                    day > daysOfThisMonth                      -> {
                         var newDay: Day = day
                         do {
                             newDay -= daysOfThisMonth
                             this.month += Month.Interval(1)
                             daysOfThisMonth = Day(this.month.LastDay)
-                        } while ( newDay > daysOfThisMonth)
+                        } while (newDay > daysOfThisMonth)
                         build(this.month)
                         build(newDay)
                     }
                     day <= Day(month.LastDay) && day >= Day(1) -> {
                         this.day = day
                     }
-                    else -> {
+                    else                                       -> {
                         var newDay: Day = day
                         do {
                             newDay += daysOfThisMonth
                             this.month -= Month.Interval(1)
                             daysOfThisMonth = Day(this.month.LastDay)
-                        } while ( newDay < Day(1))
+                        } while (newDay < Day(1))
                         build(this.month)
                         build(newDay)
                     }
@@ -150,7 +150,7 @@ class LocalDateTime protected constructor(
                 val lower = getLowerThresholdInclusive(time)
                 val upper = getUpperThresholdInclusive(time)
                 when {
-                    timeInt > upper -> {
+                    timeInt > upper                      -> {
                         val moveUp = timeInt / (upper + 1)
                         val residueTime = timeInt % (upper + 1)
                         plusBuilder(moveUp)
@@ -159,9 +159,9 @@ class LocalDateTime protected constructor(
                     timeInt <= upper && timeInt >= lower -> {
                         assigner(timeInt)
                     }
-                    else -> {
+                    else                                 -> {
                         val moveDown = Math.abs(timeInt) / (upper + 1) + 1
-                        val residueTime = timeInt % (upper + 1) + upper+1 + lower
+                        val residueTime = timeInt % (upper + 1) + upper + 1 + lower
                         minusBuilder(moveDown)
                         assigner(residueTime)
                     }
@@ -189,9 +189,9 @@ class LocalDateTime protected constructor(
         when (time) {
             is Second -> return second
             is Minute -> return minute
-            is Hour -> return hour
-            is Day -> return day
-            else -> throw IllegalTypeOfTimeException()
+            is Hour   -> return hour
+            is Day    -> return day
+            else      -> throw IllegalTypeOfTimeException()
         }
     }
 
@@ -199,9 +199,9 @@ class LocalDateTime protected constructor(
         when (time) {
             is Second -> return Factory.init(this).build(time + second).complete()
             is Minute -> return Factory.init(this).build(time + minute).complete()
-            is Hour -> return Factory.init(this).build(time + hour).complete()
-            is Day -> return Factory.init(this).build(time + day).complete()
-            else -> throw IllegalTypeOfTimeException()
+            is Hour   -> return Factory.init(this).build(time + hour).complete()
+            is Day    -> return Factory.init(this).build(time + day).complete()
+            else      -> throw IllegalTypeOfTimeException()
         }
     }
 
@@ -209,9 +209,9 @@ class LocalDateTime protected constructor(
         when (time) {
             is Second -> return Factory.init(this).build(second - time).complete()
             is Minute -> return Factory.init(this).build(minute - time).complete()
-            is Hour -> return Factory.init(this).build(hour - time).complete()
-            is Day -> return Factory.init(this).build(day - time).complete()
-            else -> throw IllegalTypeOfTimeException()
+            is Hour   -> return Factory.init(this).build(hour - time).complete()
+            is Day    -> return Factory.init(this).build(day - time).complete()
+            else      -> throw IllegalTypeOfTimeException()
         }
     }
 
@@ -232,7 +232,7 @@ class LocalDateTime protected constructor(
     }
 
     // LocalDateTime 同士を足すことに意味は無い
-//    operator fun plus(other: LocalDateTime): LocalDateTime
+    //    operator fun plus(other: LocalDateTime): LocalDateTime
 
     operator fun minus(localDateTime: LocalDateTime): Second {
         return toUnixTime() - localDateTime.toUnixTime()
@@ -240,25 +240,16 @@ class LocalDateTime protected constructor(
 
     override operator fun compareTo(other: LocalDateTime): Int {
         when {
-            year != other.year -> return (year - other.year).value
-            month != other.month -> return (month - other.month).value
-            day != other.day -> return (day - other.day).toInt()
-            hour != other.hour -> return (hour - other.hour).toInt()
+            year != other.year     -> return (year - other.year).value
+            month != other.month   -> return (month - other.month).value
+            day != other.day       -> return (day - other.day).toInt()
+            hour != other.hour     -> return (hour - other.hour).toInt()
             minute != other.minute -> return (minute - other.minute).toInt()
             second != other.second -> return (second - other.second).toInt()
-            else -> return 0
+            else                   -> return 0
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is LocalDateTime
-                && year == other.year
-                && month == other.month
-                && day == other.day
-                && hour == other.hour
-                && minute == other.minute
-                && second == other.second
-    }
 
     override fun toString(): String {
         val strings = arrayListOf(
@@ -270,6 +261,32 @@ class LocalDateTime protected constructor(
                 second.toString()
         )
         return "LocalDateTime(${strings.joinToString()})"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as LocalDateTime
+
+        if (year != other.year) return false
+        if (month != other.month) return false
+        if (day != other.day) return false
+        if (hour != other.hour) return false
+        if (minute != other.minute) return false
+        if (second != other.second) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = year.hashCode()
+        result = 31 * result + month.hashCode()
+        result = 31 * result + day.hashCode()
+        result = 31 * result + hour.hashCode()
+        result = 31 * result + minute.hashCode()
+        result = 31 * result + second.hashCode()
+        return result
     }
 
 }

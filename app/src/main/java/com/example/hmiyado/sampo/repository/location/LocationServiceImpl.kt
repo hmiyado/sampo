@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.hmiyado.sampo.domain.model.Time.Second
 import rx.Observable
 import rx.subjects.PublishSubject
+import timber.log.Timber
 import android.location.Location as AndroidLocation
 import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
 import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime as SampoLocalDateTime
@@ -27,7 +28,7 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
                     androidLocation.longitude,
                     com.example.hmiyado.sampo.domain.model.Time.LocalDateTime.Companion.Factory
                             // Location.getTime() は ms を返すので，1000で割って秒に変換する
-                            .initByUnixTime(Second((androidLocation.time / 1000).toInt()))
+                            .initByUnixTime(Second((androidLocation.time / 1000)))
                             .complete()
             )
         }
@@ -63,8 +64,8 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
         return object : LocationListener {
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
                 when (status) {
-                    LocationProvider.AVAILABLE -> Log.v("Status", "AVAILABLE")
-                    LocationProvider.OUT_OF_SERVICE -> Log.v("Status", "OUT_OF_SERVICE")
+                    LocationProvider.AVAILABLE               -> Log.v("Status", "AVAILABLE")
+                    LocationProvider.OUT_OF_SERVICE          -> Log.v("Status", "OUT_OF_SERVICE")
                     LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.v("Status", "TEMPORARILY_UNAVAILABLE")
                 }
                 Log.d("locationlistener", "onsStatusChanged")
@@ -79,8 +80,9 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
             }
 
             override fun onLocationChanged(location: android.location.Location) {
-                val sampoLoation = convertFromAndroidLocationToSampoLocation(location)
-                locationSubject.onNext(sampoLoation)
+                val sampoLocation = convertFromAndroidLocationToSampoLocation(location)
+                Timber.d(sampoLocation.toString())
+                locationSubject.onNext(sampoLocation)
             }
         }
     }

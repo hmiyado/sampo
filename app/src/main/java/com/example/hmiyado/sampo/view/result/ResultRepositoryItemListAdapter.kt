@@ -16,6 +16,8 @@ class ResultRepositoryItemListAdapter(val context: Context) : BaseAdapter() {
 
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
         if (p1 != null) {
+            p1 as ResultRealmItemView
+            p1.setLocation(getItem(p0) as Location)
             return p1
         }
         p2 ?: return View(context)
@@ -25,11 +27,11 @@ class ResultRepositoryItemListAdapter(val context: Context) : BaseAdapter() {
     }
 
     override fun getItem(p0: Int): Any {
-        return locations.get(p0)
+        return locations[p0]
     }
 
     override fun getItemId(p0: Int): Long {
-        return locations.get(p0).localDateTime.toUnixTime().toLong()
+        return locations[p0].localDateTime.toUnixTime().toLong()
     }
 
     override fun getCount(): Int {

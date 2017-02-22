@@ -3,7 +3,9 @@ package com.example.hmiyado.sampo.domain.model.Time
 /**
  * Created by hmiyado on 2016/07/29.
  */
-class Minute(value: Int) : Time(value) {
+class Minute(value: Long) : Time(value) {
+    constructor(value: Int) : this(value.toLong())
+
     override fun toSecond(): Second {
         return Second(value * 60)
     }
@@ -14,10 +16,6 @@ class Minute(value: Int) : Time(value) {
 
     operator fun minus(minute: Minute): Minute {
         return Minute(value - minute.value)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return other is Minute && value == other.value
     }
 
     override fun toString(): String {

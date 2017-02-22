@@ -28,7 +28,7 @@ class ResultRepositoryFragmentPresenter(
 
     private fun refreshLocationList() {
         resultRepositoryFragment.listViewAdapter.locations.clear()
-        resultRepositoryFragment.listViewAdapter.locations.addAll(locationRepository.loadLocationList())
+        resultRepositoryFragment.listViewAdapter.locations.addAll(locationRepository.loadLocationList().sortedBy { it.localDateTime })
         resultRepositoryFragment.listViewAdapter.notifyDataSetChanged()
     }
 

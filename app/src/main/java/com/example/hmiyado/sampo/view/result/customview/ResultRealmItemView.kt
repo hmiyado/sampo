@@ -32,12 +32,13 @@ class ResultRealmItemView(context: Context) : LinearLayout(context) {
     }
 
     private fun setLocalDateTime(localDateTime: LocalDateTime) {
-        timeView.text = String.format("%04d/%02d/%02d %02d:%02d:%02d",
+        val formattedString = String.format("%04d/%02d/%02d %02d:%02d:%02d",
                 localDateTime.year.getValue(),
                 localDateTime.month.getValue(),
                 localDateTime.day.toInt(),
                 localDateTime.hour.toInt(),
                 localDateTime.minute.toInt(),
                 localDateTime.second.toInt())
+        timeView.text = formattedString
     }
 }
