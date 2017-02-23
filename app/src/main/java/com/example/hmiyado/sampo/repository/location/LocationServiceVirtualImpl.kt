@@ -1,8 +1,7 @@
 package com.example.hmiyado.sampo.repository.location
 
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
-import com.example.hmiyado.sampo.domain.model.Time.Second
+import org.threeten.bp.Instant
 import rx.Observable
 import rx.Subscription
 import rx.subjects.PublishSubject
@@ -20,7 +19,7 @@ class LocationServiceVirtualImpl : LocationService {
 
     init {
         locationSubject = PublishSubject.create()
-        nextLocation = Location(0.0, 0.0, LocalDateTime.Companion.UnixEpoch)
+        nextLocation = Location(0.0, 0.0, Instant.now())
     }
 
 
@@ -44,7 +43,7 @@ class LocationServiceVirtualImpl : LocationService {
         nextLocation = Location(
                 0.01 * Math.cos(value),
                 0.01 * Math.sin(value),
-                nextLocation.localDateTime + Second(num.toInt())
+                nextLocation.timeStamp.plusMillis(delayTimeMs)
         )
     }
 

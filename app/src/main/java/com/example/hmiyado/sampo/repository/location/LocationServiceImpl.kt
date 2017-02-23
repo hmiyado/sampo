@@ -5,13 +5,11 @@ import android.location.LocationManager
 import android.location.LocationProvider
 import android.os.Bundle
 import android.util.Log
-import com.example.hmiyado.sampo.domain.model.Time.Second
+import org.threeten.bp.Instant
 import rx.Observable
 import rx.subjects.PublishSubject
-import timber.log.Timber
 import android.location.Location as AndroidLocation
 import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
-import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime as SampoLocalDateTime
 
 /**
  * Created by hmiyado on 2016/07/27.
@@ -26,19 +24,15 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
             return com.example.hmiyado.sampo.domain.model.Location(
                     androidLocation.latitude,
                     androidLocation.longitude,
-                    com.example.hmiyado.sampo.domain.model.Time.LocalDateTime.Companion.Factory
-                            // Location.getTime() は ms を返すので，1000で割って秒に変換する
-                            .initByUnixTime(Second((androidLocation.time / 1000)))
-                            .complete()
+                    Instant.ofEpochMilli(androidLocation.time)
             )
         }
     }
 
-    private val locationSubject: PublishSubject<com.example.hmiyado.sampo.domain.model.Location>
+    private val locationSubject: PublishSubject<com.example.hmiyado.sampo.domain.model.Location> = PublishSubject.create()
     private val locationListener: LocationListener
 
     init {
-        locationSubject = PublishSubject.create()
         locationListener = createLocationListener()
     }
 
@@ -81,7 +75,6 @@ class LocationServiceImpl(private val locationManager: LocationManager) : Locati
 
             override fun onLocationChanged(location: android.location.Location) {
                 val sampoLocation = convertFromAndroidLocationToSampoLocation(location)
-                Timber.d(sampoLocation.toString())
                 locationSubject.onNext(sampoLocation)
             }
         }

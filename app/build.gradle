@@ -55,7 +55,7 @@ dependencies {
     compile 'com.trello:rxlifecycle-kotlin:1.0'
     compile 'com.trello:rxlifecycle-android:1.0'
     compile 'com.trello:rxlifecycle-components:1.0'
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     compile 'org.jetbrains.anko:anko-sdk15:0.9' // sdk19, sdk21, sdk23 are also available
     compile 'org.jetbrains.anko:anko-support-v4:0.9' // In case you need support-v4 bindings
     compile 'org.jetbrains.anko:anko-appcompat-v7:0.9' // For appcompat-v7 bindings

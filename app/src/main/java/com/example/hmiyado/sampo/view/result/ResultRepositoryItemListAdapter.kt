@@ -31,7 +31,7 @@ class ResultRepositoryItemListAdapter(val context: Context) : BaseAdapter() {
     }
 
     override fun getItemId(p0: Int): Long {
-        return locations[p0].localDateTime.toUnixTime().toLong()
+        return locations[p0].timeStamp.toEpochMilli()
     }
 
     override fun getCount(): Int {

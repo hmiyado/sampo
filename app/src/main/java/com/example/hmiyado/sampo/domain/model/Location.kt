@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.domain.model
 
-import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
+import org.threeten.bp.Instant
 
 /**
  * Created by hmiyado on 2016/07/27.
@@ -9,9 +9,9 @@ import com.example.hmiyado.sampo.domain.model.Time.LocalDateTime
  *
  * @param latitude 緯度
  * @param longitude 経度
- * @param localDateTime 時間
+ * @param timeStamp 時間
  */
-open class Location (
+open class Location(
         /**
          * 緯度
          */
@@ -23,18 +23,18 @@ open class Location (
         /**
          * 時間
          */
-        val localDateTime: LocalDateTime
-){
-    companion object{
-        fun empty() = object:Location(-100000.0,-100000.0, LocalDateTime.empty()){
-            override fun isEmpty(): Boolean{
+        val timeStamp: Instant
+) {
+    companion object {
+        fun empty() = object : Location(-100000.0, -100000.0, Instant.MIN) {
+            override fun isEmpty(): Boolean {
                 return true
             }
         }
     }
 
     override fun toString(): String {
-        return "Location($latitude, $longitude, ${localDateTime.toString()})"
+        return "Location($latitude, $longitude, ${timeStamp.toString()})"
     }
 
     open fun isEmpty(): Boolean {
