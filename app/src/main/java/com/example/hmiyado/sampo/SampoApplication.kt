@@ -7,18 +7,13 @@ import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
 import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
 import com.example.hmiyado.sampo.service.LocationAndroidService
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.KodeinAware
-import com.github.salomonbrys.kodein.android.activityScope
+import com.github.salomonbrys.kodein.*
+import com.github.salomonbrys.kodein.android.androidActivityScope
 import com.github.salomonbrys.kodein.android.androidModule
-import com.github.salomonbrys.kodein.android.autoActivitySingleton
-import com.github.salomonbrys.kodein.lazy
-import com.github.salomonbrys.kodein.singleton
+import com.github.salomonbrys.kodein.android.autoAndroidModule
 import com.jakewharton.threetenabp.AndroidThreeTen
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import org.jetbrains.anko.locationManager
-import org.jetbrains.anko.sensorManager
 import timber.log.Timber
 
 /**
@@ -28,23 +23,24 @@ import timber.log.Timber
  */
 class SampoApplication : Application(), KodeinAware {
     override val kodein by Kodein.lazy {
+        import(autoAndroidModule(this@SampoApplication))
         import(androidModule)
 
         if (BuildConfig.FLAVOR == "mock") {
             bind<LocationService>() with singleton { LocationServiceVirtualImpl() }
             bind<CompassService>() with singleton { CompassServiceVirtualImpl() }
         } else if (BuildConfig.FLAVOR == "real") {
-            bind<LocationService>() with singleton { LocationServiceImpl(locationManager) }
-            bind<CompassService>() with singleton { CompassServiceImpl(sensorManager) }
+            bind<LocationService>() with singleton { LocationServiceImpl(instance()) }
+            bind<CompassService>() with singleton { CompassServiceImpl(instance()) }
         }
-        bind<LocationRepository>() with autoActivitySingleton { LocationRepositoryRealmImpl() }
+        bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
     }
 
 
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
-        registerActivityLifecycleCallbacks(activityScope.lifecycleManager)
+        registerActivityLifecycleCallbacks(androidActivityScope.lifecycleManager)
         Realm.init(baseContext)
         val realmConfig = RealmConfiguration.Builder()
                 .name(BuildConfig.BUILD_TYPE + BuildConfig.FLAVOR)
