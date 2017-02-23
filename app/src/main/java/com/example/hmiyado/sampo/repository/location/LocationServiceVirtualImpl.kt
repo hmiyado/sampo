@@ -1,7 +1,6 @@
 package com.example.hmiyado.sampo.repository.location
 
 import com.example.hmiyado.sampo.domain.model.Location
-import org.threeten.bp.Instant
 import rx.Observable
 import rx.Subscription
 import rx.subjects.PublishSubject
@@ -19,7 +18,7 @@ class LocationServiceVirtualImpl : LocationService {
 
     init {
         locationSubject = PublishSubject.create()
-        nextLocation = Location(0.0, 0.0, Instant.now())
+        nextLocation = Location.empty()
     }
 
 

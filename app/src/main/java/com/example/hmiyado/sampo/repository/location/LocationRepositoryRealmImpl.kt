@@ -28,9 +28,10 @@ class LocationRepositoryRealmImpl : LocationRepository {
     override fun saveLocation(location: Location) {
         Realm.getDefaultInstance().executeTransaction {
             try {
-                val locationModel = it.createObject(LocationModel::class.java, location.timeStamp.toDate())
+                val locationModel = it.createObject(LocationModel::class.java)
                 locationModel.latitude = location.latitude
                 locationModel.longitude = location.longitude
+                locationModel.timeStamp = location.timeStamp.toDate()
             } catch (realmPrimaryKeyConstraintException: RealmPrimaryKeyConstraintException) {
                 Timber.e(realmPrimaryKeyConstraintException.message)
             }

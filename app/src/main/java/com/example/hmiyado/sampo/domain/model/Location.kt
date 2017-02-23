@@ -26,7 +26,7 @@ open class Location(
         val timeStamp: Instant
 ) {
     companion object {
-        fun empty() = object : Location(-100000.0, -100000.0, Instant.MIN) {
+        fun empty() = object : Location(0.0, 0.0, Instant.EPOCH) {
             override fun isEmpty(): Boolean {
                 return true
             }
