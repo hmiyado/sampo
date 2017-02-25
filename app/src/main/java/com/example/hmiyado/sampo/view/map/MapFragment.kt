@@ -1,7 +1,10 @@
 package com.example.hmiyado.sampo.view.map
 
 
+import android.content.ContentResolver
+import android.content.IntentFilter
 import android.content.res.Configuration
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +16,7 @@ import com.example.hmiyado.sampo.presenter.map.CompassViewPresenter
 import com.example.hmiyado.sampo.presenter.map.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
 import com.example.hmiyado.sampo.presenter.map.ScaleViewPresenter
+import com.example.hmiyado.sampo.service.LocationSettingReceiver
 import com.example.hmiyado.sampo.view.map.custom.CompassView
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import com.example.hmiyado.sampo.view.map.custom.ScaleView
@@ -20,9 +24,9 @@ import com.example.hmiyado.sampo.view.map.ui.MapFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.instance
 import com.trello.rxlifecycle.components.RxFragment
 import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.find
 import timber.log.Timber
 
@@ -31,7 +35,7 @@ import timber.log.Timber
  * 地図情報をだすフラグメント
  */
 
-class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
+class MapFragment : RxFragment(), KodeinInjected {
     override val injector = KodeinInjector()
 
     companion object {
@@ -51,13 +55,20 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
     val scaleViewPresenter: ScaleViewPresenter by lazy { find<ScaleView>(MapFragmentUi.scaleViewId).presenter }
     val scaleViewController: ScaleViewController by lazy { find<ScaleView>(MapFragmentUi.scaleViewId).controller }
 
+    val locationSettingReceiver: LocationSettingReceiver by instance()
+    private val locationManager: LocationManager by instance()
+    private val contentResolver: ContentResolver by instance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject(appKodein())
+
+        locationSettingReceiver.setLocationServiceState(contentResolver, locationManager)
+        activity.baseContext.registerReceiver(locationSettingReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-//        Timber.d("on create view")
+        //        Timber.d("on create view")
         return MapFragmentUi().createView(AnkoContext.create(activity.baseContext, this))
     }
 
@@ -97,5 +108,6 @@ class MapFragment : RxFragment(), AnkoLogger, KodeinInjected {
     override fun onDestroy() {
         Timber.d("on destroy")
         super.onDestroy()
+        activity.baseContext.unregisterReceiver(locationSettingReceiver)
     }
 }

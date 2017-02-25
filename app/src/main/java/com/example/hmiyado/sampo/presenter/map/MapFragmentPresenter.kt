@@ -1,8 +1,11 @@
 package com.example.hmiyado.sampo.presenter.map
 
+import android.content.Intent
 import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
+import com.example.hmiyado.sampo.repository.location.LocationServiceState
+import com.example.hmiyado.sampo.service.LocationAndroidService
 import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewInput
 import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewOutput
 import com.example.hmiyado.sampo.usecase.map.compassview.interaction.StoreAndCompassViewInputToCompassViewOutputInteraction
@@ -21,6 +24,7 @@ import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance
 import rx.Observable
 import rx.subscriptions.CompositeSubscription
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/07/26.
@@ -54,6 +58,29 @@ class MapFragmentPresenter(
         ).forEach {
             subscriptions += it.subscriptions
         }
+
+        subscriptions += mapFragment.locationSettingReceiver.onChangeLocationServiceState()
+                .subscribe {
+                    Timber.d(it.toString())
+                    when (it) {
+                        LocationServiceState.OFF -> {
+                            mapFragment.activity.startService(Intent(mapFragment.activity.baseContext, LocationAndroidService::class.java)
+                                    .putExtra(
+                                            LocationAndroidService.IntentType::class.simpleName,
+                                            LocationAndroidService.IntentType.STOP
+                                    )
+                            )
+                        }
+                        else                     -> {
+                            mapFragment.activity.startService(Intent(mapFragment.activity.baseContext, LocationAndroidService::class.java)
+                                    .putExtra(
+                                            LocationAndroidService.IntentType::class.simpleName,
+                                            LocationAndroidService.IntentType.START
+                                    )
+                            )
+                        }
+                    }
+                }
 
     }
 

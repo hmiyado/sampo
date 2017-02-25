@@ -6,8 +6,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.location.LocationManager
 import android.os.IBinder
 import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
@@ -15,9 +13,8 @@ import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.location.LocationService
 import com.example.hmiyado.sampo.usecase.map.interaction.locationrepository.StoreToLocationRepositoryInteraction
 import com.example.hmiyado.sampo.usecase.map.interaction.store.LocationServiceToStoreInteraction
-import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
-import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.android.ServiceInjector
 import com.github.salomonbrys.kodein.factory
 import com.github.salomonbrys.kodein.instance
 import rx.subscriptions.CompositeSubscription
@@ -29,10 +26,10 @@ import timber.log.Timber
  * バックグラウンドで位置情報を取得，更新してくれるサービス．
  * 通知欄から操作できる．
  */
-class LocationAndroidService : Service(), KodeinInjected {
+class LocationAndroidService : Service(), ServiceInjector {
     enum class IntentType {
         START,
-        CLOSE
+        STOP
     }
 
     override val injector: KodeinInjector = KodeinInjector()
@@ -43,26 +40,22 @@ class LocationAndroidService : Service(), KodeinInjected {
     private val store = MapStore
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
-    private val gpsLocationReceiver = GpsLocationReceiver()
 
     override fun onCreate() {
         super.onCreate()
         Timber.d("onCreate")
-        inject(appKodein())
-        baseContext.registerReceiver(gpsLocationReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
+        initializeInjector()
         subscriptions += LocationServiceToStoreInteraction(locationService, store).subscriptions
         subscriptions += StoreToLocationRepositoryInteraction(store, locationRepository).subscriptions
-        subscriptions += gpsLocationReceiver.onChangeLocationServiceState()
-                .subscribe { Timber.d(it.toString()) }
     }
 
     private fun createCloseAction(): Notification.Action {
         val notifyIntent = Intent(this, LocationAndroidService::class.java)
-                .putExtra(IntentType::class.simpleName, IntentType.CLOSE)
+                .putExtra(IntentType::class.simpleName, IntentType.STOP)
         val pendingIntent = PendingIntent.getService(this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         return Notification.Action.Builder(
                 android.R.drawable.ic_menu_close_clear_cancel,
-                IntentType.CLOSE.name.toLowerCase(),
+                IntentType.STOP.name.toLowerCase(),
                 pendingIntent
         ).build()
     }
@@ -92,7 +85,7 @@ class LocationAndroidService : Service(), KodeinInjected {
                 locationService.startLocationObserve()
                 return START_STICKY
             }
-            LocationAndroidService.IntentType.CLOSE -> {
+            LocationAndroidService.IntentType.STOP  -> {
                 notificationManagerFactory(this).cancelAll()
                 locationService.stopLocationObserve()
                 stopSelf()
@@ -105,7 +98,7 @@ class LocationAndroidService : Service(), KodeinInjected {
         super.onDestroy()
         Timber.d("onDestroy")
         subscriptions.unsubscribe()
-        baseContext.unregisterReceiver(gpsLocationReceiver)
+        destroyInjector()
     }
 
     override fun onBind(p0: Intent?): IBinder {

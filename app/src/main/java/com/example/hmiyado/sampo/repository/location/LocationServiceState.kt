@@ -5,6 +5,7 @@ package com.example.hmiyado.sampo.repository.location
  */
 enum class LocationServiceState {
     OFF,
+    ON,
     HIGH_ACCURACY,
     DEVICE_ONLY,
     BATTERY_SAVING

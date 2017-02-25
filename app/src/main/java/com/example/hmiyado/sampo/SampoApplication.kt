@@ -1,12 +1,11 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
-import android.content.Intent
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
 import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
-import com.example.hmiyado.sampo.service.LocationAndroidService
+import com.example.hmiyado.sampo.service.LocationSettingReceiver
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.androidActivityScope
 import com.github.salomonbrys.kodein.android.androidModule
@@ -34,6 +33,7 @@ class SampoApplication : Application(), KodeinAware {
             bind<CompassService>() with singleton { CompassServiceImpl(instance()) }
         }
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
+        bind<LocationSettingReceiver>() with provider { LocationSettingReceiver() }
     }
 
 
@@ -52,13 +52,6 @@ class SampoApplication : Application(), KodeinAware {
         Realm.setDefaultConfiguration(realmConfig)
 
         Timber.plant(Timber.DebugTree())
-        startService(Intent(baseContext, LocationAndroidService::class.java)
-                .putExtra(
-                        LocationAndroidService.IntentType::class.simpleName,
-                        LocationAndroidService.IntentType.START
-                )
-        )
-
     }
 
     override fun onTerminate() {
