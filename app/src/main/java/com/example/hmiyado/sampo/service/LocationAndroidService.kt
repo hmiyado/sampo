@@ -13,7 +13,6 @@ import com.example.hmiyado.sampo.repository.location.LocationService
 import com.example.hmiyado.sampo.usecase.map.interaction.locationrepository.StoreToLocationRepositoryInteraction
 import com.example.hmiyado.sampo.usecase.map.interaction.store.LocationServiceToStoreInteraction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import com.example.hmiyado.sampo.usecase.map.store.MapStoreImpl
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.ServiceInjector
 import com.github.salomonbrys.kodein.factory
@@ -38,7 +37,7 @@ class LocationAndroidService : Service(), ServiceInjector {
     private val notificationManagerFactory: (Context) -> NotificationManager by injector.factory()
     private val locationService: LocationService by injector.instance()
     private val locationRepository: LocationRepository by injector.instance()
-    private val store: MapStore = MapStoreImpl()
+    private val store: MapStore by injector.instance()
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
 

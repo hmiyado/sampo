@@ -14,7 +14,6 @@ import com.example.hmiyado.sampo.usecase.map.mapview.interaction.StoreToMapViewO
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.StoreAndScaleViewInputToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.StoreToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import com.example.hmiyado.sampo.usecase.map.store.MapStoreImpl
 import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance
 import rx.Observable
@@ -29,7 +28,7 @@ class MapFragmentPresenter(
         private val mapFragment: MapFragment
 ) {
     private val subscriptions = CompositeSubscription()
-    private val store: MapStore = MapStoreImpl()
+    private val store: MapStore by mapFragment.injector.instance()
     private val useMapViewInput by lazy { mapFragment.mapViewPresenter }
     private val useMapViewOutput by lazy { mapFragment.mapViewController }
     private val useCompassViewInput by lazy { mapFragment.compassViewPresenter }

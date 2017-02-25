@@ -6,6 +6,8 @@ import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
 import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
 import com.example.hmiyado.sampo.service.LocationSettingReceiver
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
+import com.example.hmiyado.sampo.usecase.map.store.MapStoreImpl
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.androidActivityScope
 import com.github.salomonbrys.kodein.android.androidModule
@@ -34,6 +36,7 @@ class SampoApplication : Application(), KodeinAware {
         }
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
         bind<LocationSettingReceiver>() with provider { LocationSettingReceiver() }
+        bind<MapStore>() with singleton { MapStoreImpl() }
     }
 
 
