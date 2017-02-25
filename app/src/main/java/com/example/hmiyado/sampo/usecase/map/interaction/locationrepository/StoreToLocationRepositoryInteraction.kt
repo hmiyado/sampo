@@ -1,9 +1,9 @@
 package com.example.hmiyado.sampo.usecase.map.interaction.locationrepository
 
-import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Subscription
 import rx.schedulers.Schedulers
 

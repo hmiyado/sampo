@@ -1,10 +1,10 @@
 package com.example.hmiyado.sampo.usecase.map.mapview.interaction
 
-import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
 import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
 
 /**
  * Created by hmiyado on 2016/12/15.

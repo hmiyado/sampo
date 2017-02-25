@@ -1,9 +1,9 @@
 package com.example.hmiyado.sampo.usecase.map.interaction.store
 
-import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import timber.log.Timber
 
 /**

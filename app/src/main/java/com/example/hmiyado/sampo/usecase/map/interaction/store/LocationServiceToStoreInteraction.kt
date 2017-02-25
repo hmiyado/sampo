@@ -1,9 +1,9 @@
 package com.example.hmiyado.sampo.usecase.map.interaction.store
 
-import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationService
 import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
 
 /**
  * Created by hmiyado on 2016/12/20.

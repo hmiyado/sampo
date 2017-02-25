@@ -1,10 +1,10 @@
 package com.example.hmiyado.sampo.usecase.map.scaleview.interaction
 
-import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewInput
 import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewOutput
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Subscription
 
 /**

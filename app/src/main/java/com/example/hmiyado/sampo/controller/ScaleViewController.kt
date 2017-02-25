@@ -6,8 +6,8 @@ import android.graphics.Paint
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Orientation
-import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewOutput
+import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.custom.ScaleView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.px2dip
