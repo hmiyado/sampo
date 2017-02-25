@@ -1,7 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.compassview
 
 import android.graphics.Canvas
-import com.example.hmiyado.sampo.presenter.map.CompassViewPresenter
 import rx.Observable
 
 /**
@@ -9,8 +8,6 @@ import rx.Observable
  *
  * 方位磁針からの入力を扱う
  */
-class UseCompassViewInput(
-        private val compassViewPresenter: CompassViewPresenter
-) {
-    fun getOnDrawSignal(): Observable<Canvas> = compassViewPresenter.getOnDrawSignal()
+interface UseCompassViewInput {
+    fun getOnDrawSignal(): Observable<Canvas>
 }

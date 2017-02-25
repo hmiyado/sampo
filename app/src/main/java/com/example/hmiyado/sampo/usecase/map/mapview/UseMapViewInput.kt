@@ -1,11 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.mapview
 
 import android.graphics.Canvas
-import android.graphics.PointF
-import android.view.MotionEvent
-import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.Radian
-import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
 import rx.Observable
 
 /**
@@ -16,61 +12,16 @@ import rx.Observable
  * - 回転角の変化
  * - 縮尺の変化
  */
-class UseMapViewInput(
-        private val mapViewPresenter: MapViewPresenter
-) {
+interface UseMapViewInput {
     /**
      * @return 地図をどれだけ回転させたか(radian)のシグナル
      */
-    fun getOnRotateSignal(): Observable<Radian> {
-        val getPointPairByEvent = { event: MotionEvent ->
-            Pair(
-                    PointF(event.getX(0), event.getY(0)),
-                    PointF(event.getX(1), event.getY(1))
-            )
-        }
-
-        var isRotating = false
-        var previousPoints = Pair(PointF(0f, 0f), PointF(0f, 0f))
-
-        return mapViewPresenter.getOnTouchEventSignal()
-                // ２点タップしていなければ，回転をとることはない
-                .filter {
-                    if (it.pointerCount == 2) {
-                        if (!isRotating) {
-                            previousPoints = getPointPairByEvent(it)
-                            isRotating = true
-                        }
-                        true
-                    } else {
-                        isRotating = false
-                        false
-                    }
-                }
-                .map {
-                    val nextPoints = getPointPairByEvent(it)
-
-                    val angle = Geometry.determineAngle(
-                            previousPoints.first,
-                            previousPoints.second,
-                            nextPoints.first,
-                            nextPoints.second)
-
-                    previousPoints = nextPoints
-
-                    angle
-                }
-    }
+    fun getOnRotateSignal(): Observable<Radian>
 
     /**
      * @return 拡大率のシグナル
      */
-    fun getOnScaleSignal(): Observable<Float> {
-        return mapViewPresenter.getOnScaleSignal()
-                .map { 1 / it.scaleFactor }
-    }
+    fun getOnScaleSignal(): Observable<Float>
 
-    fun getOnDrawSignal(): Observable<Canvas> {
-        return mapViewPresenter.getOnDrawSignal()
-    }
+    fun getOnDrawSignal(): Observable<Canvas>
 }

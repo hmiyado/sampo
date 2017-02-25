@@ -4,14 +4,21 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
+import com.example.hmiyado.sampo.domain.math.cos
+import com.example.hmiyado.sampo.domain.math.sin
+import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
+import rx.Observable
+import rx.Subscription
 
 /**
  * Created by hmiyado on 2016/12/10.
  * @link MapView に対応するController
  */
-class MapViewController(view: MapView) : ViewController<MapView>(view) {
+class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapViewOutput {
     val viewWidth = view.width
     val viewHeight = view.height
 
@@ -60,4 +67,67 @@ class MapViewController(view: MapView) : ViewController<MapView>(view) {
             canvas.drawLine(it.unaryMinus().toFloat(), bottom, it.unaryMinus().toFloat(), top, paint)
         }
     }
+
+    private data class Map(
+            val canvas: Canvas,
+            val originalLocation: Location,
+            val scale: Float,
+            val rotateAngle: Degree,
+            val footmarks: List<Location>
+    )
+
+    override fun setOnDrawSignal(
+            originalLocationSignal: Observable<Location>,
+            scaleSignal: Observable<Float>,
+            rotateAngleSignal: Observable<Degree>,
+            footmarksSignal: Observable<List<Location>>,
+            onDrawSignal: Observable<Canvas>
+    ): Subscription {
+        return onDrawSignal
+                .withLatestFrom(
+                        originalLocationSignal,
+                        scaleSignal,
+                        rotateAngleSignal,
+                        footmarksSignal,
+                        ::Map
+                )
+                .bindMapView()
+                .subscribe({ map ->
+                    centeringCanvas(map.canvas)
+                    rotateCanvas(map.canvas, map.rotateAngle)
+
+                    drawMesh(map.canvas)
+                    drawOriginalLocation(map.canvas)
+
+                    val measurement = SphericalTrigonometry
+
+                    map.footmarks.forEach {
+                        val distance = measurement.determinePathwayDistance(map.originalLocation, it)
+                        val azimuth = measurement.determineAzimuth(map.originalLocation, it)
+                        val x = distance * cos(azimuth)
+                        val y = distance * sin(azimuth)
+                        drawFootmark(map.canvas, (x / map.scale).toFloat(), (y / map.scale).toFloat())
+                    }
+
+                })
+    }
+
+    override fun setOnUpdateMapSignal(
+            originalLocationSignal: Observable<Location>,
+            scaleSignal: Observable<Float>,
+            rotateAngleSignal: Observable<Degree>
+    ): Subscription {
+        return Observable.merge(
+                originalLocationSignal,
+                scaleSignal,
+                rotateAngleSignal
+        )
+                .bindMapView()
+                .subscribe({ invalidate() })
+    }
+
+    private fun <T> Observable<T>.bindMapView(): Observable<T> {
+        return bindToViewLifecycle(this)
+    }
+
 }

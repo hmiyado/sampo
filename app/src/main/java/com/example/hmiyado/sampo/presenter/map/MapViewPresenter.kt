@@ -1,9 +1,13 @@
 package com.example.hmiyado.sampo.presenter.map
 
 import android.graphics.Canvas
+import android.graphics.PointF
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import com.example.hmiyado.sampo.domain.math.Geometry
+import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.presenter.ViewPresenter
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import rx.Observable
 import rx.lang.kotlin.PublishSubject
@@ -15,7 +19,7 @@ import timber.log.Timber
  */
 class MapViewPresenter(
         mapView: MapView
-) : ViewPresenter<MapView>(mapView) {
+) : ViewPresenter<MapView>(mapView), UseMapViewInput {
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(mapView.context, createGestureDetector())
     private val onScaleBeginSignalSubject = PublishSubject<ScaleGestureDetector>()
     private val onScaleSignalSubject = PublishSubject<ScaleGestureDetector>()
@@ -51,15 +55,59 @@ class MapViewPresenter(
                 .share()
     }
 
-    fun getOnScaleSignal(): Observable<ScaleGestureDetector> {
-        return onScaleSignalSubject.share()
+    override fun getOnScaleSignal(): Observable<Float> {
+        return onScaleSignalSubject.share().map { 1 / it.scaleFactor }
+
     }
 
     fun getOnScaleBeginSignal(): Observable<ScaleGestureDetector> {
         return onScaleBeginSignalSubject.share()
     }
 
-    fun getOnDrawSignal(): Observable<Canvas> {
+    override fun getOnDrawSignal(): Observable<Canvas> {
         return view.getOnDrawSignal()
+    }
+
+    /**
+     * @return 地図をどれだけ回転させたか(radian)のシグナル
+     */
+    override fun getOnRotateSignal(): Observable<Radian> {
+        val getPointPairByEvent = { event: MotionEvent ->
+            Pair(
+                    PointF(event.getX(0), event.getY(0)),
+                    PointF(event.getX(1), event.getY(1))
+            )
+        }
+
+        var isRotating = false
+        var previousPoints = Pair(PointF(0f, 0f), PointF(0f, 0f))
+
+        return getOnTouchEventSignal()
+                // ２点タップしていなければ，回転をとることはない
+                .filter {
+                    if (it.pointerCount == 2) {
+                        if (!isRotating) {
+                            previousPoints = getPointPairByEvent(it)
+                            isRotating = true
+                        }
+                        true
+                    } else {
+                        isRotating = false
+                        false
+                    }
+                }
+                .map {
+                    val nextPoints = getPointPairByEvent(it)
+
+                    val angle = Geometry.determineAngle(
+                            previousPoints.first,
+                            previousPoints.second,
+                            nextPoints.first,
+                            nextPoints.second)
+
+                    previousPoints = nextPoints
+
+                    angle
+                }
     }
 }

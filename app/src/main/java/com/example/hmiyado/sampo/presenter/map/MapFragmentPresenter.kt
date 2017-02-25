@@ -6,18 +6,12 @@ import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.location.LocationServiceState
 import com.example.hmiyado.sampo.service.LocationAndroidService
-import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewInput
-import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewOutput
 import com.example.hmiyado.sampo.usecase.map.compassview.interaction.StoreAndCompassViewInputToCompassViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.map.compassview.interaction.StoreToCompassViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.map.interaction.store.CompassServiceToStoreInteraction
 import com.example.hmiyado.sampo.usecase.map.interaction.store.MapViewerInputToStoreInteraction
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
 import com.example.hmiyado.sampo.usecase.map.mapview.interaction.StoreAndMapViewInputToMapViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.map.mapview.interaction.StoreToMapViewOutputInteraction
-import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewInput
-import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewOutput
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.StoreAndScaleViewInputToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.StoreToScaleViewOutputInteraction
 import com.example.hmiyado.sampo.view.map.MapFragment
@@ -35,12 +29,12 @@ class MapFragmentPresenter(
 ) {
     private val subscriptions = CompositeSubscription()
     private val store = MapStore
-    private val useMapViewInput by lazy { UseMapViewInput(mapFragment.mapViewPresenter) }
-    private val useMapViewOutput by lazy { UseMapViewOutput(mapFragment.mapViewController) }
-    private val useCompassViewInput by lazy { UseCompassViewInput(mapFragment.compassViewPresenter) }
-    private val useCompassViewOutput by lazy { UseCompassViewOutput(mapFragment.compassViewController) }
-    private val useScaleViewInput by lazy { UseScaleViewInput(mapFragment.scaleViewPresenter) }
-    private val useScaleViewOutput by lazy { UseScaleViewOutput(mapFragment.scaleViewController) }
+    private val useMapViewInput by lazy { mapFragment.mapViewPresenter }
+    private val useMapViewOutput by lazy { mapFragment.mapViewController }
+    private val useCompassViewInput by lazy { mapFragment.compassViewPresenter }
+    private val useCompassViewOutput by lazy { mapFragment.compassViewController }
+    private val useScaleViewInput by lazy { mapFragment.scaleViewPresenter }
+    private val useScaleViewOutput by lazy { mapFragment.scaleViewController }
     private val compassService by mapFragment.injector.instance<CompassService>()
 
     fun onStart() {

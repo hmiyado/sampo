@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.presenter.map
 
 import com.example.hmiyado.sampo.presenter.ViewPresenter
+import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewInput
 import com.example.hmiyado.sampo.view.map.custom.CompassView
 
 /**
@@ -10,7 +11,7 @@ import com.example.hmiyado.sampo.view.map.custom.CompassView
  */
 class CompassViewPresenter(
         compassView: CompassView
-) : ViewPresenter<CompassView>(compassView) {
+) : ViewPresenter<CompassView>(compassView), UseCompassViewInput {
 
-    fun getOnDrawSignal() = view.getOnDrawSignal()
+    override fun getOnDrawSignal() = view.getOnDrawSignal()
 }
