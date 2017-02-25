@@ -6,6 +6,8 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.location.LocationManager
 import android.os.IBinder
 import com.example.hmiyado.sampo.domain.store.MapStore
 import com.example.hmiyado.sampo.libs.plusAssign
@@ -41,12 +43,17 @@ class LocationAndroidService : Service(), KodeinInjected {
     private val store = MapStore
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
+    private val gpsLocationReceiver = GpsLocationReceiver()
+
     override fun onCreate() {
         super.onCreate()
         Timber.d("onCreate")
         inject(appKodein())
+        baseContext.registerReceiver(gpsLocationReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
         subscriptions += LocationServiceToStoreInteraction(locationService, store).subscriptions
         subscriptions += StoreToLocationRepositoryInteraction(store, locationRepository).subscriptions
+        subscriptions += gpsLocationReceiver.onChangeLocationServiceState()
+                .subscribe { Timber.d(it.toString()) }
     }
 
     private fun createCloseAction(): Notification.Action {
@@ -98,6 +105,7 @@ class LocationAndroidService : Service(), KodeinInjected {
         super.onDestroy()
         Timber.d("onDestroy")
         subscriptions.unsubscribe()
+        baseContext.unregisterReceiver(gpsLocationReceiver)
     }
 
     override fun onBind(p0: Intent?): IBinder {

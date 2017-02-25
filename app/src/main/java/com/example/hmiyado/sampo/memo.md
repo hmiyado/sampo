@@ -133,12 +133,28 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
         - 地表面を分割した区画
 - [] twitter 連携
 - [] slack 連携
+- [] デザイン
 
 - 3月までの実装
-    - [] production/develop でビルド環境を変える
+    - [x] production/develop でビルド環境を変える
         - 特に，Repository を変える
     - [x] Repository の確認をできるようにする
         - see 結果を表示できるActivity，Fragmentを作る
+
+## 位置情報の設定
+- [] 位置情報の設定を取得できる
+- [] 位置情報取得設定がONなら，取得を行う
+- [] 位置情報取得設定がOFFなら，取得しない
+
+### 位置情報のシステム設定を取得する
+LOCATION_MODE API に LocationManager.MODE_CHANGED_ACTION が対応している．
+BroadcastReciever で LocationManager.MODE_CHANGED_ACTION を使えば，システム設定の変更を取得できる
+
+isProviderEnabled に LocationManager.PROVIDERS_CHANGED_ACTION が対応している．
+provider 固有のメソッド(requestLocationUpdates など)を使っているなら， LOCATION_MODE ではなく，こちらを使うべき．
+-> たしかに使っているので， PROVIDERS_CHANGED_ACTION を使うべきっぽい
+
+http://stackoverflow.com/questions/20673620/how-to-trigger-broadcast-receiver-when-gps-is-turn-on-off
 
 ## ビルド環境を変える
 ビルド環境が変わると，repository が変わるようにする → repository の名前を変更したので大丈夫なはず

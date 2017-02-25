@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hmiyado.sampo">
+          package="com.example.hmiyado.sampo">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".SampoApplication"
@@ -17,17 +17,17 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.map.MapActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <!-- ATTENTION: This intent was auto-generated. Follow instructions at https://g.co/AppIndexing/AndroidStudio to publish your URLs. -->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
                 <!--
                   ATTENTION: This data URL was auto-generated. We recommend that you use the HTTP scheme.
                   TODO: Change the host or pathPrefix as necessary.
@@ -35,13 +35,19 @@
                 <data
                     android:host="[ENTER-YOUR-HTTP-HOST-HERE]"
                     android:pathPrefix="/main"
-                    android:scheme="http" />
+                    android:scheme="http"/>
             </intent-filter>
         </activity>
+        <receiver android:name=".service.GpsLocationReceiver">
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".service.LocationAndroidService"
-            android:exported="false" />
+            android:exported="false"/>
 
         <activity android:name=".view.result.ResultActivity"></activity>
     </application>
