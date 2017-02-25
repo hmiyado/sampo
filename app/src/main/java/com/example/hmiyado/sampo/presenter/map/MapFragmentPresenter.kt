@@ -5,14 +5,14 @@ import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.location.LocationServiceState
 import com.example.hmiyado.sampo.service.LocationAndroidService
-import com.example.hmiyado.sampo.usecase.map.compassview.interaction.StoreAndCompassViewInputToCompassViewOutputInteraction
-import com.example.hmiyado.sampo.usecase.map.compassview.interaction.StoreToCompassViewOutputInteraction
-import com.example.hmiyado.sampo.usecase.map.interaction.store.CompassServiceToStoreInteraction
-import com.example.hmiyado.sampo.usecase.map.interaction.store.MapViewerInputToStoreInteraction
-import com.example.hmiyado.sampo.usecase.map.mapview.interaction.StoreAndMapViewInputToMapViewOutputInteraction
-import com.example.hmiyado.sampo.usecase.map.mapview.interaction.StoreToMapViewOutputInteraction
-import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.StoreAndScaleViewInputToScaleViewOutputInteraction
-import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.StoreToScaleViewOutputInteraction
+import com.example.hmiyado.sampo.usecase.map.compassview.interaction.DrawCompass
+import com.example.hmiyado.sampo.usecase.map.compassview.interaction.UpdateCompass
+import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateMapViewState
+import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateOrientation
+import com.example.hmiyado.sampo.usecase.map.mapview.interaction.DrawMap
+import com.example.hmiyado.sampo.usecase.map.mapview.interaction.UpdateMap
+import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.DrawScale
+import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.UpdateScale
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance
@@ -40,14 +40,14 @@ class MapFragmentPresenter(
     fun onStart() {
         Observable.from(
                 listOf(
-                        StoreAndMapViewInputToMapViewOutputInteraction(store, useMapViewInput, useMapViewOutput),
-                        MapViewerInputToStoreInteraction(useMapViewInput, store),
-                        StoreToMapViewOutputInteraction(store, useMapViewOutput),
-                        CompassServiceToStoreInteraction(compassService, store),
-                        StoreAndCompassViewInputToCompassViewOutputInteraction(store, useCompassViewInput, useCompassViewOutput),
-                        StoreToCompassViewOutputInteraction(store, useCompassViewOutput),
-                        StoreAndScaleViewInputToScaleViewOutputInteraction(store, useScaleViewInput, useScaleViewOutput),
-                        StoreToScaleViewOutputInteraction(store, useScaleViewOutput)
+                        DrawMap(store, useMapViewInput, useMapViewOutput),
+                        UpdateMapViewState(useMapViewInput, store),
+                        UpdateMap(store, useMapViewOutput),
+                        UpdateOrientation(compassService, store),
+                        DrawCompass(store, useCompassViewInput, useCompassViewOutput),
+                        UpdateCompass(store, useCompassViewOutput),
+                        DrawScale(store, useScaleViewInput, useScaleViewOutput),
+                        UpdateScale(store, useScaleViewOutput)
                 )
         ).forEach {
             subscriptions += it.subscriptions

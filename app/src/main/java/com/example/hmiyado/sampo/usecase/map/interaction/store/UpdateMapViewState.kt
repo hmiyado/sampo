@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
  *
  * 地図の入力と出力をつなぐ．
  */
-class MapViewerInputToStoreInteraction(
+class UpdateMapViewState(
         private val useMapViewInput: UseMapViewInput,
         private val store: MapStore
 ) : Interaction() {

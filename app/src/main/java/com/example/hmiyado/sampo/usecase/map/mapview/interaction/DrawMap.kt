@@ -2,24 +2,25 @@ package com.example.hmiyado.sampo.usecase.map.mapview.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
 import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import rx.Subscription
 
 /**
  * Created by hmiyado on 2016/12/15.
- * ストアから地図出力へのインタラクション
+ * ストアと地図ビューの入力から，地図ビューの出力する
  */
-class StoreToMapViewOutputInteraction(
+class DrawMap(
         private val store: MapStore,
+        private val useMapViewInput: UseMapViewInput,
         private val useMapViewOutput: UseMapViewOutput
 ) : Interaction() {
 
     init {
-        subscriptions += mapInteraction()
+        drawInteraction()
     }
 
-    private fun mapInteraction(): Subscription {
-        return useMapViewOutput.setOnUpdateMapSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle())
+    private fun drawInteraction() {
+        subscriptions += useMapViewOutput.setOnDrawSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle(), store.getFootmarks(), useMapViewInput.getOnDrawSignal())
     }
 }

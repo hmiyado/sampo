@@ -12,7 +12,7 @@ import rx.Subscription
  *
  * 縮尺のビューへの相互作用．
  */
-class StoreAndScaleViewInputToScaleViewOutputInteraction(
+class DrawScale(
         private val store: MapStore,
         private val scaleViewInput: UseScaleViewInput,
         private val scaleViewOutput: UseScaleViewOutput

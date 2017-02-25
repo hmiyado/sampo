@@ -11,7 +11,7 @@ import timber.log.Timber
  *
  * 現在向いている方角から状態へのインタラクション
  */
-class CompassServiceToStoreInteraction(
+class UpdateOrientation(
         private val compassService: CompassService,
         private val store: MapStore
 ) : Interaction() {

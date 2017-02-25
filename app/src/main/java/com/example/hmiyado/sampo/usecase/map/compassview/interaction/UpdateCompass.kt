@@ -11,7 +11,7 @@ import rx.Subscription
  *
  * 状態の変化に応じて方位磁針に出力する
  */
-class StoreToCompassViewOutputInteraction(
+class UpdateCompass(
         private val store: MapStore,
         private val useCompassViewOutput: UseCompassViewOutput
 ) : Interaction() {

@@ -11,7 +11,7 @@ import com.example.hmiyado.sampo.usecase.map.store.MapStore
  *
  * 状態と方位磁針の入力から，方位磁針へ出力する
  */
-class StoreAndCompassViewInputToCompassViewOutputInteraction(
+class DrawCompass(
         private val store: MapStore,
         private val useCompassViewInput: UseCompassViewInput,
         private val useCompassViewOutput: UseCompassViewOutput

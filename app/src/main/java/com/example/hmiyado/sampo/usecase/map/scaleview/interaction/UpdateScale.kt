@@ -9,9 +9,9 @@ import rx.Subscription
 /**
  * Created by hmiyado on 2016/12/26.
  *
- * MapStoreImpl　から ScaleViewOutput への相互作用
+ * MapStore　から ScaleViewOutput への相互作用
  */
-class StoreToScaleViewOutputInteraction(
+class UpdateScale(
         private val store: MapStore,
         private val useScaleViewOutput: UseScaleViewOutput
 ) : Interaction() {
