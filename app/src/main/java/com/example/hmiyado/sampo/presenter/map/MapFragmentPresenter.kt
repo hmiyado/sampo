@@ -46,7 +46,7 @@ class MapFragmentPresenter(
                         UpdateOrientation(compassService, store),
                         DrawCompass(store, useCompassViewInput, useCompassViewOutput),
                         UpdateCompass(store, useCompassViewOutput),
-                        DrawScale(store, useScaleViewInput, useScaleViewOutput),
+                        DrawScale(store, useScaleViewOutput),
                         UpdateScale(store, useScaleViewOutput)
                 )
         ).forEach {

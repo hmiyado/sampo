@@ -2,8 +2,9 @@ package com.example.hmiyado.sampo.usecase.map.scaleview.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewOutput
+import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewSink
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
+import rx.Observable
 import rx.Subscription
 
 /**
@@ -13,13 +14,21 @@ import rx.Subscription
  */
 class UpdateScale(
         private val store: MapStore,
-        private val useScaleViewOutput: UseScaleViewOutput
+        private val useScaleViewSink: UseScaleViewSink
 ) : Interaction() {
     init {
         subscriptions += mapInteraction()
+        subscriptions += updateScale()
     }
 
     private fun mapInteraction(): Subscription =
-            useScaleViewOutput.setMapSignal(store.getOriginalLocation(), store.getOrientation(), store.getRotateAngle(), store.getScaleFactor())
+            Observable.merge(
+                    store.getScaleFactor(),
+                    store.getRotateAngle(),
+                    store.getOriginalLocation(),
+                    store.getOrientation()
+            ).subscribe { useScaleViewSink.draw() }
+
+    private fun updateScale(): Subscription = store.getScaleFactor().subscribe { useScaleViewSink.setScale(it) }
 
 }

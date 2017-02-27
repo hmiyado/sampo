@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.view.map.custom
 
 import android.content.Context
+import android.graphics.Canvas
 import com.example.hmiyado.sampo.controller.ScaleViewController
 import com.example.hmiyado.sampo.presenter.map.ScaleViewPresenter
 
@@ -12,4 +13,10 @@ import com.example.hmiyado.sampo.presenter.map.ScaleViewPresenter
 class ScaleView(context: Context) : CanvasView(context) {
     val presenter by lazy { ScaleViewPresenter(this) }
     val controller by lazy { ScaleViewController(this) }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        canvas ?: return
+        controller.drawScale(canvas)
+    }
 }

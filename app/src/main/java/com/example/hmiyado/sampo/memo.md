@@ -22,22 +22,34 @@ Android Studioのリンタに従う
 ### 枠組み
 MVP+DDD & Clean Architecture
 
-View と Presenter は1対1対応
-View を触れるのは対応するPresenterだけ
-PresenterはView間とModelとのロジックを操作する
-Presenterをまとめる，ManagerやOperator，Stateみたいなものを定義することもある
+- domain ドメインロジックを書く場所
+    - モデル定義
+    - 状態定義
+    - 例外
+- libs
+    - 外部ライブラリやピュアな Kotlin を便利にできるする処理をおく
+- repository
+    - View 以外の外部世界．データソースとのやりとりの方法を定義する
+        - repository データを保存できる場所
+        - service データを保存はできず，ただただ観測するだけの場所
+- usecase
+    - Android 世界をラップする interface がおいてある
+        - view に何か入力する： UseHogeViewSink
+        - View から何か出力を受け取る: UseHogeViewSource
+    - repository や view の usecase の結合部分も置いてある
+- presenter
+    - usecase の UseHogeViewSource の具体的な実装
+    - (T) -> R のような返り値のあるメソッドの集合
+- controller
+    - usecase の UseHogeViewSink の具体的な実装
+    - (T) -> Unit のような返り値のないメソッドの集合
+- view
+    - Activiy, Fragment, カスタムビューがおいてある
+        - ロジックはだいたい presenter や controller に移譲する
+        - 入出力を頑張ってきれいにわける
 
-DDDっぽく，関心事に対していくつかのレイヤー分けをする
+domain, repository の interface, usecase は pure　に書く(Android の実装からは独立)
 
-| レイヤ | 意味　| 依存レイヤ |
-|:--:|:--|:-- |
-| domain/model | データ構造や，そのデータ構造を作るためのファクトリを持つ|なし |
-| repository | データの取得，保存を行う|モデル|
-| domain/usecase | 純粋な関心事のロジックを記述する|モデル，サービス|
-| presenter|ビューから入力を受け取り，ビジネスロジックを適用し，他のプレゼンターを通してビューに反映する|他全部|
-| view |UI．UIへのイベント定義もここ（ロジックは当然プレゼンターから注入する）|プレゼンター|
-
-内部，外部ライブラリは必ずインターフェースに実装を注入する形でラップして使う．
 
 #### クリーンアーキテクチャ
 - 外の世界: ユーザー操作（view, touch イベント）
