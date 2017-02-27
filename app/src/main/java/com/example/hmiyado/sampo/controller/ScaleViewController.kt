@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.controller
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewSink
+import com.example.hmiyado.sampo.usecase.map.UseScaleView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.custom.ScaleView
 import org.jetbrains.anko.dip
@@ -15,7 +15,7 @@ import org.jetbrains.anko.sp
  *
  * @see ScaleView のコントローラー
  */
-class ScaleViewController(scaleView: ScaleView) : ViewController<ScaleView>(scaleView), UseScaleViewSink {
+class ScaleViewController(scaleView: ScaleView) : ViewController<ScaleView>(scaleView), UseScaleView.Sink {
     private var scale = 0.0f
 
     private fun createPaint(colorInt: Int, strokeWidth: Float): Paint {

@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.map.interaction.store
+package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService

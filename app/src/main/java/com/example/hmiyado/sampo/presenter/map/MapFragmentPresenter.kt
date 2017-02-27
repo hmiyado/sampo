@@ -5,11 +5,7 @@ import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.location.LocationServiceState
 import com.example.hmiyado.sampo.service.LocationAndroidService
-import com.example.hmiyado.sampo.usecase.map.compassview.interaction.DrawCompass
-import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateMapState
-import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateOrientation
-import com.example.hmiyado.sampo.usecase.map.mapview.interaction.DrawMap
-import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.DrawScale
+import com.example.hmiyado.sampo.usecase.map.interaction.*
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance

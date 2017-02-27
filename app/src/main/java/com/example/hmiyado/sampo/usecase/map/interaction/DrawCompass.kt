@@ -1,8 +1,8 @@
-package com.example.hmiyado.sampo.usecase.map.compassview.interaction
+package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewSink
+import com.example.hmiyado.sampo.usecase.map.UseCompassView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 
 /**
@@ -12,7 +12,7 @@ import com.example.hmiyado.sampo.usecase.map.store.MapStore
  */
 class DrawCompass(
         private val store: MapStore,
-        private val useCompassViewSink: UseCompassViewSink
+        private val useCompassViewSink: UseCompassView.Sink
 ) : Interaction() {
     init {
         subscriptions += drawInteraction()

@@ -1,8 +1,8 @@
-package com.example.hmiyado.sampo.usecase.map.scaleview.interaction
+package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.scaleview.UseScaleViewSink
+import com.example.hmiyado.sampo.usecase.map.UseScaleView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Subscription
 
@@ -13,7 +13,7 @@ import rx.Subscription
  */
 class DrawScale(
         private val store: MapStore,
-        private val scaleViewSink: UseScaleViewSink
+        private val scaleViewSink: UseScaleView.Sink
 ) : Interaction() {
     init {
         subscriptions += drawInteraction()

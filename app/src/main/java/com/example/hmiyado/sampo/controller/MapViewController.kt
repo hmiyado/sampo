@@ -8,7 +8,7 @@ import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSink
+import com.example.hmiyado.sampo.usecase.map.UseMapView
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 
@@ -16,8 +16,8 @@ import org.jetbrains.anko.dip
  * Created by hmiyado on 2016/12/10.
  * @link MapView に対応するController
  */
-class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapViewSink {
-    private var drawableMap: UseMapViewSink.DrawableMap = UseMapViewSink.DrawableMap(
+class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapView.Sink {
+    private var drawableMap: UseMapView.Sink.DrawableMap = UseMapView.Sink.DrawableMap(
             originalLocation = Location.empty(),
             scaleFactor = 1.0f,
             rotateAngle = Degree(0),
@@ -70,7 +70,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapVi
         }
     }
 
-    override fun draw(drawableMap: UseMapViewSink.DrawableMap) {
+    override fun draw(drawableMap: UseMapView.Sink.DrawableMap) {
         this.drawableMap = drawableMap
         invalidate()
     }

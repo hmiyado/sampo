@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.controller
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import com.example.hmiyado.sampo.domain.model.Orientation
-import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewSink
+import com.example.hmiyado.sampo.usecase.map.UseCompassView
 import com.example.hmiyado.sampo.view.map.custom.CompassView
 
 /**
@@ -13,7 +13,7 @@ import com.example.hmiyado.sampo.view.map.custom.CompassView
  */
 class CompassViewController(
         compassView: CompassView
-) : ViewController<CompassView>(compassView), UseCompassViewSink {
+) : ViewController<CompassView>(compassView), UseCompassView.Sink {
     private var orientation = Orientation.empty()
 
     private fun drawCompass(canvas: Canvas, orientation: Orientation) {

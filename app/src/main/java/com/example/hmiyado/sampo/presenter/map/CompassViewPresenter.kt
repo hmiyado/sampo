@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.presenter.map
 
 import com.example.hmiyado.sampo.presenter.ViewPresenter
-import com.example.hmiyado.sampo.usecase.map.compassview.UseCompassViewSource
+import com.example.hmiyado.sampo.usecase.map.UseCompassView
 import com.example.hmiyado.sampo.view.map.custom.CompassView
 
 /**
@@ -11,4 +11,4 @@ import com.example.hmiyado.sampo.view.map.custom.CompassView
  */
 class CompassViewPresenter(
         compassView: CompassView
-) : ViewPresenter<CompassView>(compassView), UseCompassViewSource
+) : ViewPresenter<CompassView>(compassView), UseCompassView.Source
