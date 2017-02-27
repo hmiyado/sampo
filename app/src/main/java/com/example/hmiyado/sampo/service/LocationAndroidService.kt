@@ -10,8 +10,8 @@ import android.os.IBinder
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.location.LocationService
-import com.example.hmiyado.sampo.usecase.map.interaction.locationrepository.StoreToLocationRepositoryInteraction
-import com.example.hmiyado.sampo.usecase.map.interaction.store.LocationServiceToStoreInteraction
+import com.example.hmiyado.sampo.usecase.map.interaction.SaveLocation
+import com.example.hmiyado.sampo.usecase.map.interaction.UpdateLocation
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.ServiceInjector
@@ -45,8 +45,8 @@ class LocationAndroidService : Service(), ServiceInjector {
         super.onCreate()
         Timber.d("onCreate")
         initializeInjector()
-        subscriptions += LocationServiceToStoreInteraction(locationService, store).subscriptions
-        subscriptions += StoreToLocationRepositoryInteraction(store, locationRepository).subscriptions
+        subscriptions += UpdateLocation(locationService, store).subscriptions
+        subscriptions += SaveLocation(store, locationRepository).subscriptions
     }
 
     private fun createCloseAction(): Notification.Action {

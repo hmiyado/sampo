@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.usecase.map.interaction.locationrepository
+package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers
  *
  * 変化があった状態から，地点を保存する相互作用
  */
-class StoreToLocationRepositoryInteraction(
+class SaveLocation(
         private val store: MapStore,
         private val locationRepository: LocationRepository
 ) : Interaction() {
