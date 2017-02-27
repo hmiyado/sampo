@@ -6,7 +6,6 @@ import com.example.hmiyado.sampo.repository.compass.CompassService
 import com.example.hmiyado.sampo.repository.location.LocationServiceState
 import com.example.hmiyado.sampo.service.LocationAndroidService
 import com.example.hmiyado.sampo.usecase.map.compassview.interaction.DrawCompass
-import com.example.hmiyado.sampo.usecase.map.compassview.interaction.UpdateCompass
 import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateMapState
 import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateOrientation
 import com.example.hmiyado.sampo.usecase.map.mapview.interaction.DrawMap
@@ -30,9 +29,7 @@ class MapFragmentPresenter(
     private val store: MapStore by mapFragment.injector.instance()
     private val useMapViewSource by lazy { mapFragment.mapViewPresenter }
     private val useMapViewSink by lazy { mapFragment.mapViewController }
-    private val useCompassViewInput by lazy { mapFragment.compassViewPresenter }
-    private val useCompassViewOutput by lazy { mapFragment.compassViewController }
-    private val useScaleViewInput by lazy { mapFragment.scaleViewPresenter }
+    private val useCompassViewSink by lazy { mapFragment.compassViewController }
     private val useScaleViewOutput by lazy { mapFragment.scaleViewController }
     private val compassService by mapFragment.injector.instance<CompassService>()
 
@@ -42,8 +39,7 @@ class MapFragmentPresenter(
                         DrawMap(store, useMapViewSink),
                         UpdateMapState(useMapViewSource, store),
                         UpdateOrientation(compassService, store),
-                        DrawCompass(store, useCompassViewInput, useCompassViewOutput),
-                        UpdateCompass(store, useCompassViewOutput),
+                        DrawCompass(store, useCompassViewSink),
                         DrawScale(store, useScaleViewOutput),
                         UpdateScale(store, useScaleViewOutput)
                 )
