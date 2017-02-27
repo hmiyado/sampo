@@ -7,7 +7,7 @@ import rx.Observable
  * Created by hmiyado on 2016/11/30.
  * 方位を取得するサービス
  */
-interface CompassService {
+interface CompassSensor {
 
     /**
      * @return 方位が変更されるたびに，この端末の向きを取得する

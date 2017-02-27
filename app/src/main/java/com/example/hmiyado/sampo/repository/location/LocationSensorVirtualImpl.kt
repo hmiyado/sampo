@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
  * Created by hmiyado on 2016/08/06.
  * 仮想の位置情報を取得するサービス
  */
-class LocationServiceVirtualImpl : LocationService {
+class LocationSensorVirtualImpl : LocationSensor {
     private val locationSubject: PublishSubject<Location>
     private var nextLocation: Location
     private val delayTimeMs: Long = 1000

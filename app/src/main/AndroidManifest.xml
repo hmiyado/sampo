@@ -46,7 +46,7 @@
         </receiver>
 
         <service
-            android:name=".service.LocationAndroidService"
+            android:name=".service.LocationService"
             android:exported="false"/>
 
         <activity android:name=".view.result.ResultActivity"></activity>

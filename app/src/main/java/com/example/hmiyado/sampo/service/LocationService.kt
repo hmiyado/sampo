@@ -9,7 +9,7 @@ import android.content.Intent
 import android.os.IBinder
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
-import com.example.hmiyado.sampo.repository.location.LocationService
+import com.example.hmiyado.sampo.repository.location.LocationSensor
 import com.example.hmiyado.sampo.usecase.map.interaction.SaveLocation
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateLocation
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
@@ -26,7 +26,7 @@ import timber.log.Timber
  * バックグラウンドで位置情報を取得，更新してくれるサービス．
  * 通知欄から操作できる．
  */
-class LocationAndroidService : Service(), ServiceInjector {
+class LocationService : Service(), ServiceInjector {
     enum class IntentType {
         START,
         STOP
@@ -35,7 +35,7 @@ class LocationAndroidService : Service(), ServiceInjector {
     override val injector: KodeinInjector = KodeinInjector()
 
     private val notificationManagerFactory: (Context) -> NotificationManager by injector.factory()
-    private val locationService: LocationService by injector.instance()
+    private val locationSensor: LocationSensor by injector.instance()
     private val locationRepository: LocationRepository by injector.instance()
     private val store: MapStore by injector.instance()
     private val subscriptions: CompositeSubscription = CompositeSubscription()
@@ -45,12 +45,12 @@ class LocationAndroidService : Service(), ServiceInjector {
         super.onCreate()
         Timber.d("onCreate")
         initializeInjector()
-        subscriptions += UpdateLocation(locationService, store).subscriptions
+        subscriptions += UpdateLocation(locationSensor, store).subscriptions
         subscriptions += SaveLocation(store, locationRepository).subscriptions
     }
 
     private fun createCloseAction(): Notification.Action {
-        val notifyIntent = Intent(this, LocationAndroidService::class.java)
+        val notifyIntent = Intent(this, LocationService::class.java)
                 .putExtra(IntentType::class.simpleName, IntentType.STOP)
         val pendingIntent = PendingIntent.getService(this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         return Notification.Action.Builder(
@@ -67,7 +67,7 @@ class LocationAndroidService : Service(), ServiceInjector {
         val intentType = intent.getSerializableExtra(IntentType::class.simpleName) as IntentType
         Timber.d("Intent: %s", intentType)
         when (intentType) {
-            LocationAndroidService.IntentType.START -> {
+            LocationService.IntentType.START -> {
                 val notification = Notification.Builder(applicationContext)
                         .setVisibility(Notification.VISIBILITY_PUBLIC)
                         .addAction(createCloseAction())
@@ -82,12 +82,12 @@ class LocationAndroidService : Service(), ServiceInjector {
                 Timber.d(notification.toString())
                 notificationManagerFactory(baseContext).notify(notification.hashCode(), notification)
                 startForeground(notification.hashCode(), notification)
-                locationService.startLocationObserve()
+                locationSensor.startLocationObserve()
                 return START_STICKY
             }
-            LocationAndroidService.IntentType.STOP  -> {
+            LocationService.IntentType.STOP  -> {
                 notificationManagerFactory(this).cancelAll()
-                locationService.stopLocationObserve()
+                locationSensor.stopLocationObserve()
                 stopSelf()
                 return START_NOT_STICKY
             }

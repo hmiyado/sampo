@@ -13,7 +13,7 @@ import rx.subjects.PublishSubject
  * 方位を取得するサービスの実装．
  * http://techbooster.jpn.org/andriod/ui/443/
  */
-class CompassServiceImpl(val sensorManager: SensorManager) : CompassService {
+class CompassSensorImpl(val sensorManager: SensorManager) : CompassSensor {
 
     private var magneticValues = floatArrayOf(0f, 0f, 0f)
     private var accelerometerValues = floatArrayOf(0f, 0f, 0f)
@@ -34,7 +34,7 @@ class CompassServiceImpl(val sensorManager: SensorManager) : CompassService {
                 Sensor.TYPE_MAGNETIC_FIELD -> {
                     sensorManager.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_UI)
                 }
-                Sensor.TYPE_ACCELEROMETER -> {
+                Sensor.TYPE_ACCELEROMETER  -> {
                     sensorManager.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_UI)
                 }
             }
@@ -59,7 +59,7 @@ class CompassServiceImpl(val sensorManager: SensorManager) : CompassService {
                     Sensor.TYPE_MAGNETIC_FIELD -> {
                         magneticValues = p0.values.clone()
                     }
-                    Sensor.TYPE_ACCELEROMETER -> {
+                    Sensor.TYPE_ACCELEROMETER  -> {
                         accelerometerValues = p0.values.clone()
                     }
                 }

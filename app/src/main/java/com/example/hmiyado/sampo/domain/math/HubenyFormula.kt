@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.domain.math
 
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.repository.location.LocationDistanceInterface
+import com.example.hmiyado.sampo.repository.location.LocationDistance
 
 /**
  * Created by hmiyado on 2016/09/22.
@@ -12,7 +12,7 @@ import com.example.hmiyado.sampo.repository.location.LocationDistanceInterface
  * http://tancro.e-central.tv/grandmaster/excel/hubenystandard.html
  * http://yamadarake.jp/trdi/report000001.html
  */
-object HubenyFormula : LocationDistanceInterface {
+object HubenyFormula : LocationDistance {
 
     val a: Double = 6377397.155 // 長半径(赤道半径)
     val b: Double = 6356079.000 // 短半径(極半径)

@@ -7,7 +7,7 @@ import rx.Observable
  * Created by hmiyado on 2016/07/27.
  * 状態をもたずに位置情報を扱う方法を提供する
  */
-interface LocationService : LocationDistanceInterface {
+interface LocationSensor : LocationDistance {
     /**
      * 位置情報が流れてくるObservable
      */

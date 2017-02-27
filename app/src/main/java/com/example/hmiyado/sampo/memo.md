@@ -31,7 +31,7 @@ MVP+DDD & Clean Architecture
 - repository
     - View 以外の外部世界．データソースとのやりとりの方法を定義する
         - repository データを保存できる場所
-        - service データを保存はできず，ただただ観測するだけの場所
+        - sensor データを保存はできず，ただただ観測するだけの場所
 - usecase
     - Android 世界をラップする interface がおいてある
         - view に何か入力する： UseHogeViewSink

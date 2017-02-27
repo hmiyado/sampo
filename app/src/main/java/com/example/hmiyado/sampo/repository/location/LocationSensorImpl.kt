@@ -18,7 +18,7 @@ import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
  */
 
 // TODO object にする
-class LocationServiceImpl(private val locationManager: LocationManager) : LocationService {
+class LocationSensorImpl(private val locationManager: LocationManager) : LocationSensor {
     companion object {
         private fun convertFromAndroidLocationToSampoLocation(androidLocation: android.location.Location): com.example.hmiyado.sampo.domain.model.Location {
             return com.example.hmiyado.sampo.domain.model.Location(

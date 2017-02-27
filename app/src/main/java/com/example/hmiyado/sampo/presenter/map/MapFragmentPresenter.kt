@@ -2,9 +2,9 @@ package com.example.hmiyado.sampo.presenter.map
 
 import android.content.Intent
 import com.example.hmiyado.sampo.libs.plusAssign
-import com.example.hmiyado.sampo.repository.compass.CompassService
-import com.example.hmiyado.sampo.repository.location.LocationServiceState
-import com.example.hmiyado.sampo.service.LocationAndroidService
+import com.example.hmiyado.sampo.repository.compass.CompassSensor
+import com.example.hmiyado.sampo.repository.location.LocationSensorState
+import com.example.hmiyado.sampo.service.LocationService
 import com.example.hmiyado.sampo.usecase.map.interaction.*
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.MapFragment
@@ -26,7 +26,7 @@ class MapFragmentPresenter(
     private val useMapViewSink by lazy { mapFragment.mapViewController }
     private val useCompassViewSink by lazy { mapFragment.compassViewController }
     private val useScaleViewSink by lazy { mapFragment.scaleViewController }
-    private val compassService by mapFragment.injector.instance<CompassService>()
+    private val compassService by mapFragment.injector.instance<CompassSensor>()
 
     fun onStart() {
         Observable.from(
@@ -45,19 +45,19 @@ class MapFragmentPresenter(
                 .subscribe {
                     Timber.d(it.toString())
                     when (it) {
-                        LocationServiceState.OFF -> {
-                            mapFragment.activity.startService(Intent(mapFragment.activity.baseContext, LocationAndroidService::class.java)
+                        LocationSensorState.OFF -> {
+                            mapFragment.activity.startService(Intent(mapFragment.activity.baseContext, LocationService::class.java)
                                     .putExtra(
-                                            LocationAndroidService.IntentType::class.simpleName,
-                                            LocationAndroidService.IntentType.STOP
+                                            LocationService.IntentType::class.simpleName,
+                                            LocationService.IntentType.STOP
                                     )
                             )
                         }
-                        else                     -> {
-                            mapFragment.activity.startService(Intent(mapFragment.activity.baseContext, LocationAndroidService::class.java)
+                        else                    -> {
+                            mapFragment.activity.startService(Intent(mapFragment.activity.baseContext, LocationService::class.java)
                                     .putExtra(
-                                            LocationAndroidService.IntentType::class.simpleName,
-                                            LocationAndroidService.IntentType.START
+                                            LocationService.IntentType::class.simpleName,
+                                            LocationService.IntentType.START
                                     )
                             )
                         }

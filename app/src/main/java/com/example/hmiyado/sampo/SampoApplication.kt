@@ -1,9 +1,9 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
-import com.example.hmiyado.sampo.repository.compass.CompassService
-import com.example.hmiyado.sampo.repository.compass.CompassServiceImpl
-import com.example.hmiyado.sampo.repository.compass.CompassServiceVirtualImpl
+import com.example.hmiyado.sampo.repository.compass.CompassSensor
+import com.example.hmiyado.sampo.repository.compass.CompassSensorImpl
+import com.example.hmiyado.sampo.repository.compass.CompassSensorVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
 import com.example.hmiyado.sampo.service.LocationSettingReceiver
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
@@ -28,11 +28,11 @@ class SampoApplication : Application(), KodeinAware {
         import(androidModule)
 
         if (BuildConfig.FLAVOR == "mock") {
-            bind<LocationService>() with singleton { LocationServiceVirtualImpl() }
-            bind<CompassService>() with singleton { CompassServiceVirtualImpl() }
+            bind<LocationSensor>() with singleton { LocationSensorVirtualImpl() }
+            bind<CompassSensor>() with singleton { CompassSensorVirtualImpl() }
         } else if (BuildConfig.FLAVOR == "real") {
-            bind<LocationService>() with singleton { LocationServiceImpl(instance()) }
-            bind<CompassService>() with singleton { CompassServiceImpl(instance()) }
+            bind<LocationSensor>() with singleton { LocationSensorImpl(instance()) }
+            bind<CompassSensor>() with singleton { CompassSensorImpl(instance()) }
         }
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
         bind<LocationSettingReceiver>() with provider { LocationSettingReceiver() }

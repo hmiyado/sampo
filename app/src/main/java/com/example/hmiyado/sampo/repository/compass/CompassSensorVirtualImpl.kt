@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  *
  * 仮想的な方位を取得するサービス．
  */
-class CompassServiceVirtualImpl : CompassService {
+class CompassSensorVirtualImpl : CompassSensor {
     private val virtualCompassSubject: Subject<Orientation, Orientation> = PublishSubject<Orientation>()
     private val timerObservable = Observable.interval(5, TimeUnit.SECONDS)
     private var timerSubscription: Subscription = timerObservable.subscribe()

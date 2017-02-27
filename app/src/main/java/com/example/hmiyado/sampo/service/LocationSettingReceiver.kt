@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
 import android.provider.Settings
-import com.example.hmiyado.sampo.repository.location.LocationServiceState
+import com.example.hmiyado.sampo.repository.location.LocationSensorState
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.BroadcastReceiverInjector
 import com.github.salomonbrys.kodein.instance
@@ -24,7 +24,7 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector {
     private val contentResolver: ContentResolver by injector.instance<ContentResolver>()
     private val locationManager: LocationManager by injector.instance<LocationManager>()
 
-    private val locationServiceStateSubject = BehaviorSubject<LocationServiceState>()
+    private val locationServiceStateSubject = BehaviorSubject<LocationSensorState>()
 
     override fun onReceive(context1: Context?, intent: Intent?) {
         this.context = context1
@@ -40,25 +40,25 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector {
         destroyInjector()
     }
 
-    private fun getLocationServiceState(contentResolver: ContentResolver, locationManager: LocationManager): LocationServiceState {
+    private fun getLocationServiceState(contentResolver: ContentResolver, locationManager: LocationManager): LocationSensorState {
         val mode = Settings.Secure.getInt(contentResolver, Settings.Secure.LOCATION_MODE)
         if (mode == Settings.Secure.LOCATION_MODE_OFF) {
             //            Timber.d("Location mode off")
-            return LocationServiceState.OFF
+            return LocationSensorState.OFF
         }
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             //            "High accuracy. Uses GPS, Wi-Fi, and mobile networks to determine location";
-            return LocationServiceState.HIGH_ACCURACY
+            return LocationSensorState.HIGH_ACCURACY
         } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //            "Device only. Uses GPS to determine location";
-            return LocationServiceState.DEVICE_ONLY
+            return LocationSensorState.DEVICE_ONLY
         } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             //            "Battery saving. Uses Wi-Fi and mobile networks to determine location";
-            return LocationServiceState.BATTERY_SAVING
+            return LocationSensorState.BATTERY_SAVING
         } else {
-            return LocationServiceState.ON
+            return LocationSensorState.ON
         }
     }
 
@@ -66,5 +66,5 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector {
         locationServiceStateSubject.onNext(getLocationServiceState(contentResolver, locationManager))
     }
 
-    fun onChangeLocationServiceState(): Observable<LocationServiceState> = locationServiceStateSubject.asObservable().distinctUntilChanged().share()
+    fun onChangeLocationServiceState(): Observable<LocationSensorState> = locationServiceStateSubject.asObservable().distinctUntilChanged().share()
 }

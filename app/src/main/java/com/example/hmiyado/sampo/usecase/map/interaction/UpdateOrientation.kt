@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
-import com.example.hmiyado.sampo.repository.compass.CompassService
+import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import timber.log.Timber
@@ -12,7 +12,7 @@ import timber.log.Timber
  * 現在向いている方角から状態へのインタラクション
  */
 class UpdateOrientation(
-        private val compassService: CompassService,
+        private val compassSensor: CompassSensor,
         private val store: MapStore
 ) : Interaction() {
     init {
@@ -20,7 +20,7 @@ class UpdateOrientation(
     }
 
     private fun compassInteraction() =
-            compassService.getCompassService()
+            compassSensor.getCompassService()
                     .subscribe(
                             { store.setOrientation(it) },
                             { Timber.e(it, "error on get compass service") }
