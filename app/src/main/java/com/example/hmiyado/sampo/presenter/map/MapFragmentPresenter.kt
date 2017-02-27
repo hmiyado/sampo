@@ -10,7 +10,6 @@ import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateMapState
 import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateOrientation
 import com.example.hmiyado.sampo.usecase.map.mapview.interaction.DrawMap
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.DrawScale
-import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.UpdateScale
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance
@@ -30,7 +29,7 @@ class MapFragmentPresenter(
     private val useMapViewSource by lazy { mapFragment.mapViewPresenter }
     private val useMapViewSink by lazy { mapFragment.mapViewController }
     private val useCompassViewSink by lazy { mapFragment.compassViewController }
-    private val useScaleViewOutput by lazy { mapFragment.scaleViewController }
+    private val useScaleViewSink by lazy { mapFragment.scaleViewController }
     private val compassService by mapFragment.injector.instance<CompassService>()
 
     fun onStart() {
@@ -40,8 +39,7 @@ class MapFragmentPresenter(
                         UpdateMapState(useMapViewSource, store),
                         UpdateOrientation(compassService, store),
                         DrawCompass(store, useCompassViewSink),
-                        DrawScale(store, useScaleViewOutput),
-                        UpdateScale(store, useScaleViewOutput)
+                        DrawScale(store, useScaleViewSink)
                 )
         ).forEach {
             subscriptions += it.subscriptions
