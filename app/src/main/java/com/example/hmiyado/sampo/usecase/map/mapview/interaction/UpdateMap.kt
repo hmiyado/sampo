@@ -2,7 +2,7 @@ package com.example.hmiyado.sampo.usecase.map.mapview.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSink
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Subscription
 
@@ -12,7 +12,7 @@ import rx.Subscription
  */
 class UpdateMap(
         private val store: MapStore,
-        private val useMapViewOutput: UseMapViewOutput
+        private val useMapViewSink: UseMapViewSink
 ) : Interaction() {
 
     init {
@@ -20,6 +20,6 @@ class UpdateMap(
     }
 
     private fun mapInteraction(): Subscription {
-        return useMapViewOutput.setOnUpdateMapSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle())
+        return useMapViewSink.setOnUpdateMapSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle())
     }
 }

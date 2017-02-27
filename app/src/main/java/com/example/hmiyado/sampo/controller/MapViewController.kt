@@ -8,7 +8,7 @@ import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 import rx.Observable
@@ -18,7 +18,7 @@ import rx.Subscription
  * Created by hmiyado on 2016/12/10.
  * @link MapView に対応するController
  */
-class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapViewOutput {
+class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapViewSink {
     val viewWidth = view.width
     val viewHeight = view.height
 

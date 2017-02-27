@@ -12,7 +12,7 @@ import rx.Observable
  * - 回転角の変化
  * - 縮尺の変化
  */
-interface UseMapViewInput {
+interface UseMapViewSource {
     /**
      * @return 地図をどれだけ回転させたか(radian)のシグナル
      */

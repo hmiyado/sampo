@@ -7,7 +7,7 @@ import android.view.ScaleGestureDetector
 import com.example.hmiyado.sampo.domain.math.Geometry
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.presenter.ViewPresenter
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSource
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import rx.Observable
 import rx.lang.kotlin.PublishSubject
@@ -19,7 +19,7 @@ import timber.log.Timber
  */
 class MapViewPresenter(
         mapView: MapView
-) : ViewPresenter<MapView>(mapView), UseMapViewInput {
+) : ViewPresenter<MapView>(mapView), UseMapViewSource {
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(mapView.context, createGestureDetector())
     private val onScaleBeginSignalSubject = PublishSubject<ScaleGestureDetector>()
     private val onScaleSignalSubject = PublishSubject<ScaleGestureDetector>()

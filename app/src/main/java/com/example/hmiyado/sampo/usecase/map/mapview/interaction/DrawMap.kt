@@ -2,8 +2,8 @@ package com.example.hmiyado.sampo.usecase.map.mapview.interaction
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewOutput
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSink
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSource
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 
 /**
@@ -12,8 +12,8 @@ import com.example.hmiyado.sampo.usecase.map.store.MapStore
  */
 class DrawMap(
         private val store: MapStore,
-        private val useMapViewInput: UseMapViewInput,
-        private val useMapViewOutput: UseMapViewOutput
+        private val useMapViewSource: UseMapViewSource,
+        private val useMapViewSink: UseMapViewSink
 ) : Interaction() {
 
     init {
@@ -21,6 +21,6 @@ class DrawMap(
     }
 
     private fun drawInteraction() {
-        subscriptions += useMapViewOutput.setOnDrawSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle(), store.getFootmarks(), useMapViewInput.getOnDrawSignal())
+        subscriptions += useMapViewSink.setOnDrawSignal(store.getOriginalLocation(), store.getScaleFactor(), store.getRotateAngle(), store.getFootmarks(), useMapViewSource.getOnDrawSignal())
     }
 }

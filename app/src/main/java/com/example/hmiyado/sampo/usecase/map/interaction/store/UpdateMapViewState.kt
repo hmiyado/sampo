@@ -2,7 +2,7 @@ package com.example.hmiyado.sampo.usecase.map.interaction.store
 
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewInput
+import com.example.hmiyado.sampo.usecase.map.mapview.UseMapViewSource
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Subscription
 import java.util.concurrent.TimeUnit
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  * 地図の入力と出力をつなぐ．
  */
 class UpdateMapViewState(
-        private val useMapViewInput: UseMapViewInput,
+        private val useMapViewSource: UseMapViewSource,
         private val store: MapStore
 ) : Interaction() {
 
@@ -23,14 +23,14 @@ class UpdateMapViewState(
     }
 
     private fun rotationInteraction(): Subscription {
-        return useMapViewInput.getOnRotateSignal()
+        return useMapViewSource.getOnRotateSignal()
                 .doOnNext { store.setRotateAngle(it.toDegree()) }
                 .subscribe()
 
     }
 
     private fun scaleInteraction(): Subscription {
-        return useMapViewInput.getOnScaleSignal()
+        return useMapViewSource.getOnScaleSignal()
                 .throttleLast(100, TimeUnit.MILLISECONDS)
                 .doOnNext { store.setScaleFactor(it) }
                 .subscribe()

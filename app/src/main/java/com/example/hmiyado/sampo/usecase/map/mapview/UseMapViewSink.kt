@@ -19,7 +19,7 @@ import rx.Subscription
  *  - 現在地
  *  - その他の地点情報
  */
-interface UseMapViewOutput {
+interface UseMapViewSink {
     fun setOnDrawSignal(
             originalLocationSignal: Observable<Location>,
             scaleSignal: Observable<Float>,
