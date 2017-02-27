@@ -1,10 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.mapview
 
-import android.graphics.Canvas
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.model.Location
-import rx.Observable
-import rx.Subscription
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -20,18 +17,13 @@ import rx.Subscription
  *  - その他の地点情報
  */
 interface UseMapViewSink {
-    fun setOnDrawSignal(
-            originalLocationSignal: Observable<Location>,
-            scaleSignal: Observable<Float>,
-            rotateAngleSignal: Observable<Degree>,
-            footmarksSignal: Observable<List<Location>>,
-            onDrawSignal: Observable<Canvas>
-    ): Subscription
+    data class DrawableMap(
+            val originalLocation: Location,
+            val scaleFactor: Float,
+            val rotateAngle: Degree,
+            val footmarks: List<Location>
+    )
 
-    fun setOnUpdateMapSignal(
-            originalLocationSignal: Observable<Location>,
-            scaleSignal: Observable<Float>,
-            rotateAngleSignal: Observable<Degree>
-    ): Subscription
+    fun draw(drawableMap: DrawableMap)
 }
 

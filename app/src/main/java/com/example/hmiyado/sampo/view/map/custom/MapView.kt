@@ -3,6 +3,7 @@
 package com.example.hmiyado.sampo.view.map.custom
 
 import android.content.Context
+import android.graphics.Canvas
 import android.view.MotionEvent
 import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
@@ -21,6 +22,12 @@ class MapView(context: Context) : CanvasView(context) {
     }
     val controller: MapViewController by kotlin.lazy {
         MapViewController(this)
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        canvas ?: return
+        controller.draw(canvas)
     }
 
     fun getOnTouchSignal(): Observable<MotionEvent> {

@@ -7,10 +7,9 @@ import com.example.hmiyado.sampo.repository.location.LocationServiceState
 import com.example.hmiyado.sampo.service.LocationAndroidService
 import com.example.hmiyado.sampo.usecase.map.compassview.interaction.DrawCompass
 import com.example.hmiyado.sampo.usecase.map.compassview.interaction.UpdateCompass
-import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateMapViewState
+import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateMapState
 import com.example.hmiyado.sampo.usecase.map.interaction.store.UpdateOrientation
 import com.example.hmiyado.sampo.usecase.map.mapview.interaction.DrawMap
-import com.example.hmiyado.sampo.usecase.map.mapview.interaction.UpdateMap
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.DrawScale
 import com.example.hmiyado.sampo.usecase.map.scaleview.interaction.UpdateScale
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
@@ -29,8 +28,8 @@ class MapFragmentPresenter(
 ) {
     private val subscriptions = CompositeSubscription()
     private val store: MapStore by mapFragment.injector.instance()
-    private val useMapViewInput by lazy { mapFragment.mapViewPresenter }
-    private val useMapViewOutput by lazy { mapFragment.mapViewController }
+    private val useMapViewSource by lazy { mapFragment.mapViewPresenter }
+    private val useMapViewSink by lazy { mapFragment.mapViewController }
     private val useCompassViewInput by lazy { mapFragment.compassViewPresenter }
     private val useCompassViewOutput by lazy { mapFragment.compassViewController }
     private val useScaleViewInput by lazy { mapFragment.scaleViewPresenter }
@@ -40,9 +39,8 @@ class MapFragmentPresenter(
     fun onStart() {
         Observable.from(
                 listOf(
-                        DrawMap(store, useMapViewInput, useMapViewOutput),
-                        UpdateMapViewState(useMapViewInput, store),
-                        UpdateMap(store, useMapViewOutput),
+                        DrawMap(store, useMapViewSink),
+                        UpdateMapState(useMapViewSource, store),
                         UpdateOrientation(compassService, store),
                         DrawCompass(store, useCompassViewInput, useCompassViewOutput),
                         UpdateCompass(store, useCompassViewOutput),

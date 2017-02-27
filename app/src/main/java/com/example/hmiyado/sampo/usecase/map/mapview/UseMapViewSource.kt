@@ -1,6 +1,5 @@
 package com.example.hmiyado.sampo.usecase.map.mapview
 
-import android.graphics.Canvas
 import com.example.hmiyado.sampo.domain.math.Radian
 import rx.Observable
 
@@ -22,6 +21,4 @@ interface UseMapViewSource {
      * @return 拡大率のシグナル
      */
     fun getOnScaleSignal(): Observable<Float>
-
-    fun getOnDrawSignal(): Observable<Canvas>
 }
