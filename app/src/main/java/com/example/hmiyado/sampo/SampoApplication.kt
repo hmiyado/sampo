@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo
 
 import android.app.Application
+import com.example.hmiyado.sampo.controller.common.IntentDispatcher
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.repository.compass.CompassSensorImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensorVirtualImpl
@@ -37,6 +38,7 @@ class SampoApplication : Application(), KodeinAware {
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
         bind<LocationSettingReceiver>() with provider { LocationSettingReceiver() }
         bind<MapStore>() with singleton { MapStoreImpl() }
+        bind<IntentDispatcher>() with singleton { IntentDispatcher(applicationContext) }
     }
 
 
@@ -49,7 +51,7 @@ class SampoApplication : Application(), KodeinAware {
                 .name(BuildConfig.BUILD_TYPE + BuildConfig.FLAVOR)
                 .schemaVersion(1)
                 .build()
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Realm.deleteRealm(realmConfig)
         }
         Realm.setDefaultConfiguration(realmConfig)

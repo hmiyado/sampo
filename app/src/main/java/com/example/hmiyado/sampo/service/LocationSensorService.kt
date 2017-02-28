@@ -6,6 +6,8 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.IBinder
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
@@ -26,10 +28,15 @@ import timber.log.Timber
  * バックグラウンドで位置情報を取得，更新してくれるサービス．
  * 通知欄から操作できる．
  */
-class LocationService : Service(), ServiceInjector {
+class LocationSensorService : Service(), ServiceInjector {
     enum class IntentType {
         START,
-        STOP
+        STOP;
+
+        fun toIntent(context: Context): Intent {
+            return Intent(context, LocationSensorService::class.java)
+                    .putExtra(IntentType::class.simpleName, this)
+        }
     }
 
     override val injector: KodeinInjector = KodeinInjector()
@@ -50,14 +57,24 @@ class LocationService : Service(), ServiceInjector {
     }
 
     private fun createCloseAction(): Notification.Action {
-        val notifyIntent = Intent(this, LocationService::class.java)
-                .putExtra(IntentType::class.simpleName, IntentType.STOP)
+        val notifyIntent = IntentType.STOP.toIntent(this)
         val pendingIntent = PendingIntent.getService(this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        return Notification.Action.Builder(
-                android.R.drawable.ic_menu_close_clear_cancel,
-                IntentType.STOP.name.toLowerCase(),
-                pendingIntent
-        ).build()
+
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Notification.Action.Builder(
+                    Icon.createWithResource(baseContext, android.R.drawable.ic_menu_close_clear_cancel),
+                    IntentType.STOP.name.toLowerCase(),
+                    pendingIntent
+            )
+        } else {
+            Notification.Action.Builder(
+                    android.R.drawable.ic_menu_close_clear_cancel,
+                    IntentType.STOP.name.toLowerCase(),
+                    pendingIntent
+            )
+        }
+
+        return builder.build()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -67,31 +84,34 @@ class LocationService : Service(), ServiceInjector {
         val intentType = intent.getSerializableExtra(IntentType::class.simpleName) as IntentType
         Timber.d("Intent: %s", intentType)
         when (intentType) {
-            LocationService.IntentType.START -> {
-                val notification = Notification.Builder(applicationContext)
-                        .setVisibility(Notification.VISIBILITY_PUBLIC)
-                        .addAction(createCloseAction())
-                        .setStyle(
-                                Notification.MediaStyle()
-                                        .setShowActionsInCompactView(0)
-                        )
-                        .setContentTitle("content title")
-                        .setContentText("content text")
-                        .setSmallIcon(android.R.drawable.ic_dialog_info)
-                        .build()
-                Timber.d(notification.toString())
+            LocationSensorService.IntentType.START -> {
+                val notification = createNotification()
                 notificationManagerFactory(baseContext).notify(notification.hashCode(), notification)
                 startForeground(notification.hashCode(), notification)
                 locationSensor.startLocationObserve()
                 return START_STICKY
             }
-            LocationService.IntentType.STOP  -> {
+            LocationSensorService.IntentType.STOP  -> {
                 notificationManagerFactory(this).cancelAll()
                 locationSensor.stopLocationObserve()
                 stopSelf()
                 return START_NOT_STICKY
             }
         }
+    }
+
+    private fun createNotification(): Notification {
+        return Notification.Builder(applicationContext)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .addAction(createCloseAction())
+                .setStyle(
+                        Notification.MediaStyle()
+                                .setShowActionsInCompactView(0)
+                )
+                .setContentTitle("content title")
+                .setContentText("content text")
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .build()
     }
 
     override fun onDestroy() {

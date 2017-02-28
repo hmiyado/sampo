@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.example.hmiyado.sampo.controller.CompassViewController
 import com.example.hmiyado.sampo.controller.MapViewController
 import com.example.hmiyado.sampo.controller.ScaleViewController
+import com.example.hmiyado.sampo.controller.common.IntentDispatcher
 import com.example.hmiyado.sampo.presenter.map.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
 import com.example.hmiyado.sampo.service.LocationSettingReceiver
@@ -52,6 +53,7 @@ class MapFragment : RxFragment(), KodeinInjected {
     val scaleViewController: ScaleViewController by lazy { find<ScaleView>(MapFragmentUi.scaleViewId).controller }
 
     val locationSettingReceiver: LocationSettingReceiver by instance()
+    val intentDispatcher: IntentDispatcher by instance()
     private val locationManager: LocationManager by instance()
     private val contentResolver: ContentResolver by instance()
 

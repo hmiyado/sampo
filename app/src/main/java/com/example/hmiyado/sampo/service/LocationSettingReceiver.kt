@@ -7,6 +7,7 @@ import android.content.Intent
 import android.location.LocationManager
 import android.provider.Settings
 import com.example.hmiyado.sampo.repository.location.LocationSensorState
+import com.example.hmiyado.sampo.usecase.map.UseLocationSetting
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.BroadcastReceiverInjector
 import com.github.salomonbrys.kodein.instance
@@ -16,7 +17,7 @@ import rx.lang.kotlin.BehaviorSubject
 /**
  * Created by hmiyado on 2017/02/25.
  */
-class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector {
+class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector, UseLocationSetting.Source {
     override val injector: KodeinInjector = KodeinInjector()
 
     override var context: Context? = null
@@ -65,6 +66,8 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector {
     fun setLocationServiceState(contentResolver: ContentResolver, locationManager: LocationManager) {
         locationServiceStateSubject.onNext(getLocationServiceState(contentResolver, locationManager))
     }
+
+    override fun getLocationSettingChangedSignal(): Observable<LocationSensorState> = locationServiceStateSubject.asObservable().distinctUntilChanged().share()
 
     fun onChangeLocationServiceState(): Observable<LocationSensorState> = locationServiceStateSubject.asObservable().distinctUntilChanged().share()
 }
