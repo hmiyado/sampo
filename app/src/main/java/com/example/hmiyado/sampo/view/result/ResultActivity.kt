@@ -60,9 +60,10 @@ class ResultActivity : RxAppCompatActivity() {
                     .subscribe({ resultFragmentType ->
                         Timber.d(resultFragmentType.toString())
                         when (resultFragmentType) {
-                            ResultFragmentType.Menu  -> commitFragment(ResultMenuFragment())
-                            ResultFragmentType.Realm -> commitFragment(ResultRepositoryFragment())
-                            else                     -> {
+                            ResultFragmentType.Menu    -> commitFragment(ResultMenuFragment())
+                            ResultFragmentType.Realm   -> commitFragment(ResultRepositoryFragment())
+                            ResultFragmentType.Summary -> commitFragment(ResultSummaryFragment())
+                            else                       -> {
                             }
                         }
                     }, {}, {

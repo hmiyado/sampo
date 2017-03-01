@@ -21,6 +21,7 @@ class MapStoreImpl : MapStore {
 
     init {
         originalLocationSubject
+                .filter { it != Location.empty() }
                 .subscribe { footmarksSubject.onNext(footmarksSubject.value + it) }
     }
 

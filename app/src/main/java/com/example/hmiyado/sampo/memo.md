@@ -149,7 +149,9 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] slack 連携
 - [] デザイン
 
+## 3月の実装予定
 - 4月までの実装: ゲーム性の向上
+    - [] 結果画面の再構築(脱リストビュー)
     - [] 距離計算
     - [] エリア計算
         - [] エリア計算の方法考案
@@ -157,6 +159,26 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [] アチーブメントの設定
     - [] SNS 連携
 
+## 結果画面の再構築
+結果をぱっとみて
+
+- 移動距離情報　さんぽ
+    - 総距離
+    - 直近（１週間？）の距離
+    - 緻密に計算，ファジーに出力
+- なわばり（範囲情報）
+    - 1ヶ月
+    - 1週間
+    - 緻密に計算，ファジーに出力
+- その他への導線
+    - Achievement
+    - Share
+    - Repository(on develop)
+
+参考資料
+https://www.press.tokai.ac.jp/webtokai/kaiyuwatarikisou09.pdf
+
+## 2月の実装予定
 - 3月までの実装: 位置情報の記録
     - [x] production/develop でビルド環境を変える
         - 特に，Repository を変える

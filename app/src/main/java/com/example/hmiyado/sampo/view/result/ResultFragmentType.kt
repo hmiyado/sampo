@@ -5,5 +5,6 @@ package com.example.hmiyado.sampo.view.result
  */
 enum class ResultFragmentType {
     Menu,
+    Summary,
     Realm
 }

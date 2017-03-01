@@ -5,5 +5,6 @@ package com.example.hmiyado.sampo.domain.result
  */
 enum class ResultMenuItem {
     Realm,
+    Summary,
     Share
 }
