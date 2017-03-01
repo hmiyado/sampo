@@ -4,11 +4,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.hmiyado.sampo.domain.math.Degree
-import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
+import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.usecase.map.UseMapView
+import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 
@@ -16,13 +16,15 @@ import org.jetbrains.anko.dip
  * Created by hmiyado on 2016/12/10.
  * @link MapView に対応するController
  */
-class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapView.Sink {
-    private var drawableMap: UseMapView.Sink.DrawableMap = UseMapView.Sink.DrawableMap(
+class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
+    private var drawableMap: Sink.DrawableMap = Sink.DrawableMap(
             originalLocation = Location.empty(),
             scaleFactor = 1.0f,
             rotateAngle = Degree(0),
             footmarks = emptyList()
     )
+
+    private lateinit var measurement: Measurement
 
     private fun createPaint(colorInt: Int, strokeWidth: Float): Paint {
         val paintMapPoint = Paint()
@@ -70,7 +72,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapVi
         }
     }
 
-    override fun draw(drawableMap: UseMapView.Sink.DrawableMap) {
+    override fun draw(drawableMap: Sink.DrawableMap) {
         this.drawableMap = drawableMap
         invalidate()
     }
@@ -82,8 +84,6 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapVi
         drawMesh(canvas)
         drawOriginalLocation(canvas)
 
-        val measurement = SphericalTrigonometry
-
         drawableMap.footmarks.forEach {
             val distance = measurement.determinePathwayDistance(drawableMap.originalLocation, it)
             val azimuth = measurement.determineAzimuth(drawableMap.originalLocation, it)
@@ -91,5 +91,9 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), UseMapVi
             val y = distance * sin(azimuth)
             drawFootmark(canvas, (x / drawableMap.scaleFactor).toFloat(), (y / drawableMap.scaleFactor).toFloat())
         }
+    }
+
+    override fun setMeasurement(measurement: Measurement) {
+        this.measurement = measurement
     }
 }

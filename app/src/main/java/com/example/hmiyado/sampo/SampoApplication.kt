@@ -2,6 +2,8 @@ package com.example.hmiyado.sampo
 
 import android.app.Application
 import com.example.hmiyado.sampo.controller.common.IntentDispatcher
+import com.example.hmiyado.sampo.domain.math.Measurement
+import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.repository.compass.CompassSensorImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensorVirtualImpl
@@ -39,6 +41,7 @@ class SampoApplication : Application(), KodeinAware {
         bind<LocationSettingReceiver>() with provider { LocationSettingReceiver() }
         bind<MapStore>() with singleton { MapStoreImpl() }
         bind<IntentDispatcher>() with singleton { IntentDispatcher(applicationContext) }
+        bind<Measurement>() with singleton { SphericalTrigonometry }
     }
 
 

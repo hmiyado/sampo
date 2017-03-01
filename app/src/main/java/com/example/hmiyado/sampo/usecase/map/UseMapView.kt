@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map
 
 import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.domain.model.Location
 import rx.Observable
@@ -30,5 +31,7 @@ interface UseMapView {
         )
 
         fun draw(drawableMap: DrawableMap)
+
+        fun setMeasurement(measurement: Measurement): Unit
     }
 }

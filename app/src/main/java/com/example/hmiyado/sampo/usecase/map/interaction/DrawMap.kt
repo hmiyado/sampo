@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
+import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseMapView
@@ -13,10 +14,12 @@ import rx.Subscription
  */
 class DrawMap(
         private val store: MapStore,
+        measurement: Measurement,
         private val useMapViewSink: UseMapView.Sink
 ) : Interaction() {
 
     init {
+        useMapViewSink.setMeasurement(measurement)
         subscriptions += drawInteraction()
     }
 

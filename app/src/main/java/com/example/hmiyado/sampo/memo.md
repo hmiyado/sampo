@@ -43,8 +43,10 @@ MVP+DDD & Clean Architecture
 - controller
     - usecase の UseHogeViewSink の具体的な実装
     - (T) -> Unit のような返り値のないメソッドの集合
+- service
+    - android で定義される service に対応する
 - view
-    - Activiy, Fragment, カスタムビューがおいてある
+    - Activity, Fragment, カスタムビューがおいてある
         - ロジックはだいたい presenter や controller に移譲する
         - 入出力を頑張ってきれいにわける
 
@@ -93,7 +95,7 @@ Fragmentを切り替えてなんとかする
     - 時間情報の取得
     - 記録
     - バックグラウンドでの取得
-1. [ ] 記録の閲覧(1 month)
+1. [x] 記録の閲覧(1 month)
 1. [ ] 地点の影響範囲決定(1 month)
 1. [ ] ポイントの登録(1 month)
 1. [ ] 試用・リリース(1 month)
@@ -112,9 +114,9 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [x] 地点のテスト追加
     - たぶんバグってる
     - 0, 境界値(経度はプラマイ180度，緯度はプラマイ90度，それぞれと超える場合)，例外値(経緯度が範囲外の場合)，経路の方向(8方向は入れたい)
-- [] 地点の経時変化をSubscribeする
+- [x] 地点の経時変化をSubscribeする
     - [x] Viewに反映されるようにする
-    - [] Repositoryに反映されるようにする
+    - [x] Repositoryに反映されるようにする
         - [x] Realm に正しいスレッドからアクセスする
 - [] mesh のscaleを定義する
     - scaleに従って，meshがいい感じに変化する(100m単位，1km単位などで切り替えるとよさそう？)
@@ -135,7 +137,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [x] 画面を回転するとぶっ壊れる問題
     - 回転するたびにフラグメントが再生成されているのが原因．
 - [] 結果を表示できるActivity，Fragmentを作る
-    - [] Realm のリスト
+    - [x] Realm のリスト
     - [] 距離計算結果
     - [] エリア計算結果
 - [] 累計距離計算
@@ -147,16 +149,24 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] slack 連携
 - [] デザイン
 
-- 3月までの実装
+- 4月までの実装: ゲーム性の向上
+    - [] 距離計算
+    - [] エリア計算
+        - [] エリア計算の方法考案
+        - [] 実装
+    - [] アチーブメントの設定
+    - [] SNS 連携
+
+- 3月までの実装: 位置情報の記録
     - [x] production/develop でビルド環境を変える
         - 特に，Repository を変える
     - [x] Repository の確認をできるようにする
         - see 結果を表示できるActivity，Fragmentを作る
 
 ## 位置情報の設定
-- [] 位置情報の設定を取得できる
-- [] 位置情報取得設定がONなら，取得を行う
-- [] 位置情報取得設定がOFFなら，取得しない
+- [x] 位置情報の設定を取得できる
+- [x] 位置情報取得設定がONなら，取得を行う
+- [x] 位置情報取得設定がOFFなら，取得しない
 
 ### 位置情報のシステム設定を取得する
 LOCATION_MODE API に LocationManager.MODE_CHANGED_ACTION が対応している．

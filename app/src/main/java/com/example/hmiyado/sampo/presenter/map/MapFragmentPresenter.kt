@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.presenter.map
 
+import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.usecase.map.interaction.*
@@ -24,12 +25,13 @@ class MapFragmentPresenter(
     private val useScaleViewSink by lazy { mapFragment.scaleViewController }
     private val useLocationSetting by lazy { mapFragment.locationSettingReceiver }
     private val useLocationSensor by lazy { mapFragment.intentDispatcher }
+    private val measurement by  mapFragment.injector.instance<Measurement>()
     private val compassService by mapFragment.injector.instance<CompassSensor>()
 
     fun onStart() {
         Observable.from(
                 listOf(
-                        DrawMap(store, useMapViewSink),
+                        DrawMap(store, measurement, useMapViewSink),
                         UpdateMapState(useMapViewSource, store),
                         UpdateOrientation(compassService, store),
                         DrawCompass(store, useCompassViewSink),
