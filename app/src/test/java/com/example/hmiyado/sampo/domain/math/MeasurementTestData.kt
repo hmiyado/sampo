@@ -53,6 +53,17 @@ data class MeasurementTestData(
                 expectedAzimuth = 89.9997,
                 errorRate = 0.005
         )
+
+        val testData3 = MeasurementTestData(
+                departureLatitude = Degree(35.70320932).toRadian(),
+                departureLongitude = Degree(139.78148926).toRadian(),
+                destinationLatitude = Degree(35.70320448).toRadian(),
+                destinationLongitude = Degree(139.78107344).toRadian(),
+                expectedDistance = 37.636,
+                expectedAzimuth = 269.182744444444,
+                errorRate = 0.005
+        )
+
         val testPathwayToSouthWest = MeasurementTestData(
                 departureLatitude = Degree(0).toRadian(),
                 departureLongitude = Degree(0).toRadian(),

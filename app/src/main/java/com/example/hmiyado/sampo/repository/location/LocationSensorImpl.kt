@@ -56,6 +56,9 @@ class LocationSensorImpl(private val locationManager: LocationManager) : Locatio
 
     private fun createLocationListener(): LocationListener {
         return object : LocationListener {
+            val twoMinutes = 2 * 60 * 1000
+            var currentLocation: AndroidLocation? = null
+
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
                 when (status) {
                     LocationProvider.AVAILABLE               -> Timber.v("Status AVAILABLE")
@@ -74,8 +77,43 @@ class LocationSensorImpl(private val locationManager: LocationManager) : Locatio
             }
 
             override fun onLocationChanged(location: android.location.Location) {
-                val sampoLocation = convertFromAndroidLocationToSampoLocation(location)
-                locationSubject.onNext(sampoLocation)
+                if (currentLocation == null) {
+                    currentLocation = location
+                    return
+                }
+                if (isBetterLocation(location, currentLocation)) {
+                    val sampoLocation = convertFromAndroidLocationToSampoLocation(location)
+                    locationSubject.onNext(sampoLocation)
+                }
+            }
+
+            // https://developer.android.com/guide/topics/location/strategies.html
+            private fun isBetterLocation(androidLocation: AndroidLocation, currentAndroidLocation: AndroidLocation?): Boolean {
+                currentAndroidLocation ?: return true
+
+                val timeDelta = androidLocation.time - currentAndroidLocation.time
+                val isSignificantOlder = timeDelta < twoMinutes
+                val isNewer = timeDelta > 0
+
+                if (isSignificantOlder) {
+                    return false
+                }
+
+                val accuracyDelta = androidLocation.accuracy - currentAndroidLocation.accuracy
+                val isLessAccurate = accuracyDelta > 0
+                val isMoreAccurate = accuracyDelta < 0
+                val isSignificantlyLessAccurate = accuracyDelta > 200
+
+                val isFromSameProvider = androidLocation.provider == currentAndroidLocation.provider
+
+                if (isMoreAccurate) {
+                    return true
+                } else if (isNewer && !isLessAccurate) {
+                    return true
+                } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+                    return true
+                }
+                return false
             }
         }
     }

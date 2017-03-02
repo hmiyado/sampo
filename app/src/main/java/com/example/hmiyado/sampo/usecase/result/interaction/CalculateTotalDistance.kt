@@ -28,12 +28,16 @@ class CalculateTotalDistance(
                     if (it.first == Location.empty() || it.second == Location.empty()) {
                         0.0
                     } else {
-                        Timber.d(it.toString())
-                        measurement.determinePathwayDistance(it.first, it.second)
+                        val distance = measurement.determinePathwayDistance(it.first, it.second)
+                        Timber.d(it.toString() + " = " + distance.toString())
+                        distance
                     }
                 }
                 // すべての距離を足す
-                .reduce { distance1, distance2 -> distance1 + distance2 }
+                .reduce { distance1, distance2 ->
+                    Timber.d("dist1=%s, dist2=%s", distance1.toString(), distance2.toString())
+                    distance1 + distance2
+                }
                 .subscribe {
                     useTotalDistanceViewer.show(it)
                 }

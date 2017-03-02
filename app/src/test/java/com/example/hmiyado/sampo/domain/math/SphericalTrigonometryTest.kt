@@ -30,6 +30,11 @@ class SphericalTrigonometryTest {
     }
 
     @Test
+    fun testByTestData3() {
+        MeasurementTestData.testData3.testPathwayDistanceBy(SphericalTrigonometry)
+    }
+
+    @Test
     fun testPathwayToSouthWest() {
         MeasurementTestData.testPathwayToSouthWest.testPathwayDistanceBy(SphericalTrigonometry)
         MeasurementTestData.testPathwayToSouthWest.testAzimuthBy(SphericalTrigonometry)
