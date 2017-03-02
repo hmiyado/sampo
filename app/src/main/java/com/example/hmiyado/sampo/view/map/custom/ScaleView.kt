@@ -2,7 +2,7 @@ package com.example.hmiyado.sampo.view.map.custom
 
 import android.content.Context
 import android.graphics.Canvas
-import com.example.hmiyado.sampo.controller.ScaleViewController
+import com.example.hmiyado.sampo.controller.map.ScaleViewController
 import com.example.hmiyado.sampo.presenter.map.ScaleViewPresenter
 
 /**

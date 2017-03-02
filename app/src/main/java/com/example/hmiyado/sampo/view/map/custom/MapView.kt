@@ -5,7 +5,7 @@ package com.example.hmiyado.sampo.view.map.custom
 import android.content.Context
 import android.graphics.Canvas
 import android.view.MotionEvent
-import com.example.hmiyado.sampo.controller.MapViewController
+import com.example.hmiyado.sampo.controller.map.MapViewController
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
 import com.jakewharton.rxbinding.view.RxView
 import rx.Observable

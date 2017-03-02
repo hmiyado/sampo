@@ -1,6 +1,7 @@
-package com.example.hmiyado.sampo.controller
+package com.example.hmiyado.sampo.controller.result
 
 import android.widget.TextView
+import com.example.hmiyado.sampo.controller.ViewController
 import com.example.hmiyado.sampo.usecase.result.UseTotalDistanceViewer
 
 /**

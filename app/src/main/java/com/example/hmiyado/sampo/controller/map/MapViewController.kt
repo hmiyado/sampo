@@ -1,8 +1,9 @@
-package com.example.hmiyado.sampo.controller
+package com.example.hmiyado.sampo.controller.map
 
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.example.hmiyado.sampo.controller.ViewController
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.cos

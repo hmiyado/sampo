@@ -1,8 +1,9 @@
-package com.example.hmiyado.sampo.controller
+package com.example.hmiyado.sampo.controller.map
 
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.example.hmiyado.sampo.controller.ViewController
 import com.example.hmiyado.sampo.usecase.map.UseScaleView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.custom.ScaleView

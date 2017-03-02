@@ -1,7 +1,8 @@
-package com.example.hmiyado.sampo.controller
+package com.example.hmiyado.sampo.controller.map
 
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import com.example.hmiyado.sampo.controller.ViewController
 import com.example.hmiyado.sampo.domain.model.Orientation
 import com.example.hmiyado.sampo.usecase.map.UseCompassView
 import com.example.hmiyado.sampo.view.map.custom.CompassView

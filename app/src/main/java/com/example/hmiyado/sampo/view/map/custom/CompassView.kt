@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.view.map.custom
 
 import android.content.Context
-import com.example.hmiyado.sampo.controller.CompassViewController
+import com.example.hmiyado.sampo.controller.map.CompassViewController
 import com.example.hmiyado.sampo.presenter.map.CompassViewPresenter
 
 /**

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.hmiyado.sampo.controller.TotalDistanceViewController
+import com.example.hmiyado.sampo.controller.result.TotalDistanceViewController
 import com.example.hmiyado.sampo.presenter.result.ResultSummaryFragmentPresenter
 import com.example.hmiyado.sampo.view.result.ui.ResultSummaryFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
