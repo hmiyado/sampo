@@ -82,6 +82,7 @@ class LocationSensorImpl(private val locationManager: LocationManager) : Locatio
                     return
                 }
                 if (isBetterLocation(location, currentLocation)) {
+                    currentLocation = location
                     val sampoLocation = convertFromAndroidLocationToSampoLocation(location)
                     locationSubject.onNext(sampoLocation)
                 }

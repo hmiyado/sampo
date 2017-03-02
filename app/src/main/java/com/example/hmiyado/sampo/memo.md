@@ -159,7 +159,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [] アチーブメントの設定
     - [] SNS 連携
 
-## 結果画面の再構築
+### 結果画面の再構築
 結果をぱっとみて
 
 - 移動距離情報　さんぽ
@@ -177,6 +177,11 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 
 参考資料
 https://www.press.tokai.ac.jp/webtokai/kaiyuwatarikisou09.pdf
+
+### 距離計算
+Android の Location の accuracy はその範囲内に入っている確率が 68% であるような円の半径を表す．
+のだが，余裕で accuracy  が 200 とかになってしまうことがわかった．
+
 
 ## 2月の実装予定
 - 3月までの実装: 位置情報の記録

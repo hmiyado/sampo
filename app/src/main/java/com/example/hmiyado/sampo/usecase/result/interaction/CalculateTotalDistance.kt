@@ -35,7 +35,6 @@ class CalculateTotalDistance(
                 }
                 // すべての距離を足す
                 .reduce { distance1, distance2 ->
-                    Timber.d("dist1=%s, dist2=%s", distance1.toString(), distance2.toString())
                     distance1 + distance2
                 }
                 .subscribe {
