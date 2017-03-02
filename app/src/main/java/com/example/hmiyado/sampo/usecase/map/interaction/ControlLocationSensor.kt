@@ -5,6 +5,7 @@ import com.example.hmiyado.sampo.repository.location.LocationSensorState
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseLocationSensor
 import com.example.hmiyado.sampo.usecase.map.UseLocationSetting
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/03/01.
@@ -16,12 +17,13 @@ class ControlLocationSensor(
     init {
         subscriptions += useLocationSetting.getLocationSettingChangedSignal()
                 .subscribe {
+                    Timber.d(it.toString())
                     when (it) {
-                        LocationSensorState.OFF -> {
-                            useLocationSensor.stop()
-                        }
-                        else                    -> {
+                        LocationSensorState.HIGH_ACCURACY -> {
                             useLocationSensor.start()
+                        }
+                        else                              -> {
+                            useLocationSensor.stop()
                         }
                     }
                 }

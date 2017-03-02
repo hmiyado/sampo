@@ -4,10 +4,10 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.location.LocationProvider
 import android.os.Bundle
-import android.util.Log
 import org.threeten.bp.Instant
 import rx.Observable
 import rx.subjects.PublishSubject
+import timber.log.Timber
 import android.location.Location as AndroidLocation
 import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
 
@@ -58,19 +58,19 @@ class LocationSensorImpl(private val locationManager: LocationManager) : Locatio
         return object : LocationListener {
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
                 when (status) {
-                    LocationProvider.AVAILABLE               -> Log.v("Status", "AVAILABLE")
-                    LocationProvider.OUT_OF_SERVICE          -> Log.v("Status", "OUT_OF_SERVICE")
-                    LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.v("Status", "TEMPORARILY_UNAVAILABLE")
+                    LocationProvider.AVAILABLE               -> Timber.v("Status AVAILABLE")
+                    LocationProvider.OUT_OF_SERVICE          -> Timber.v("Status OUT_OF_SERVICE")
+                    LocationProvider.TEMPORARILY_UNAVAILABLE -> Timber.v("Status TEMPORARILY_UNAVAILABLE")
                 }
-                Log.d("locationlistener", "onsStatusChanged")
+                Timber.d("onStatusChanged")
             }
 
             override fun onProviderEnabled(p0: String?) {
-                Log.d("locationlistener", "onsProviderEnabled")
+                Timber.d("onProviderEnabled")
             }
 
             override fun onProviderDisabled(p0: String?) {
-                Log.d("locationlistener", "onsProviderDisabled")
+                Timber.d("onProviderDisabled")
             }
 
             override fun onLocationChanged(location: android.location.Location) {
