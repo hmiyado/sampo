@@ -215,6 +215,14 @@ Area に Location が1つ増えると，Area の territory score が1増える�
 以下，n回の隣接Areaのterritory scoreが増加する（？　連鎖影響の実装が面倒そうなのでやめといたほうがよさげ）．
 territory score　に応じて，なわばりの色を変える
 
+## Area, Territory のユースケース
+- 地点 → Area を特定
+- 地点をAreaに登録
+- Area の territory score が増える
+
+- Area
+    - 分割数(static)
+    - 
 
 ## 2月の実装予定
 - 3月までの実装: 位置情報の記録
