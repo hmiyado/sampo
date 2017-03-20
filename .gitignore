@@ -2,8 +2,11 @@
 .idea
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
+app/libs/
+app/src/main/res/drawable/
+app/src/test/java/com/example/hmiyado/sampo/kotlin/
+projectFilesBackup/
+projectFilesBackup1/
