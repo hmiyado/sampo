@@ -219,10 +219,16 @@ territory score　に応じて，なわばりの色を変える
 - 地点 → Area を特定
 - 地点をAreaに登録
 - Area の territory score が増える
+- score に応じて
 
 - Area
     - 分割数(static)
     - 
+
+- 新しい Location がくる
+- Location が属する Territory を特定する
+- Territory に Location を追加する
+- Territory のスコアが更新される
 
 ## 2月の実装予定
 - 3月までの実装: 位置情報の記録
