@@ -6,7 +6,7 @@ import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryScorer
 import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
 import com.example.hmiyado.sampo.usecase.DefaultObserver
-import com.example.hmiyado.sampo.usecase.UseCase
+import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Observable
 import rx.Observer
@@ -17,7 +17,7 @@ import rx.Observer
 class UpdateTerritory(
         private val mapStore: MapStore,
         private val scorer: TerritoryScorer
-) : UseCase<List<Territory>>() {
+) : Interaction<List<Territory>>() {
 
     override fun buildProducer(): Observable<List<Territory>> {
         return mapStore.getOriginalLocation()

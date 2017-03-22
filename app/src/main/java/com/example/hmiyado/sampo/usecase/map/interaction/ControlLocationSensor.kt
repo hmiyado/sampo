@@ -1,10 +1,12 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationSensorState
+import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseLocationSensor
 import com.example.hmiyado.sampo.usecase.map.UseLocationSetting
+import rx.Observable
+import rx.Observer
 import timber.log.Timber
 
 /**
@@ -13,19 +15,22 @@ import timber.log.Timber
 class ControlLocationSensor(
         private val useLocationSetting: UseLocationSetting.Source,
         private val useLocationSensor: UseLocationSensor.Sink
-) : Interaction() {
-    init {
-        subscriptions += useLocationSetting.getLocationSettingChangedSignal()
-                .subscribe {
-                    Timber.d(it.toString())
-                    when (it) {
-                        LocationSensorState.HIGH_ACCURACY -> {
-                            useLocationSensor.start()
-                        }
-                        else                              -> {
-                            useLocationSensor.stop()
-                        }
-                    }
+) : Interaction<LocationSensorState>() {
+    override fun buildProducer(): Observable<LocationSensorState> {
+        return useLocationSetting.getLocationSettingChangedSignal()
+    }
+
+    override fun buildConsumer(): Observer<LocationSensorState> {
+        return DefaultObserver({
+            Timber.d(it.toString())
+            when (it) {
+                LocationSensorState.HIGH_ACCURACY -> {
+                    useLocationSensor.start()
                 }
+                else                              -> {
+                    useLocationSensor.stop()
+                }
+            }
+        })
     }
 }

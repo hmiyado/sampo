@@ -1,9 +1,12 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.domain.model.Orientation
+import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseCompassView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
+import rx.Observable
+import rx.Observer
 
 /**
  * Created by hmiyado on 2016/12/21.
@@ -13,10 +16,13 @@ import com.example.hmiyado.sampo.usecase.map.store.MapStore
 class DrawCompass(
         private val store: MapStore,
         private val useCompassViewSink: UseCompassView.Sink
-) : Interaction() {
-    init {
-        subscriptions += drawInteraction()
+) : Interaction<Orientation>() {
+    override fun buildProducer(): Observable<Orientation> {
+        return store.getOrientation()
     }
 
-    private fun drawInteraction() = store.getOrientation().subscribe { useCompassViewSink.draw(it) }
+    override fun buildConsumer(): Observer<Orientation> {
+        return DefaultObserver(useCompassViewSink::draw)
+    }
+
 }

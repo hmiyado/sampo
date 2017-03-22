@@ -1,12 +1,12 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.domain.math.Measurement
-import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseMapView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Observable
-import rx.Subscription
+import rx.Observer
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -16,20 +16,23 @@ class DrawMap(
         private val store: MapStore,
         measurement: Measurement,
         private val useMapViewSink: UseMapView.Sink
-) : Interaction() {
+) : Interaction<UseMapView.Sink.DrawableMap>() {
+    override fun buildProducer(): Observable<UseMapView.Sink.DrawableMap> {
+        return Observable
+                .combineLatest(
+                        store.getOriginalLocation(),
+                        store.getScaleFactor(),
+                        store.getRotateAngle(),
+                        store.getFootmarks(), { originalLocation, scaleFactor, rotateAngle, footmarks ->
+                    UseMapView.Sink.DrawableMap(originalLocation, scaleFactor, rotateAngle, footmarks)
+                })
+    }
+
+    override fun buildConsumer(): Observer<UseMapView.Sink.DrawableMap> {
+        return DefaultObserver(useMapViewSink::draw)
+    }
 
     init {
         useMapViewSink.setMeasurement(measurement)
-        subscriptions += drawInteraction()
     }
-
-    private fun drawInteraction(): Subscription = Observable
-            .combineLatest(
-                    store.getOriginalLocation(),
-                    store.getScaleFactor(),
-                    store.getRotateAngle(),
-                    store.getFootmarks(), { originalLocation, scaleFactor, rotateAngle, footmarks ->
-                UseMapView.Sink.DrawableMap(originalLocation, scaleFactor, rotateAngle, footmarks)
-            })
-            .subscribe { useMapViewSink.draw(it) }
 }

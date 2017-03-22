@@ -1,9 +1,12 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.repository.location.LocationSensor
+import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
+import rx.Observable
+import rx.Observer
 
 /**
  * Created by hmiyado on 2016/12/20.
@@ -12,9 +15,13 @@ import com.example.hmiyado.sampo.usecase.map.store.MapStore
 class UpdateLocation(
         private val locationSensor: LocationSensor,
         private val store: MapStore
-) : Interaction() {
-    init {
-        subscriptions += updateOriginalLocation()
+) : Interaction<Location>() {
+    override fun buildProducer(): Observable<Location> {
+        return locationSensor.getLocationObservable()
+    }
+
+    override fun buildConsumer(): Observer<Location> {
+        return DefaultObserver(store::setOriginalLocation)
     }
 
     private fun updateOriginalLocation() =

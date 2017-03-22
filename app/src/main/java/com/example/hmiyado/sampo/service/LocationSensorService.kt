@@ -3,15 +3,16 @@ package com.example.hmiyado.sampo.service
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.IBinder
-import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.libs.rx.RxService
+import com.example.hmiyado.sampo.libs.rx.ServiceEvent
 import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.location.LocationSensor
+import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.interaction.SaveLocation
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateLocation
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
@@ -28,7 +29,7 @@ import timber.log.Timber
  * バックグラウンドで位置情報を取得，更新してくれるサービス．
  * 通知欄から操作できる．
  */
-class LocationSensorService : Service(), ServiceInjector {
+class LocationSensorService : RxService(), ServiceInjector {
     enum class IntentType {
         START,
         STOP;
@@ -52,8 +53,14 @@ class LocationSensorService : Service(), ServiceInjector {
         super.onCreate()
         Timber.d("onCreate")
         initializeInjector()
-        subscriptions += UpdateLocation(locationSensor, store).subscriptions
-        subscriptions += SaveLocation(store, locationRepository).subscriptions
+
+        val builder = Interaction.Builder(this, ServiceEvent.DESTROY)
+        listOf(
+                UpdateLocation(locationSensor, store),
+                SaveLocation(store, locationRepository)
+        ).forEach {
+            builder.build(it)
+        }
     }
 
     private fun createCloseAction(): Notification.Action {
@@ -121,7 +128,7 @@ class LocationSensorService : Service(), ServiceInjector {
         destroyInjector()
     }
 
-    override fun onBind(p0: Intent?): IBinder {
+    override fun onBind_(p0: Intent?): IBinder {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

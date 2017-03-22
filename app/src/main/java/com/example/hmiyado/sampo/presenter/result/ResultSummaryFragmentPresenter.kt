@@ -1,13 +1,13 @@
 package com.example.hmiyado.sampo.presenter.result
 
 import com.example.hmiyado.sampo.domain.math.Measurement
-import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.location.LocationRepository
+import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.result.UseTotalDistanceViewer
 import com.example.hmiyado.sampo.usecase.result.interaction.CalculateTotalDistance
 import com.example.hmiyado.sampo.view.result.ResultSummaryFragment
 import com.github.salomonbrys.kodein.instance
-import rx.Observable
+import com.trello.rxlifecycle.android.FragmentEvent
 import rx.subscriptions.CompositeSubscription
 
 /**
@@ -24,16 +24,11 @@ class ResultSummaryFragmentPresenter(
     private val measurement by fragment.injector.instance<Measurement>()
 
     fun onStart() {
-        if (subscriptions.isUnsubscribed) {
-            subscriptions = CompositeSubscription()
-        }
-
-        Observable.from(
-                listOf(
-                        CalculateTotalDistance(locationRepository, measurement, useTotalDistanceViewer)
-                )
+        val builder = Interaction.Builder(fragment, FragmentEvent.STOP)
+        listOf(
+                CalculateTotalDistance(locationRepository, measurement, useTotalDistanceViewer)
         ).forEach {
-            subscriptions += it.subscriptions
+            builder.build(it)
         }
     }
 

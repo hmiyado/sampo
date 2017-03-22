@@ -2,28 +2,25 @@ package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.UseScaleView
+import com.example.hmiyado.sampo.usecase.map.UseMapView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import rx.Observable
 import rx.Observer
+import java.util.concurrent.TimeUnit
 
 /**
- * Created by hmiyado on 2016/12/24.
- *
- * 縮尺のビューへの相互作用．
+ * Created by hmiyado on 2017/03/22.
  */
-class DrawScale(
-        private val store: MapStore,
-        private val scaleViewSink: UseScaleView.Sink
+class UpdateScale(
+        private val useMapViewSource: UseMapView.Source,
+        private val store: MapStore
 ) : Interaction<Float>() {
     override fun buildProducer(): Observable<Float> {
-        return store.getScaleFactor()
+        return useMapViewSource.getOnScaleSignal().throttleLast(100, TimeUnit.MILLISECONDS)
+
     }
 
     override fun buildConsumer(): Observer<Float> {
-        return DefaultObserver({
-            scaleViewSink.setScale(it)
-            scaleViewSink.draw()
-        })
+        return DefaultObserver(store::setScaleFactor)
     }
 }

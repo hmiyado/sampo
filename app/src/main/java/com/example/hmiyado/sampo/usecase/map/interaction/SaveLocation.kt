@@ -1,11 +1,12 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.libs.plusAssign
+import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.repository.location.LocationRepository
+import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import rx.Subscription
-import rx.schedulers.Schedulers
+import rx.Observable
+import rx.Observer
 
 /**
  * Created by hmiyado on 2016/12/27.
@@ -15,14 +16,13 @@ import rx.schedulers.Schedulers
 class SaveLocation(
         private val store: MapStore,
         private val locationRepository: LocationRepository
-) : Interaction() {
-    init {
-        subscriptions += saveLocationInteraction()
+) : Interaction<Location>() {
+    override fun buildProducer(): Observable<Location> {
+        return store.getOriginalLocation()
     }
 
-    private fun saveLocationInteraction(): Subscription {
-        return store.getOriginalLocation()
-                .observeOn(Schedulers.newThread())
-                .subscribe({ locationRepository.saveLocation(it) })
+    override fun buildConsumer(): Observer<Location> {
+        return DefaultObserver(locationRepository::saveLocation)
     }
+
 }

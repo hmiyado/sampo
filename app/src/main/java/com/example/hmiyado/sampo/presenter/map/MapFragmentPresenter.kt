@@ -1,13 +1,13 @@
 package com.example.hmiyado.sampo.presenter.map
 
 import com.example.hmiyado.sampo.domain.math.Measurement
-import com.example.hmiyado.sampo.libs.plusAssign
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
+import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.interaction.*
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.view.map.MapFragment
 import com.github.salomonbrys.kodein.instance
-import rx.Observable
+import com.trello.rxlifecycle.android.FragmentEvent
 import rx.subscriptions.CompositeSubscription
 
 /**
@@ -25,21 +25,22 @@ class MapFragmentPresenter(
     private val useScaleViewSink by lazy { mapFragment.scaleViewController }
     private val useLocationSetting by lazy { mapFragment.locationSettingReceiver }
     private val useLocationSensor by lazy { mapFragment.intentDispatcher }
-    private val measurement by  mapFragment.injector.instance<Measurement>()
+    private val measurement by mapFragment.injector.instance<Measurement>()
     private val compassService by mapFragment.injector.instance<CompassSensor>()
 
     fun onStart() {
-        Observable.from(
-                listOf(
-                        DrawMap(store, measurement, useMapViewSink),
-                        UpdateMapState(useMapViewSource, store),
-                        UpdateOrientation(compassService, store),
-                        DrawCompass(store, useCompassViewSink),
-                        DrawScale(store, useScaleViewSink),
-                        ControlLocationSensor(useLocationSetting, useLocationSensor)
-                )
+        val builder = Interaction.Builder(mapFragment, FragmentEvent.STOP)
+
+        listOf(
+                DrawMap(store, measurement, useMapViewSink),
+                UpdateRotateAngle(useMapViewSource, store),
+                UpdateScale(useMapViewSource, store),
+                UpdateOrientation(compassService, store),
+                DrawCompass(store, useCompassViewSink),
+                DrawScale(store, useScaleViewSink),
+                ControlLocationSensor(useLocationSetting, useLocationSensor)
         ).forEach {
-            subscriptions += it.subscriptions
+            builder.build(it)
         }
     }
 
