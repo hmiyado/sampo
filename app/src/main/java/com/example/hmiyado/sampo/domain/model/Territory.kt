@@ -33,6 +33,13 @@ class Territory(
     val score
         get() = this.calcScore(locations, this)
 
+    /**
+     * 新しい位置情報を加えた縄張り情報を返す
+     */
+    fun addLocation(location: Location): Territory {
+        return Territory(latitudeId, longitudeId, locations.plus(location), this, this)
+    }
+
     override fun compareTo(other: Territory): Int {
         if (this == other) {
             return 0

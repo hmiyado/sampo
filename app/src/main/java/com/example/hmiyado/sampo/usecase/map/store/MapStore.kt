@@ -3,6 +3,8 @@ package com.example.hmiyado.sampo.usecase.map.store
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Orientation
+import com.example.hmiyado.sampo.domain.model.Territory
+import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
 import rx.Observable
 
 /**
@@ -25,6 +27,10 @@ interface MapStore {
 
     fun setRotateAngle(rotateAngle: Degree)
 
+    fun setTerritories(territories: List<Territory>)
+
+    fun setTerritoryValidityPeriod(territoryValidityPeriod: TerritoryValidityPeriod)
+
     fun getOriginalLocation(): Observable<Location>
 
     fun getOrientation(): Observable<Orientation>
@@ -34,4 +40,8 @@ interface MapStore {
     fun getRotateAngle(): Observable<Degree>
 
     fun getFootmarks(): Observable<List<Location>>
+
+    fun getTerritories(): Observable<List<Territory>>
+
+    fun getTerritoryValidityPeriod(): Observable<TerritoryValidityPeriod>
 }
