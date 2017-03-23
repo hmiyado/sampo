@@ -9,6 +9,7 @@ import com.example.hmiyado.sampo.presenter.ViewPresenter
 import com.example.hmiyado.sampo.usecase.map.UseMapView
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
 import rx.lang.kotlin.PublishSubject
 import timber.log.Timber
 
@@ -78,6 +79,7 @@ class MapViewPresenter(
         var previousPoints = Pair(PointF(0f, 0f), PointF(0f, 0f))
 
         return getOnTouchEventSignal()
+                .subscribeOn(AndroidSchedulers.mainThread())
                 // ２点タップしていなければ，回転をとることはない
                 .filter {
                     if (it.pointerCount == 2) {
@@ -104,5 +106,6 @@ class MapViewPresenter(
 
                     angle
                 }
+                .share()
     }
 }

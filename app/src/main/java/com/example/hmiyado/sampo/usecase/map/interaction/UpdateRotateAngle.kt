@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseMapView
@@ -17,7 +18,7 @@ class UpdateRotateAngle(
 
 ) : Interaction<Degree>() {
     override fun buildProducer(): Observable<Degree> {
-        return useMapViewSource.getOnRotateSignal().map { it.toDegree() }
+        return useMapViewSource.getOnRotateSignal().map(Radian::toDegree)
     }
 
     override fun buildConsumer(): Observer<Degree> {
