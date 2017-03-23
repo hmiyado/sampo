@@ -8,6 +8,8 @@ import com.trello.rxlifecycle.android.ActivityEvent
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle.kotlin.bindUntilEvent
 import org.jetbrains.anko.setContentView
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import timber.log.Timber
 
 class ResultActivity : RxAppCompatActivity() {
@@ -54,9 +56,11 @@ class ResultActivity : RxAppCompatActivity() {
     private fun subscribeFragmentRequester(fragment: Fragment) {
         if (fragment is FragmentRequester<*>) {
             fragment.getFragmentRequest()
+                    .subscribeOn(Schedulers.newThread())
                     .filter { it is ResultFragmentType }
                     .cast(ResultFragmentType::class.java)
                     .bindUntilEvent(this, ActivityEvent.STOP)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ resultFragmentType ->
                         Timber.d(resultFragmentType.toString())
                         when (resultFragmentType) {

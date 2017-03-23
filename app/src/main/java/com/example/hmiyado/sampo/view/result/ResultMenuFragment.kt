@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import com.example.hmiyado.sampo.controller.common.ListViewController
 import com.example.hmiyado.sampo.domain.result.ResultMenuItem
 import com.example.hmiyado.sampo.presenter.common.ListViewPresenter
 import com.example.hmiyado.sampo.presenter.result.ResultMenuFragmentPresenter
+import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.result.interaction.resultMenuUseCaseModule
 import com.example.hmiyado.sampo.view.common.FragmentRequester
 import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
-import com.github.salomonbrys.kodein.KodeinInjected
-import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
+import com.trello.rxlifecycle.android.FragmentEvent
 import com.trello.rxlifecycle.components.RxFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find
@@ -23,28 +24,36 @@ import timber.log.Timber
 /**
  * Created by hmiyado on 2017/02/05.
  */
-class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<ResultFragmentType> {
+class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, LazyKodeinAware {
     companion object {
         fun getInstance() = ResultMenuFragment()
     }
 
-    override val injector = KodeinInjector()
+    override val kodein: LazyKodein = LazyKodein {
+        Kodein {
+            extend(appKodein())
+            import(resultMenuUseCaseModule)
+            bind<ListViewPresenter<ResultMenuItem>>() with singleton { ListViewPresenter<ResultMenuItem>(find<ListView>(ResultFragmentUi.listViewId)) }
+            bind<ResultMenuFragmentPresenter>() with singleton { ResultMenuFragmentPresenter(this@ResultMenuFragment) }
+            bind<ResultOptionItemListAdapter>() with singleton { ResultOptionItemListAdapter(activity.baseContext) }
+        }
+    }
 
-    val presenter: ResultMenuFragmentPresenter = ResultMenuFragmentPresenter(this)
 
-    val listViewPresenter: ListViewPresenter<ResultMenuItem> by lazy { ListViewPresenter<ResultMenuItem>(find<ListView>(ResultFragmentUi.listViewId)) }
-    val listViewController: ListViewController by lazy { ListViewController(find<ListView>(ResultFragmentUi.listViewId)) }
-    val resultOptionItemListAdapter: ResultOptionItemListAdapter by lazy { ResultOptionItemListAdapter(activity.baseContext) }
+    val presenter: ResultMenuFragmentPresenter by kodein.instance()
+    private val interactions: List<Interaction<*>> by kodein.instance()
+
+    val listViewPresenter: ListViewPresenter<ResultMenuItem> by kodein.instance()
+    val resultOptionItemListAdapter: ResultOptionItemListAdapter by kodein.instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject(appKodein())
 
         resultOptionItemListAdapter.addAll(ResultMenuItem.values().toList())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-//        Timber.d("on create view")
+        Timber.d("on create view")
         return ResultFragmentUi().createView(AnkoContext.create(activity.baseContext, this))
     }
 
@@ -53,7 +62,6 @@ class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<Resul
         view ?: return
         find<ListView>(ResultFragmentUi.listViewId).let {
             it.adapter = resultOptionItemListAdapter
-            listViewController.set(it)
             listViewPresenter.set(it)
         }
 
@@ -62,12 +70,7 @@ class ResultMenuFragment : RxFragment(), KodeinInjected, FragmentRequester<Resul
     override fun onStart() {
         Timber.d("onStart")
         super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+        Interaction.Builder(this, FragmentEvent.STOP).buildAll(interactions)
     }
 
     override fun getFragmentRequest(): Observable<ResultFragmentType> = presenter.getFragmentRequest()
