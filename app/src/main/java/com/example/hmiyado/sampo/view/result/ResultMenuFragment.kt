@@ -9,6 +9,8 @@ import com.example.hmiyado.sampo.domain.result.ResultMenuItem
 import com.example.hmiyado.sampo.presenter.common.ListViewPresenter
 import com.example.hmiyado.sampo.presenter.result.ResultMenuFragmentPresenter
 import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.common.UseListView
+import com.example.hmiyado.sampo.usecase.result.UseMenuRequester
 import com.example.hmiyado.sampo.usecase.result.interaction.resultMenuUseCaseModule
 import com.example.hmiyado.sampo.view.common.FragmentRequester
 import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
@@ -33,6 +35,8 @@ class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, 
         Kodein {
             extend(appKodein())
             import(resultMenuUseCaseModule)
+            bind<UseMenuRequester>() with provider { instance<ResultMenuFragmentPresenter>() }
+            bind<UseListView.Source<ResultMenuItem>>() with provider { instance<ListViewPresenter<ResultMenuItem>>() }
             bind<ListViewPresenter<ResultMenuItem>>() with singleton { ListViewPresenter<ResultMenuItem>(find<ListView>(ResultFragmentUi.listViewId)) }
             bind<ResultMenuFragmentPresenter>() with singleton { ResultMenuFragmentPresenter(this@ResultMenuFragment) }
             bind<ResultOptionItemListAdapter>() with singleton { ResultOptionItemListAdapter(activity.baseContext) }
