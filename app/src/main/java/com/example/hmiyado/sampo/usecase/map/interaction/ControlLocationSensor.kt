@@ -16,6 +16,10 @@ class ControlLocationSensor(
         private val useLocationSetting: UseLocationSetting.Source,
         private val useLocationSensor: UseLocationSensor.Sink
 ) : Interaction<LocationSensorState>() {
+    init {
+        Timber.d("$useLocationSetting")
+    }
+
     override fun buildProducer(): Observable<LocationSensorState> {
         return useLocationSetting.getLocationSettingChangedSignal()
     }

@@ -12,15 +12,12 @@ import io.reactivex.subjects.PublishSubject
 class ListViewPresenter<T>(view: ListView) : ViewPresenter<ListView>(view), UseListView.Source<T> {
     val onItemSelectedObservable = PublishSubject.create<T>()
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
     override fun getSelectedItem(): Observable<T> {
         view.setOnItemClickListener { adapterView, view, i, l ->
             val item = adapterView.adapter.getItem(i) as T
             onItemSelectedObservable.onNext(item)
         }
         return onItemSelectedObservable.hide().share()
-    }
-
-    fun setItems(list: List<T>) {
     }
 }

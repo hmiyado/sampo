@@ -13,6 +13,7 @@ import com.github.salomonbrys.kodein.android.BroadcastReceiverInjector
 import com.github.salomonbrys.kodein.instance
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/02/25.
@@ -28,6 +29,7 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector, 
     private val locationServiceStateSubject = BehaviorSubject.create<LocationSensorState>()
 
     override fun onReceive(context1: Context?, intent: Intent?) {
+        Timber.d("$this context: $context1, intent: $intent")
         this.context = context1
         context ?: return
         intent ?: return
@@ -68,6 +70,4 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector, 
     }
 
     override fun getLocationSettingChangedSignal(): Observable<LocationSensorState> = locationServiceStateSubject.hide().distinctUntilChanged().share()
-
-    fun onChangeLocationServiceState(): Observable<LocationSensorState> = locationServiceStateSubject.hide().distinctUntilChanged().share()
 }

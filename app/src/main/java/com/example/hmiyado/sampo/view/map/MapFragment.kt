@@ -77,6 +77,7 @@ class MapFragment : RxFragment(), LazyKodeinAware {
 
         locationSettingReceiver.setLocationServiceState(contentResolver, locationManager)
         activity.baseContext.registerReceiver(locationSettingReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
+        Timber.d("onCreate: $locationSettingReceiver")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

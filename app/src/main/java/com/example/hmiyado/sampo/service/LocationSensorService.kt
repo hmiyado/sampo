@@ -10,17 +10,11 @@ import android.os.Build
 import android.os.IBinder
 import com.example.hmiyado.sampo.libs.rx.RxService
 import com.example.hmiyado.sampo.libs.rx.ServiceEvent
-import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.location.LocationSensor
 import com.example.hmiyado.sampo.usecase.Interaction
-import com.example.hmiyado.sampo.usecase.map.interaction.SaveLocation
-import com.example.hmiyado.sampo.usecase.map.interaction.UpdateLocation
-import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import com.github.salomonbrys.kodein.KodeinInjector
-import com.github.salomonbrys.kodein.android.ServiceInjector
-import com.github.salomonbrys.kodein.factory
-import com.github.salomonbrys.kodein.instance
-import io.reactivex.disposables.CompositeDisposable
+import com.example.hmiyado.sampo.usecase.map.interaction.locationSensorUseCaseModule
+import com.github.salomonbrys.kodein.*
+import com.github.salomonbrys.kodein.android.appKodein
 import timber.log.Timber
 
 /**
@@ -29,7 +23,7 @@ import timber.log.Timber
  * バックグラウンドで位置情報を取得，更新してくれるサービス．
  * 通知欄から操作できる．
  */
-class LocationSensorService : RxService(), ServiceInjector {
+class LocationSensorService : RxService(), LazyKodeinAware {
     enum class IntentType {
         START,
         STOP;
@@ -40,27 +34,23 @@ class LocationSensorService : RxService(), ServiceInjector {
         }
     }
 
-    override val injector: KodeinInjector = KodeinInjector()
+    override val kodein: LazyKodein = LazyKodein {
+        Kodein {
+            extend(appKodein())
+            import(locationSensorUseCaseModule)
+        }
+    }
 
-    private val notificationManagerFactory: (Context) -> NotificationManager by injector.factory()
-    private val locationSensor: LocationSensor by injector.instance()
-    private val locationRepository: LocationRepository by injector.instance()
-    private val store: MapStore by injector.instance()
-    private val subscriptions: CompositeDisposable = CompositeDisposable()
+    private val notificationManagerFactory: (Context) -> NotificationManager by kodein.factory()
+    private val locationSensor: LocationSensor by kodein.instance()
+    private val interactions: List<Interaction<*>> by kodein.instance()
 
 
     override fun onCreate() {
         super.onCreate()
         Timber.d("onCreate")
-        initializeInjector()
 
-        val builder = Interaction.Builder(this, ServiceEvent.DESTROY)
-        listOf(
-                UpdateLocation(locationSensor, store),
-                SaveLocation(store, locationRepository)
-        ).forEach {
-            builder.build(it)
-        }
+        Interaction.Builder(this, ServiceEvent.DESTROY).buildAll(interactions)
     }
 
     private fun createCloseAction(): Notification.Action {
@@ -74,6 +64,7 @@ class LocationSensorService : RxService(), ServiceInjector {
                     pendingIntent
             )
         } else {
+            @Suppress("DEPRECATION")
             Notification.Action.Builder(
                     android.R.drawable.ic_menu_close_clear_cancel,
                     IntentType.STOP.name.toLowerCase(),
@@ -119,13 +110,6 @@ class LocationSensorService : RxService(), ServiceInjector {
                 .setContentText("content text")
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .build()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.d("onDestroy")
-        subscriptions.dispose()
-        destroyInjector()
     }
 
     override fun onBind_(p0: Intent?): IBinder {

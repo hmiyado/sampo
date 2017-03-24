@@ -27,6 +27,8 @@ interface MapStore {
 
     fun setRotateAngle(rotateAngle: Degree)
 
+    fun setFootmarks(footmarks: List<Location>)
+
     fun setTerritories(territories: List<Territory>)
 
     fun setTerritoryValidityPeriod(territoryValidityPeriod: TerritoryValidityPeriod)

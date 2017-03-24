@@ -7,6 +7,8 @@ import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import org.threeten.bp.Instant
+import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -20,13 +22,7 @@ class MapStoreImpl : MapStore {
     private val rotateAngleSubject = BehaviorSubject.createDefault<Degree>(Degree(0.0))
     private val footmarksSubject = BehaviorSubject.createDefault<List<Location>>(emptyList())
     private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
-    private val territoryValidityPeriodSubject = BehaviorSubject.create<TerritoryValidityPeriod>()
-
-    init {
-        originalLocationSubject
-                .filter { it != Location.empty() }
-                .subscribe { footmarksSubject.onNext(footmarksSubject.value + it) }
-    }
+    private val territoryValidityPeriodSubject = BehaviorSubject.createDefault<TerritoryValidityPeriod>(TerritoryValidityPeriod.create(Instant.now(), Period.ofWeeks(1)))
 
     override fun setOriginalLocation(originalLocation: Location) {
         originalLocationSubject.onNext(originalLocation)
@@ -46,6 +42,10 @@ class MapStoreImpl : MapStore {
 
     override fun setTerritoryValidityPeriod(territoryValidityPeriod: TerritoryValidityPeriod) {
         territoryValidityPeriodSubject.onNext(territoryValidityPeriod)
+    }
+
+    override fun setFootmarks(footmarks: List<Location>) {
+        footmarksSubject.onNext(footmarks)
     }
 
     override fun setTerritories(territories: List<Territory>) {
