@@ -4,7 +4,7 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.domain.model.Location
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by hmiyado on 2017/02/28.

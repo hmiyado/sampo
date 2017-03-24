@@ -1,8 +1,8 @@
 package com.example.hmiyado.sampo.controller
 
 import android.view.View
-import com.trello.rxlifecycle.kotlin.bindToLifecycle
-import rx.Observable
+import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import io.reactivex.Observable
 
 /**
  * Created by hmiyado on 2016/12/24.

@@ -16,11 +16,11 @@ import com.example.hmiyado.sampo.view.common.FragmentRequester
 import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
-import com.trello.rxlifecycle.android.FragmentEvent
-import com.trello.rxlifecycle.components.RxFragment
+import com.trello.rxlifecycle2.android.FragmentEvent
+import com.trello.rxlifecycle2.components.RxFragment
+import io.reactivex.Observable
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find
-import rx.Observable
 import timber.log.Timber
 
 /**

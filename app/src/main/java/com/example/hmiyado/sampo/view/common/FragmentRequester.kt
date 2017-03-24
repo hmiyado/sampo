@@ -1,6 +1,6 @@
 package com.example.hmiyado.sampo.view.common
 
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by hmiyado on 2017/02/16.

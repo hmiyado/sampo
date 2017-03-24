@@ -3,7 +3,7 @@ package com.example.hmiyado.sampo.view.result.ui
 import android.view.View
 import android.widget.LinearLayout
 import com.example.hmiyado.sampo.view.common.sampoToolbar
-import com.trello.rxlifecycle.components.RxFragment
+import com.trello.rxlifecycle2.components.RxFragment
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.linearLayout

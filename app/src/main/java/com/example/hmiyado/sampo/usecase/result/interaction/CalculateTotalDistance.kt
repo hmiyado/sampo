@@ -6,8 +6,8 @@ import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.result.UseTotalDistanceViewer
-import rx.Observable
-import rx.Observer
+import io.reactivex.Observable
+import io.reactivex.Observer
 import timber.log.Timber
 
 /**
@@ -19,7 +19,7 @@ class CalculateTotalDistance(
         private val useTotalDistanceViewer: UseTotalDistanceViewer.Sink
 ) : Interaction<Double>() {
     override fun buildProducer(): Observable<Double> {
-        return Observable.from(locationRepository.loadLocationList().sortedBy { it.timeStamp })
+        return Observable.fromIterable(locationRepository.loadLocationList().sortedBy { it.timeStamp })
                 // 距離を測るため，２個ずつペアにする
                 .scan(Pair(Location.empty(), Location.empty())) { locationPair, location ->
                     Pair(locationPair.second, location)
@@ -38,6 +38,7 @@ class CalculateTotalDistance(
                 .reduce { distance1, distance2 ->
                     distance1 + distance2
                 }
+                .toObservable()
     }
 
     override fun buildConsumer(): Observer<Double> {

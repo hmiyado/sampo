@@ -11,8 +11,8 @@ import com.example.hmiyado.sampo.usecase.map.UseLocationSetting
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.BroadcastReceiverInjector
 import com.github.salomonbrys.kodein.instance
-import rx.Observable
-import rx.lang.kotlin.BehaviorSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Created by hmiyado on 2017/02/25.
@@ -25,7 +25,7 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector, 
     private val contentResolver: ContentResolver by injector.instance<ContentResolver>()
     private val locationManager: LocationManager by injector.instance<LocationManager>()
 
-    private val locationServiceStateSubject = BehaviorSubject<LocationSensorState>()
+    private val locationServiceStateSubject = BehaviorSubject.create<LocationSensorState>()
 
     override fun onReceive(context1: Context?, intent: Intent?) {
         this.context = context1
@@ -67,7 +67,7 @@ class LocationSettingReceiver : BroadcastReceiver(), BroadcastReceiverInjector, 
         locationServiceStateSubject.onNext(getLocationServiceState(contentResolver, locationManager))
     }
 
-    override fun getLocationSettingChangedSignal(): Observable<LocationSensorState> = locationServiceStateSubject.asObservable().distinctUntilChanged().share()
+    override fun getLocationSettingChangedSignal(): Observable<LocationSensorState> = locationServiceStateSubject.hide().distinctUntilChanged().share()
 
-    fun onChangeLocationServiceState(): Observable<LocationSensorState> = locationServiceStateSubject.asObservable().distinctUntilChanged().share()
+    fun onChangeLocationServiceState(): Observable<LocationSensorState> = locationServiceStateSubject.hide().distinctUntilChanged().share()
 }

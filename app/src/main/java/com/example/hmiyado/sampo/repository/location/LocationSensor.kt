@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.repository.location
 
 import com.example.hmiyado.sampo.domain.model.Location
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by hmiyado on 2016/07/27.

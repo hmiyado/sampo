@@ -8,8 +8,9 @@ import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import rx.Observable
-import rx.Observer
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.functions.Function3
 
 /**
  * Created by hmiyado on 2017/03/22.
@@ -21,7 +22,7 @@ class UpdateTerritory(
 
     override fun buildProducer(): Observable<List<Territory>> {
         return mapStore.getOriginalLocation()
-                .withLatestFrom(mapStore.getTerritories(), mapStore.getTerritoryValidityPeriod(), this::updateTerritories)
+                .withLatestFrom(mapStore.getTerritories(), mapStore.getTerritoryValidityPeriod(), Function3(this::updateTerritories))
     }
 
     private fun updateTerritories(location: Location, territories: List<Territory>, territoryValidityPeriod: TerritoryValidityPeriod): List<Territory> {

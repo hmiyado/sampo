@@ -4,8 +4,8 @@ import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseScaleView
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import rx.Observable
-import rx.Observer
+import io.reactivex.Observable
+import io.reactivex.Observer
 
 /**
  * Created by hmiyado on 2016/12/24.

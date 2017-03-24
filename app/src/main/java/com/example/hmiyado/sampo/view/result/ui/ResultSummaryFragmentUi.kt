@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
 import com.example.hmiyado.sampo.view.common.sampoToolbar
-import com.trello.rxlifecycle.components.RxFragment
+import com.trello.rxlifecycle2.components.RxFragment
 import org.jetbrains.anko.*
 
 /**

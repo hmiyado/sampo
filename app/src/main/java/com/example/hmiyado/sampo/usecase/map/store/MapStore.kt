@@ -5,7 +5,7 @@ import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Orientation
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by hmiyado on 2017/02/26.

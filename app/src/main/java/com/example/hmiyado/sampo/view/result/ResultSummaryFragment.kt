@@ -11,7 +11,7 @@ import com.example.hmiyado.sampo.view.result.ui.ResultSummaryFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.appKodein
-import com.trello.rxlifecycle.components.RxFragment
+import com.trello.rxlifecycle2.components.RxFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find
 

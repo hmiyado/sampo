@@ -4,8 +4,8 @@ import com.example.hmiyado.sampo.domain.result.ResultMenuItem
 import com.example.hmiyado.sampo.usecase.result.UseMenuRequester
 import com.example.hmiyado.sampo.view.result.ResultFragmentType
 import com.example.hmiyado.sampo.view.result.ResultMenuFragment
-import rx.Observable
-import rx.lang.kotlin.PublishSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by hmiyado on 2017/02/06.
@@ -13,7 +13,7 @@ import rx.lang.kotlin.PublishSubject
 class ResultMenuFragmentPresenter(
         private val resultMenuFragment: ResultMenuFragment
 ) : UseMenuRequester {
-    private val fragmentRequester = PublishSubject<ResultFragmentType>()
+    private val fragmentRequester = PublishSubject.create<ResultFragmentType>()
 
     override fun request(resultMenuItem: ResultMenuItem) {
         when (resultMenuItem) {
@@ -34,5 +34,5 @@ class ResultMenuFragmentPresenter(
         fragmentRequester.onNext(resultFragmentType)
     }
 
-    fun getFragmentRequest(): Observable<ResultFragmentType> = fragmentRequester.asObservable().share()
+    fun getFragmentRequest(): Observable<ResultFragmentType> = fragmentRequester.hide().share()
 }

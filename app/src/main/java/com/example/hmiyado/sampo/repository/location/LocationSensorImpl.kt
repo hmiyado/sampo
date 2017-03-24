@@ -4,9 +4,9 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.location.LocationProvider
 import android.os.Bundle
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import org.threeten.bp.Instant
-import rx.Observable
-import rx.subjects.PublishSubject
 import timber.log.Timber
 import android.location.Location as AndroidLocation
 import com.example.hmiyado.sampo.domain.model.Location as SampoLocation
@@ -37,7 +37,7 @@ class LocationSensorImpl(private val locationManager: LocationManager) : Locatio
     }
 
     override fun getLocationObservable(): Observable<com.example.hmiyado.sampo.domain.model.Location> {
-        return locationSubject.asObservable().share()
+        return locationSubject.hide().share()
     }
 
     override fun startLocationObserve() {

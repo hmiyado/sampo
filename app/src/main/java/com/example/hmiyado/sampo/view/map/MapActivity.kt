@@ -2,7 +2,7 @@ package com.example.hmiyado.sampo.view.map
 
 import android.os.Bundle
 import com.example.hmiyado.sampo.view.map.ui.MapActivityUi
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import org.jetbrains.anko.setContentView
 
 class MapActivity : RxAppCompatActivity() {

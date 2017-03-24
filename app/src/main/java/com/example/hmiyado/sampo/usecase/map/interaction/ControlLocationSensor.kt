@@ -5,8 +5,8 @@ import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseLocationSensor
 import com.example.hmiyado.sampo.usecase.map.UseLocationSetting
-import rx.Observable
-import rx.Observer
+import io.reactivex.Observable
+import io.reactivex.Observer
 import timber.log.Timber
 
 /**

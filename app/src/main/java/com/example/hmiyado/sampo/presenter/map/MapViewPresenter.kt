@@ -8,9 +8,9 @@ import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.presenter.ViewPresenter
 import com.example.hmiyado.sampo.usecase.map.UseMapView
 import com.example.hmiyado.sampo.view.map.custom.MapView
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.lang.kotlin.PublishSubject
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
 /**
@@ -21,8 +21,8 @@ class MapViewPresenter(
         mapView: MapView
 ) : ViewPresenter<MapView>(mapView), UseMapView.Source {
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(mapView.context, createGestureDetector())
-    private val onScaleBeginSignalSubject = PublishSubject<ScaleGestureDetector>()
-    private val onScaleSignalSubject = PublishSubject<ScaleGestureDetector>()
+    private val onScaleBeginSignalSubject = PublishSubject.create<ScaleGestureDetector>()
+    private val onScaleSignalSubject = PublishSubject.create<ScaleGestureDetector>()
 
     private fun createGestureDetector(): ScaleGestureDetector.OnScaleGestureListener {
         return object : ScaleGestureDetector.OnScaleGestureListener {

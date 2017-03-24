@@ -5,8 +5,8 @@ import com.example.hmiyado.sampo.repository.location.LocationSensor
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
-import rx.Observable
-import rx.Observer
+import io.reactivex.Observable
+import io.reactivex.Observer
 
 /**
  * Created by hmiyado on 2016/12/20.
@@ -23,10 +23,4 @@ class UpdateLocation(
     override fun buildConsumer(): Observer<Location> {
         return DefaultObserver(store::setOriginalLocation)
     }
-
-    private fun updateOriginalLocation() =
-            locationSensor.getLocationObservable()
-                    .doOnNext { store.setOriginalLocation(it) }
-                    .subscribe()
-
 }

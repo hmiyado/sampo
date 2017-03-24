@@ -7,8 +7,8 @@ import android.graphics.Canvas
 import android.view.MotionEvent
 import com.example.hmiyado.sampo.controller.map.MapViewController
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
-import com.jakewharton.rxbinding.view.RxView
-import rx.Observable
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.Observable
 
 
 /**

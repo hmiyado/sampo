@@ -3,24 +3,24 @@ package com.example.hmiyado.sampo.libs.rx
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.trello.rxlifecycle.LifecycleProvider
-import com.trello.rxlifecycle.LifecycleTransformer
-import com.trello.rxlifecycle.RxLifecycle
-import rx.Observable
-import rx.lang.kotlin.BehaviorSubject
+import com.trello.rxlifecycle2.LifecycleProvider
+import com.trello.rxlifecycle2.LifecycleTransformer
+import com.trello.rxlifecycle2.RxLifecycle
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Created by hmiyado on 2017/03/23.
  */
 abstract class RxService : Service(), LifecycleProvider<ServiceEvent> {
-    private val lifecycleSubject = BehaviorSubject<ServiceEvent>()
+    private val lifecycleSubject = BehaviorSubject.create<ServiceEvent>()
 
     override fun <T : Any?> bindToLifecycle(): LifecycleTransformer<T> {
         return RxLifecycle.bind(lifecycleSubject)
     }
 
     override fun lifecycle(): Observable<ServiceEvent> {
-        return lifecycleSubject.asObservable()
+        return lifecycleSubject.hide()
     }
 
     override fun <T : Any?> bindUntilEvent(event: ServiceEvent): LifecycleTransformer<T> {

@@ -5,8 +5,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.example.hmiyado.sampo.domain.model.Orientation
-import rx.Observable
-import rx.subjects.PublishSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by hmiyado on 2016/11/30.
@@ -25,7 +25,7 @@ class CompassSensorImpl(val sensorManager: SensorManager) : CompassSensor {
     }
 
     override fun getCompassService(): Observable<Orientation> {
-        return compassServiceSubject.asObservable().share()
+        return compassServiceSubject.hide().share()
     }
 
     override fun startCompassService() {

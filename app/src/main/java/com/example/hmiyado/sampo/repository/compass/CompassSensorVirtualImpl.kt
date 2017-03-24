@@ -2,10 +2,9 @@ package com.example.hmiyado.sampo.repository.compass
 
 import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Orientation
-import rx.Observable
-import rx.Subscription
-import rx.lang.kotlin.PublishSubject
-import rx.subjects.Subject
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 /**
@@ -14,9 +13,9 @@ import java.util.concurrent.TimeUnit
  * 仮想的な方位を取得するサービス．
  */
 class CompassSensorVirtualImpl : CompassSensor {
-    private val virtualCompassSubject: Subject<Orientation, Orientation> = PublishSubject<Orientation>()
+    private val virtualCompassSubject = PublishSubject.create<Orientation>()
     private val timerObservable = Observable.interval(5, TimeUnit.SECONDS)
-    private var timerSubscription: Subscription = timerObservable.subscribe()
+    private var timerSubscription: Disposable = timerObservable.subscribe()
     private var nextOrientation = Orientation.empty()
 
     override fun getCompassService(): Observable<Orientation> {
@@ -40,6 +39,6 @@ class CompassSensorVirtualImpl : CompassSensor {
     }
 
     override fun stopCompassService() {
-        timerSubscription.unsubscribe()
+        timerSubscription.dispose()
     }
 }

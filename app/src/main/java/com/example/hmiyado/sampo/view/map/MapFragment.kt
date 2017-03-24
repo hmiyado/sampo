@@ -26,8 +26,8 @@ import com.example.hmiyado.sampo.view.map.custom.ScaleView
 import com.example.hmiyado.sampo.view.map.ui.MapFragmentUi
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
-import com.trello.rxlifecycle.android.FragmentEvent
-import com.trello.rxlifecycle.components.RxFragment
+import com.trello.rxlifecycle2.android.FragmentEvent
+import com.trello.rxlifecycle2.components.RxFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find
 import timber.log.Timber

@@ -5,8 +5,8 @@ import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Orientation
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
-import rx.Observable
-import rx.lang.kotlin.BehaviorSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -14,13 +14,13 @@ import rx.lang.kotlin.BehaviorSubject
  * 状態の保持/更新方法の提供/状態の提供の責務を負うクラス．
  */
 class MapStoreImpl : MapStore {
-    private val originalLocationSubject = BehaviorSubject<Location>(Location.Companion.empty())
-    private val orientationSubject = BehaviorSubject<Orientation>(Orientation.Companion.empty())
-    private val scaleFactorSubject = BehaviorSubject<Float>(1f)
-    private val rotateAngleSubject = BehaviorSubject<Degree>(Degree(0.0))
-    private val footmarksSubject = BehaviorSubject<List<Location>>(emptyList())
-    private val territoriesSubject = BehaviorSubject<List<Territory>>(emptyList())
-    private val territoryValidityPeriodSubject = BehaviorSubject<TerritoryValidityPeriod>()
+    private val originalLocationSubject = BehaviorSubject.createDefault<Location>(Location.empty())
+    private val orientationSubject = BehaviorSubject.createDefault<Orientation>(Orientation.Companion.empty())
+    private val scaleFactorSubject = BehaviorSubject.createDefault<Float>(1f)
+    private val rotateAngleSubject = BehaviorSubject.createDefault<Degree>(Degree(0.0))
+    private val footmarksSubject = BehaviorSubject.createDefault<List<Location>>(emptyList())
+    private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
+    private val territoryValidityPeriodSubject = BehaviorSubject.create<TerritoryValidityPeriod>()
 
     init {
         originalLocationSubject
@@ -52,17 +52,17 @@ class MapStoreImpl : MapStore {
         territoriesSubject.onNext(territories)
     }
 
-    override fun getOriginalLocation(): Observable<Location> = originalLocationSubject.asObservable().share()
+    override fun getOriginalLocation(): Observable<Location> = originalLocationSubject.hide().share()
 
-    override fun getOrientation(): Observable<Orientation> = orientationSubject.asObservable().share()
+    override fun getOrientation(): Observable<Orientation> = orientationSubject.hide().share()
 
-    override fun getScaleFactor(): Observable<Float> = scaleFactorSubject.asObservable().share()
+    override fun getScaleFactor(): Observable<Float> = scaleFactorSubject.hide().share()
 
-    override fun getRotateAngle(): Observable<Degree> = rotateAngleSubject.asObservable().share()
+    override fun getRotateAngle(): Observable<Degree> = rotateAngleSubject.hide().share()
 
-    override fun getFootmarks(): Observable<List<Location>> = footmarksSubject.asObservable().share()
+    override fun getFootmarks(): Observable<List<Location>> = footmarksSubject.hide().share()
 
-    override fun getTerritoryValidityPeriod(): Observable<TerritoryValidityPeriod> = territoryValidityPeriodSubject.asObservable().share()
+    override fun getTerritoryValidityPeriod(): Observable<TerritoryValidityPeriod> = territoryValidityPeriodSubject.hide().share()
 
-    override fun getTerritories(): Observable<List<Territory>> = territoriesSubject.asObservable().share()
+    override fun getTerritories(): Observable<List<Territory>> = territoriesSubject.hide().share()
 }

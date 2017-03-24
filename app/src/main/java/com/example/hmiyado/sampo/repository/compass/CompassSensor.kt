@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.repository.compass
 
 import com.example.hmiyado.sampo.domain.model.Orientation
-import rx.Observable
+import io.reactivex.Observable
 
 /**
  * Created by hmiyado on 2016/11/30.

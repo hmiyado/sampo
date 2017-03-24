@@ -1,9 +1,9 @@
 package com.example.hmiyado.sampo.repository.location
 
 import com.example.hmiyado.sampo.domain.model.Location
-import rx.Observable
-import rx.Subscription
-import rx.subjects.PublishSubject
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 /**
@@ -14,7 +14,7 @@ class LocationSensorVirtualImpl : LocationSensor {
     private val locationSubject: PublishSubject<Location>
     private var nextLocation: Location
     private val delayTimeMs: Long = 1000
-    private var nextLocationSubscription: Subscription? = null
+    private var nextLocationSubscription: Disposable? = null
 
     init {
         locationSubject = PublishSubject.create()
@@ -23,7 +23,7 @@ class LocationSensorVirtualImpl : LocationSensor {
 
 
     override fun getLocationObservable(): Observable<Location> {
-        return locationSubject.asObservable().share()
+        return locationSubject.hide().share()
     }
 
     override fun startLocationObserve() {
@@ -34,7 +34,7 @@ class LocationSensorVirtualImpl : LocationSensor {
     }
 
     override fun stopLocationObserve() {
-        nextLocationSubscription?.unsubscribe()
+        nextLocationSubscription?.dispose()
     }
 
     private fun updateNextLocation(num: Long) {

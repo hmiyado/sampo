@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase
 
-import rx.Observer
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
 /**
@@ -8,8 +9,9 @@ import timber.log.Timber
  */
 class DefaultObserver<T>(
         private val onNext: (T) -> Unit,
-        private val onError: (Throwable?) -> Unit,
-        private val onCompleted: () -> Unit
+        private val onError: (Throwable?) -> Unit = DefaultObserver.Companion::onErrorDefault,
+        private val onComplete: () -> Unit = {},
+        private val onSubscribe: (Disposable?) -> Unit = {}
 ) : Observer<T> {
     companion object {
         private fun onErrorDefault(e: Throwable?) {
@@ -17,18 +19,19 @@ class DefaultObserver<T>(
         }
     }
 
-    constructor(onNext: (T) -> Unit) : this(onNext, onError = DefaultObserver.Companion::onErrorDefault, onCompleted = {})
-
     override fun onError(e: Throwable?) {
         onError.invoke(e)
-    }
-
-    override fun onCompleted() {
-        onCompleted.invoke()
     }
 
     override fun onNext(t: T) {
         onNext.invoke(t)
     }
 
+    override fun onComplete() {
+        onComplete.invoke()
+    }
+
+    override fun onSubscribe(d: Disposable?) {
+        onSubscribe.invoke(d)
+    }
 }

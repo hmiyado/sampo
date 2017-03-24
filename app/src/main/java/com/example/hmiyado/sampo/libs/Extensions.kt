@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.libs
 
-import rx.Subscription
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 /**
  * Created by hmiyado on 2017/01/05.
@@ -9,6 +9,6 @@ import rx.subscriptions.CompositeSubscription
  * ライブラリの拡張関数をおく
  */
 
-operator fun CompositeSubscription.plusAssign(subscription: Subscription) {
-    this.add(subscription)
+operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
+    this.add(disposable)
 }

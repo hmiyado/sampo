@@ -4,12 +4,12 @@ import android.app.Fragment
 import android.os.Bundle
 import com.example.hmiyado.sampo.view.common.FragmentRequester
 import com.example.hmiyado.sampo.view.result.ui.ResultActivityUi
-import com.trello.rxlifecycle.android.ActivityEvent
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity
-import com.trello.rxlifecycle.kotlin.bindUntilEvent
+import com.trello.rxlifecycle2.android.ActivityEvent
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle2.kotlin.bindUntilEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.setContentView
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 import timber.log.Timber
 
 class ResultActivity : RxAppCompatActivity() {

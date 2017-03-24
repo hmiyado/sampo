@@ -20,7 +20,7 @@ import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.ServiceInjector
 import com.github.salomonbrys.kodein.factory
 import com.github.salomonbrys.kodein.instance
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 /**
@@ -46,7 +46,7 @@ class LocationSensorService : RxService(), ServiceInjector {
     private val locationSensor: LocationSensor by injector.instance()
     private val locationRepository: LocationRepository by injector.instance()
     private val store: MapStore by injector.instance()
-    private val subscriptions: CompositeSubscription = CompositeSubscription()
+    private val subscriptions: CompositeDisposable = CompositeDisposable()
 
 
     override fun onCreate() {
@@ -124,7 +124,7 @@ class LocationSensorService : RxService(), ServiceInjector {
     override fun onDestroy() {
         super.onDestroy()
         Timber.d("onDestroy")
-        subscriptions.unsubscribe()
+        subscriptions.dispose()
         destroyInjector()
     }
 
