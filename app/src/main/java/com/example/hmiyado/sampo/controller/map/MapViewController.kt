@@ -9,9 +9,12 @@ import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
+import org.threeten.bp.Instant
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -22,7 +25,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
             originalLocation = Location.empty(),
             scaleFactor = 1.0f,
             rotateAngle = Degree(0),
-            footmarks = emptyList()
+            footmarks = emptyList(),
+            territories = emptyList()
     )
 
     private lateinit var measurement: Measurement
@@ -44,8 +48,31 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         canvas.rotate(rotateAngle.toFloat())
     }
 
-    private fun drawFootmark(canvas: Canvas, x: Float, y: Float) {
-        val paintFootmark = createPaint(Color.GREEN, view.dip(1).toFloat())
+    private fun drawTerritory(canvas: Canvas, territory: Territory, drawableMap: Sink.DrawableMap) {
+        val latitude = Territory.findLatitudeById(territory.latitudeId)
+        val longitude = Territory.findLongitudeById(territory.longitudeId)
+
+        val centerLatitude = latitude + Territory.LATITUDE_UNIT / 2
+        val centerLongitude = longitude + Territory.LONGITUDE_UNIT / 2
+
+        val centerLocation = Location(centerLatitude, centerLongitude, Instant.EPOCH)
+
+        val distance = measurement.determinePathwayDistance(drawableMap.originalLocation, centerLocation)
+        val azimuth = measurement.determineAzimuth(drawableMap.originalLocation, centerLocation)
+        val x = distance * cos(azimuth)
+        val y = distance * sin(azimuth)
+
+        canvas.drawCircle(
+                view.dip(drawableMap.scaleFactor.scale(x)).toFloat(),
+                view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
+                view.dip(drawableMap.scaleFactor.scale(Territory.getRadius(measurement))).toFloat(),
+                createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
+                    alpha = territory.score.toInt()
+                })
+        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
+    }
+
+    private fun drawPoint(canvas: Canvas, x: Float, y: Float, paintFootmark: Paint) {
         canvas.drawCircle(view.dip(x).toFloat(), view.dip(y).toFloat(), view.dip(3).toFloat(), paintFootmark)
     }
 
@@ -90,9 +117,15 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
             val azimuth = measurement.determineAzimuth(drawableMap.originalLocation, it)
             val x = distance * cos(azimuth)
             val y = distance * sin(azimuth)
-            drawFootmark(canvas, (x / drawableMap.scaleFactor).toFloat(), (y / drawableMap.scaleFactor).toFloat())
+            drawPoint(canvas, drawableMap.scaleFactor.scale(x), drawableMap.scaleFactor.scale(y), createPaint(Color.GREEN, view.dip(1).toFloat()))
+        }
+
+        drawableMap.territories.forEach {
+            drawTerritory(canvas, it, drawableMap)
         }
     }
+
+    private fun Float.scale(num: Double) = (num / this).toFloat()
 
     override fun setMeasurement(measurement: Measurement) {
         this.measurement = measurement

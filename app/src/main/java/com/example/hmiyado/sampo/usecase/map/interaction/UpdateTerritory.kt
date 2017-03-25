@@ -1,6 +1,5 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryScorer
@@ -26,8 +25,8 @@ class UpdateTerritory(
     }
 
     private fun updateTerritories(location: Location, territories: List<Territory>, territoryValidityPeriod: TerritoryValidityPeriod): List<Territory> {
-        val queryLatitudeId = Territory.findLatitudeIdBy(location.latitude.toDegree())
-        val queryLongitudeId = Territory.findLongitudeIdBy(location.longitude.toDegree())
+        val queryLatitudeId = Territory.findLatitudeIdBy(location.latitude)
+        val queryLongitudeId = Territory.findLongitudeIdBy(location.longitude)
         val foundTerritory = territories.find { it.latitudeId == queryLatitudeId && it.longitudeId == queryLongitudeId }
         if (foundTerritory == null) {
             val newTerritory = Territory(queryLatitudeId, queryLongitudeId, listOf(location), scorer, territoryValidityPeriod)

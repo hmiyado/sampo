@@ -8,11 +8,7 @@ package com.example.hmiyado.sampo.domain.math
 class Degree(
         value: Double
 ) {
-    private val value: Double
-
-    init {
-        this.value = value % 360
-    }
+    private val value = value % 360
 
     constructor(value: Int) : this(value.toDouble())
 
@@ -22,6 +18,26 @@ class Degree(
 
     operator fun plus(degree: Degree): Degree {
         return Degree(value + degree.value % 360)
+    }
+
+    operator fun times(number: Int): Degree {
+        return Degree(value * number)
+    }
+
+    operator fun times(number: Double): Degree {
+        return Degree(value * number)
+    }
+
+    operator fun div(degree: Degree): Double {
+        return value / degree.value
+    }
+
+    operator fun div(number: Double): Degree {
+        return Degree(value / number)
+    }
+
+    operator fun div(number: Int): Degree {
+        return Degree(value / number)
     }
 
     override fun equals(other: Any?): Boolean {

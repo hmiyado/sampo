@@ -4,6 +4,7 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Territory
 import io.reactivex.Observable
 
 /**
@@ -27,7 +28,8 @@ interface UseMapView {
                 val originalLocation: Location,
                 val scaleFactor: Float,
                 val rotateAngle: Degree,
-                val footmarks: List<Location>
+                val footmarks: List<Location>,
+                val territories: List<Territory>
         )
 
         fun draw(drawableMap: DrawableMap)

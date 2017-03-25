@@ -9,6 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import org.threeten.bp.Instant
 import org.threeten.bp.Period
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -49,6 +50,7 @@ class MapStoreImpl : MapStore {
     }
 
     override fun setTerritories(territories: List<Territory>) {
+        Timber.d(territories.map { "Territory(${it.latitudeId}, ${it.longitudeId}, ${it.score})" }.toString())
         territoriesSubject.onNext(territories)
     }
 

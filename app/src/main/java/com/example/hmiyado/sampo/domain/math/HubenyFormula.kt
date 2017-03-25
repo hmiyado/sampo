@@ -45,10 +45,10 @@ object HubenyFormula : LocationDistance {
      * @param p2 地点２
      */
     override fun determineDistance(p1: Location, p2: Location): Double {
-        val dX = p1.longitude - p2.longitude
-        val dY = p1.latitude - p2.latitude
+        val dX = (p1.longitude - p2.longitude).toDouble()
+        val dY = (p1.latitude - p2.latitude).toDouble()
 
-        val mu = determineMu(p1.latitude, p2.latitude)
+        val mu = determineMu(p1.latitude.toDouble(), p2.latitude.toDouble())
         val W = determineW(mu)
         val M = determineM(W)
         val N = determineN(W)

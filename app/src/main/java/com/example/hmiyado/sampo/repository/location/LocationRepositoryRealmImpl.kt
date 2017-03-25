@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.repository.location
 
+import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.toDate
 import com.example.hmiyado.sampo.domain.model.Time.toInstant
@@ -18,8 +19,8 @@ class LocationRepositoryRealmImpl : LocationRepository {
     companion object {
         fun convertToLocationFromModel(locationModel: LocationModel): Location {
             return Location(
-                    latitude = locationModel.latitude,
-                    longitude = locationModel.longitude,
+                    latitude = locationModel.latitude.toDegree(),
+                    longitude = locationModel.longitude.toDegree(),
                     timeStamp = locationModel.timeStamp.toInstant()
             )
         }
@@ -29,8 +30,8 @@ class LocationRepositoryRealmImpl : LocationRepository {
         Realm.getDefaultInstance().executeTransaction {
             try {
                 val locationModel = it.createObject(LocationModel::class.java)
-                locationModel.latitude = location.latitude
-                locationModel.longitude = location.longitude
+                locationModel.latitude = location.latitude.toDouble()
+                locationModel.longitude = location.longitude.toDouble()
                 locationModel.timeStamp = location.timeStamp.toDate()
             } catch (realmPrimaryKeyConstraintException: RealmPrimaryKeyConstraintException) {
                 Timber.e(realmPrimaryKeyConstraintException.message)

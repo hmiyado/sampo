@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.model
 
+import com.example.hmiyado.sampo.domain.math.Degree
 import org.threeten.bp.Instant
 
 /**
@@ -15,19 +16,21 @@ open class Location(
         /**
          * 緯度
          */
-        val latitude: Double,
+        val latitude: Degree = Degree(0),
         /**
          * 経度
          */
-        val longitude: Double,
+        val longitude: Degree = Degree(0),
         /**
          * 時間
          */
-        val timeStamp: Instant
+        val timeStamp: Instant = Instant.EPOCH
 ) {
     companion object {
-        fun empty() = Location(0.0, 0.0, Instant.EPOCH)
+        fun empty() = Location()
     }
+
+    constructor(lat: Double, long: Double, timeStamp: Instant = Instant.EPOCH) : this(Degree(lat), Degree(long), timeStamp)
 
     override fun toString(): String {
         return "Location($latitude, $longitude, ${timeStamp.toString()})"

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.hmiyado.sampo.R
-import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Location
 import org.jetbrains.anko.find
 import org.threeten.bp.Instant
@@ -29,8 +28,8 @@ class ResultRealmItemView(context: Context) : LinearLayout(context) {
 
     fun setLocation(location: Location) {
         setLocalDateTime(location.timeStamp)
-        longitudeView.text = location.longitude.toDegree().toString()
-        latitudeView.text = location.latitude.toDegree().toString()
+        longitudeView.text = location.longitude.toString()
+        latitudeView.text = location.latitude.toString()
     }
 
     private fun setLocalDateTime(timeStamp: Instant) {

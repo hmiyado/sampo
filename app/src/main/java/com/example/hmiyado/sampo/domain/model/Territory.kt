@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.domain.model
 
 import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.math.Measurement
 
 /**
  * Created by hmiyado on 2017/03/21.
@@ -18,15 +19,30 @@ class Territory(
          * 地球を東西方向および南北方向に分割するときの数
          */
         val DIVISION_NUMBER = 225855
-        val LATITUDE_UNIT = 180.toDouble() / DIVISION_NUMBER
-        val LONGITUDE_UNIT = 360.toDouble() / DIVISION_NUMBER
+        val LATITUDE_UNIT = Degree(180.0 / DIVISION_NUMBER)
+        val LONGITUDE_UNIT = Degree(360.0 / DIVISION_NUMBER)
 
         fun findLatitudeIdBy(latitude: Degree): Int {
-            return ((latitude.toDouble() + 90) / LATITUDE_UNIT).toInt()
+            return ((latitude + Degree(90)) / LATITUDE_UNIT).toInt()
         }
 
         fun findLongitudeIdBy(longitude: Degree): Int {
-            return ((longitude.toDouble() + 180) / LONGITUDE_UNIT).toInt()
+            return ((longitude + Degree(180)) / LONGITUDE_UNIT).toInt()
+        }
+
+        fun findLatitudeById(latitudeId: Int): Degree {
+            return (LATITUDE_UNIT * latitudeId - Degree(90))
+        }
+
+        fun findLongitudeById(longitudeId: Int): Degree {
+            return (LONGITUDE_UNIT * longitudeId - Degree(180))
+        }
+
+        fun getRadius(measurement: Measurement): Double {
+            return measurement.determinePathwayDistance(
+                    Location(0.0, 0.0),
+                    Location(LATITUDE_UNIT, LONGITUDE_UNIT)
+            ) / 2
         }
     }
 
@@ -39,6 +55,7 @@ class Territory(
     fun addLocation(location: Location): Territory {
         return Territory(latitudeId, longitudeId, locations.plus(location), this, this)
     }
+
 
     override fun compareTo(other: Territory): Int {
         if (this == other) {
@@ -68,6 +85,10 @@ class Territory(
         var result = latitudeId
         result = 31 * result + longitudeId
         return result
+    }
+
+    override fun toString(): String {
+        return "Territory(latitudeId=$latitudeId, longitudeId=$longitudeId, locations=$locations)"
     }
 
 }

@@ -58,19 +58,19 @@ interface Measurement {
 
     fun determinePathwayDistance(departure: Location, destination: Location): Double {
         return determinePathwayDistance(
-                departure.latitude.toDegree().toRadian(),
-                departure.longitude.toDegree().toRadian(),
-                destination.latitude.toDegree().toRadian(),
-                destination.longitude.toDegree().toRadian()
+                departure.latitude.toRadian(),
+                departure.longitude.toRadian(),
+                destination.latitude.toRadian(),
+                destination.longitude.toRadian()
         )
     }
 
     fun determineAzimuth(departure: Location, destination: Location): Radian {
         return determineAzimuth(
-                departure.latitude.toDegree().toRadian(),
-                departure.longitude.toDegree().toRadian(),
-                destination.latitude.toDegree().toRadian(),
-                destination.longitude.toDegree().toRadian()
+                departure.latitude.toRadian(),
+                departure.longitude.toRadian(),
+                destination.latitude.toRadian(),
+                destination.longitude.toRadian()
         )
     }
 }
