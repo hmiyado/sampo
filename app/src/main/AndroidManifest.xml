@@ -15,7 +15,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.map.MapActivity">
+        <activity
+            android:name=".view.map.MapActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -49,7 +51,9 @@
             android:name=".service.LocationSensorService"
             android:exported="false"/>
 
-        <activity android:name=".view.result.ResultActivity"></activity>
+        <activity
+            android:name=".view.result.ResultActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>
