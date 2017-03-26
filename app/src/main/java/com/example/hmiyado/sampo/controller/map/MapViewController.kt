@@ -1,8 +1,10 @@
 package com.example.hmiyado.sampo.controller.map
 
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.example.hmiyado.sampo.R
 import com.example.hmiyado.sampo.controller.ViewController
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
@@ -14,7 +16,6 @@ import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 import org.threeten.bp.Instant
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -69,7 +70,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
                     alpha = territory.score.toInt()
                 })
-        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
+        //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
     }
 
     private fun drawPoint(canvas: Canvas, x: Float, y: Float, paintFootmark: Paint) {
@@ -77,10 +78,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun drawOriginalLocation(canvas: Canvas) {
-        val paintOriginalLocation: Paint = createPaint(Color.BLUE, view.dip(1).toFloat())
-        val length = view.dip(25).toFloat()
-        canvas.drawLine(0f, 0f, 0f, length, paintOriginalLocation)
-        canvas.drawCircle(0f, length, length / 2, paintOriginalLocation)
+        val originBitmap = BitmapFactory.decodeResource(view.resources, R.drawable.ic_navigation_black_18dp)
+        canvas.drawBitmap(originBitmap, -originBitmap.width.toFloat() / 2, -originBitmap.height.toFloat() / 2, null)
     }
 
     private fun drawMesh(canvas: Canvas) {
