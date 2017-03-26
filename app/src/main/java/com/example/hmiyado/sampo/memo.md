@@ -155,11 +155,13 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - 4月までの実装: ゲーム性の向上
     - [] 結果画面の再構築(脱リストビュー)
     - [x] 距離計算
-    - [] エリア計算
+    - [x] エリア計算
         - [x] エリア計算の方法考案
-        - [] 実装
+        - [x] 実装
     - [] アチーブメントの設定
     - [] SNS 連携
+    
+    
 
 ### 結果画面の再構築
 結果をぱっとみて
@@ -216,6 +218,10 @@ Area に Location が1つ増えると，Area の territory score が1増える�
 また，Areaに隣接するAreaのterritory score は 1/x 増える(x: 影響力)．
 以下，n回の隣接Areaのterritory scoreが増加する（？　連鎖影響の実装が面倒そうなのでやめといたほうがよさげ）．
 territory score　に応じて，なわばりの色を変える
+
+### スコアとレベルデザイン
+
+
 
 ## Area, Territory のユースケース
 - 地点 → Area を特定
