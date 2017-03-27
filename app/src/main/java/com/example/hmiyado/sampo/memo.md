@@ -148,8 +148,8 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] twitter 連携
 - [] slack 連携
 - [] デザイン
-    - [] アイコンの変更　https://material.io/icons/
-    - [] テーマの設定
+    - [x] アイコンの変更　https://material.io/icons/
+    - [x] テーマの設定
 
 ## 3月の実装予定
 - 4月までの実装: ゲーム性の向上
@@ -158,6 +158,9 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [x] エリア計算
         - [x] エリア計算の方法考案
         - [x] 実装
+    - [] 数字の調整・調査
+        - [] scale の正しい数字
+        - [] score の調整
     - [] アチーブメントの設定
     - [] SNS 連携
     
