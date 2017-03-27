@@ -32,7 +32,7 @@ class TerritoryTest {
 
     @Test
     fun compareTo() {
-        val scorer = TerritoryScorerSizeImpl()
+        val scorer = TerritoryScorerSizeImpl
         val territoryValidPeriod = mock(TerritoryValidityPeriod::class.java)
         val territory0 = Territory(0, 0, emptyList(), scorer, territoryValidPeriod)
         val territory1 = Territory(0, 0, emptyList(), scorer, territoryValidPeriod)

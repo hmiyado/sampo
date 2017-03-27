@@ -223,8 +223,38 @@ Area に Location が1つ増えると，Area の territory score が1増える�
 territory score　に応じて，なわばりの色を変える
 
 ### スコアとレベルデザイン
+ユーザーのリソース 1day = 24h = 24 * 60 min
+少なくとも2分に1回地点を観測　24 * 60 / 2 = 720 locations/day = 7 * 720 locations/week
 
+移動が多い狩猟型と移動が少ない農耕型
 
+#### スコア計算に係る要素
+- マーカー
+    - 影響範囲
+    - 数
+    - 倍率
+- Territory ボーナス
+- Territory 連続滞在期間
+- Territory 滞在期間
+- Territory 広さ
+
+#### スコアの算出
+total score = f(territories) * Sigma(territory score)
+f: Territory の広さ(数)による倍率
+
+territory score = (bonus + g(最大連続滞在期間) + h(滞在期間)) * marking
+
+marking: マーカーによる倍率
+bonus: Territory に1地点分でも滞在したら入る定数スコア
+g: 最大連続滞在期間に依存するスコア．多項式オーダーがよい？
+h: 滞在期間に依存するスコア．シグモイドのような，長期間滞在すると伸びが悪くなるスコア関数がよい？
+
+#### モデルケース
+モデルケースを設定し，スコアを調整していくのがよいのではないか？
+
+- 農耕特化：　自宅引きこもり．24時間自宅
+- 農耕重点型：　2箇所を往復する．自宅12時間，移動2時間，仕事10時間
+- 狩猟特化型：　日本一周中．同じ場所は2度と通らない．
 
 ## Area, Territory のユースケース
 - 地点 → Area を特定
