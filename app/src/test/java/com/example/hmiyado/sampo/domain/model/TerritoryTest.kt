@@ -4,7 +4,6 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import org.mockito.Mockito.mock
 
 /**
  * Created by hmiyado on 2017/03/21.
@@ -32,13 +31,11 @@ class TerritoryTest {
 
     @Test
     fun compareTo() {
-        val scorer = TerritoryScorerSizeImpl
-        val territoryValidPeriod = mock(TerritoryValidityPeriod::class.java)
-        val territory0 = Territory(0, 0, emptyList(), scorer, territoryValidPeriod)
-        val territory1 = Territory(0, 0, emptyList(), scorer, territoryValidPeriod)
-        val territory2 = Territory(0, 1, emptyList(), scorer, territoryValidPeriod)
-        val territory3 = Territory(1, 0, emptyList(), scorer, territoryValidPeriod)
-        val territory4 = Territory(1, 1, emptyList(), scorer, territoryValidPeriod)
+        val territory0 = Territory(0, 0, emptyList())
+        val territory1 = Territory(0, 0, emptyList())
+        val territory2 = Territory(0, 1, emptyList())
+        val territory3 = Territory(1, 0, emptyList())
+        val territory4 = Territory(1, 1, emptyList())
         assert(territory0 == territory1)
         assert(territory1 < territory2)
         assert(territory1 < territory3)

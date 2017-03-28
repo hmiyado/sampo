@@ -9,10 +9,8 @@ import com.example.hmiyado.sampo.domain.math.Measurement
 class Territory(
         val latitudeId: Int,
         val longitudeId: Int,
-        val locations: List<Location>,
-        scorer: TerritoryScorer,
-        territoryValidityPeriod: TerritoryValidityPeriod
-) : Comparable<Territory>, TerritoryScorer by scorer, TerritoryValidityPeriod by territoryValidityPeriod {
+        val locations: List<Location>
+) : Comparable<Territory> {
 
     companion object {
         /**
@@ -46,14 +44,11 @@ class Territory(
         }
     }
 
-    val score
-        get() = this.calcScore(locations, this)
-
     /**
      * 新しい位置情報を加えた縄張り情報を返す
      */
     fun addLocation(location: Location): Territory {
-        return Territory(latitudeId, longitudeId, locations.plus(location), this, this)
+        return Territory(latitudeId, longitudeId, locations.plus(location))
     }
 
 

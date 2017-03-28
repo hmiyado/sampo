@@ -12,10 +12,13 @@ import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
+import com.example.hmiyado.sampo.domain.model.TerritoryScorerSizeImpl
+import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
 import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 import org.threeten.bp.Instant
+import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -27,7 +30,9 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
             scaleFactor = 1.0f,
             rotateAngle = Degree(0),
             footmarks = emptyList(),
-            territories = emptyList()
+            territories = emptyList(),
+            scorer = TerritoryScorerSizeImpl,
+            validityPeriod = TerritoryValidityPeriod.create(Instant.EPOCH, Period.ofWeeks(1))
     )
 
     private lateinit var measurement: Measurement
@@ -68,7 +73,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(Territory.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
-                    alpha = territory.score.toInt()
+                    alpha = drawableMap.scorer.calcScore(territory.locations, drawableMap.validityPeriod).toInt()
                 })
         //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
     }
