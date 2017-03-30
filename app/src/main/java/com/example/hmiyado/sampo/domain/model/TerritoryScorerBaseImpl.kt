@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.model
 
+import com.example.hmiyado.sampo.domain.math.function.CeiledProportionalFunction
 import com.example.hmiyado.sampo.domain.math.function.LogisticFunction
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
@@ -13,9 +14,9 @@ object TerritoryScorerBaseImpl : TerritoryScorer {
     val RESIDENTIAL_DURATION: Duration = Duration.ofMinutes(5)
 
     // 長期滞在ボーナススコア関数
-    val residentialScoreFunction = LogisticFunction(carryingCapacity = 500.0)::invoke
+    val residentialScoreFunction = LogisticFunction(carryingCapacity = 1080.0, growthRate = 0.015, initialPopulation = 1.0)::invoke
     // 滞在スコア関数
-    val transientScoreFunction = LogisticFunction()::invoke
+    val transientScoreFunction = CeiledProportionalFunction(ceil = 200.0, ratio = 1000.0)::invoke
     // 滞在ボーナス
     val stayBonus = 10.0
 

@@ -15,23 +15,24 @@ import io.reactivex.functions.BiFunction
 class UpdateTerritory(
         private val mapStore: MapStore
 ) : Interaction<List<Territory>>() {
+    companion object {
+        fun updateTerritories(location: Location, territories: List<Territory>): List<Territory> {
+            val queryLatitudeId = Territory.findLatitudeIdBy(location.latitude)
+            val queryLongitudeId = Territory.findLongitudeIdBy(location.longitude)
+            val foundTerritory = territories.find { it.latitudeId == queryLatitudeId && it.longitudeId == queryLongitudeId }
+            if (foundTerritory == null) {
+                val newTerritory = Territory(queryLatitudeId, queryLongitudeId, listOf(location))
+                return territories.plus(newTerritory)
+            } else {
+                val newTerritory = foundTerritory.addLocation(location)
+                return territories.minus(foundTerritory).plus(newTerritory)
+            }
+        }
+    }
 
     override fun buildProducer(): Observable<List<Territory>> {
         return mapStore.getOriginalLocation()
-                .withLatestFrom(mapStore.getTerritories(), BiFunction(this::updateTerritories))
-    }
-
-    private fun updateTerritories(location: Location, territories: List<Territory>): List<Territory> {
-        val queryLatitudeId = Territory.findLatitudeIdBy(location.latitude)
-        val queryLongitudeId = Territory.findLongitudeIdBy(location.longitude)
-        val foundTerritory = territories.find { it.latitudeId == queryLatitudeId && it.longitudeId == queryLongitudeId }
-        if (foundTerritory == null) {
-            val newTerritory = Territory(queryLatitudeId, queryLongitudeId, listOf(location))
-            return territories.plus(newTerritory)
-        } else {
-            val newTerritory = foundTerritory.addLocation(location)
-            return territories.minus(foundTerritory).plus(newTerritory)
-        }
+                .withLatestFrom(mapStore.getTerritories(), BiFunction(UpdateTerritory.Companion::updateTerritories))
     }
 
     override fun buildConsumer(): Observer<List<Territory>> {

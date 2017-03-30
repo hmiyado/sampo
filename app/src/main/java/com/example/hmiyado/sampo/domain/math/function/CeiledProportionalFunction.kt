@@ -24,6 +24,6 @@ class CeiledProportionalFunction(
         // x = y - a/L - a / (y - L)
         // この式を y について解き直したもの
         // https://www.desmos.com/calculator
-        return (x + L + a / L) - Math.sqrt((x + L + a / L).square() - 4 * L * x) / 2
+        return ((x + L + a / L) - Math.sqrt((x + L + a / L).square() - 4 * L * x)) / 2
     }
 }
