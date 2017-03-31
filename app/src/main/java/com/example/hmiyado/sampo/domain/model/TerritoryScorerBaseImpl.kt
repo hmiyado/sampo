@@ -13,24 +13,24 @@ object TerritoryScorerBaseImpl : TerritoryScorer {
     // たとえば，この値が5分なら，5分間の間
     val RESIDENTIAL_DURATION: Duration = Duration.ofMinutes(5)
 
-    // 長期滞在ボーナススコア関数
+    // 長期滞在ボーナススコア関数　最大で1地点あたり1.5点
     val residentialScoreFunction = LogisticFunction(carryingCapacity = 1080.0, growthRate = 0.015, initialPopulation = 1.0)::invoke
-    // 滞在スコア関数
+    // 滞在スコア関数 1地点あたり1点
     val transientScoreFunction = CeiledProportionalFunction(ceil = 200.0, ratio = 1000.0)::invoke
-    // 滞在ボーナス
+    // 滞在ボーナス 1地点あたり10点．ただし， Territory につき1回だけである
     val stayBonus = 10.0
 
     override fun calcScore(locations: List<Location>, territoryValidPeriod: TerritoryValidityPeriod): Double {
         val sortedValidLocations = locations.sortedBy { it.timeStamp }.filter { territoryValidPeriod.isValid(it.timeStamp) }
         val transient = sortedValidLocations.size
-        val residence = sortedValidLocations.fold(Triple(0.0, 0.0, Instant.EPOCH), { triple, temporalLocation ->
+        val residence = sortedValidLocations.fold(Triple(0.0, 1.0, Instant.EPOCH), { triple, temporalLocation ->
             val maxResidentialSpan = triple.first
             val temporalResidentialSpan = triple.second
             val previousTimestamp = triple.third
             val newResidentialSpan = if (Duration.between(previousTimestamp, temporalLocation.timeStamp) <= RESIDENTIAL_DURATION) {
                 temporalResidentialSpan + 1
             } else {
-                0.0
+                1.0
             }
             Triple(
                     Math.max(maxResidentialSpan, newResidentialSpan),

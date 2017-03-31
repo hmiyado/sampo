@@ -14,6 +14,6 @@ interface TerritoryValidityPeriod {
     val start: Instant
     val period: Period
 
-    fun isValid(instant: Instant): Boolean = instant.isBefore(start.plus(period))
+    fun isValid(instant: Instant): Boolean = instant.isBefore(start.plus(period)) || instant == start.plus(period)
 
 }

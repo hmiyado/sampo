@@ -24,6 +24,10 @@ class Degree(
         return Degree(value * number)
     }
 
+    operator fun times(number: Long): Degree {
+        return Degree(value * number)
+    }
+
     operator fun times(number: Double): Degree {
         return Degree(value * number)
     }
