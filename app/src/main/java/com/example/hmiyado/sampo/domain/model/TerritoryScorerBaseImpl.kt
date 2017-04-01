@@ -22,12 +22,12 @@ object TerritoryScorerBaseImpl : TerritoryScorer {
     // 広さボーナス関数
     val areaScoreFunction = { area: Double -> Math.pow(area, 0.25) }
 
-    override fun calcScore(territories: List<Territory>, territoryValidPeriod: TerritoryValidityPeriod): Double {
-        return areaScoreFunction(territories.size.toDouble()) * territories.map { calcScorePerTerritory(it, territoryValidPeriod) }.sum()
+    override fun calcScore(territories: List<Territory>, validPeriod: ValidityPeriod): Double {
+        return areaScoreFunction(territories.size.toDouble()) * territories.map { calcScorePerTerritory(it, validPeriod) }.sum()
     }
 
-    override fun calcScorePerTerritory(territory: Territory, territoryValidPeriod: TerritoryValidityPeriod): Double {
-        val sortedValidLocations = territory.locations.sortedBy { it.timeStamp }.filter { territoryValidPeriod.isValid(it.timeStamp) }
+    override fun calcScorePerTerritory(territory: Territory, validPeriod: ValidityPeriod): Double {
+        val sortedValidLocations = territory.locations.sortedBy { it.timeStamp }.filter { validPeriod.isValid(it.timeStamp) }
         val transient = sortedValidLocations.size
         val residence = sortedValidLocations.fold(Triple(0.0, 1.0, Instant.EPOCH), { triple, temporalLocation ->
             val maxResidentialSpan = triple.first
