@@ -19,9 +19,15 @@ object TerritoryScorerBaseImpl : TerritoryScorer {
     val transientScoreFunction = CeiledProportionalFunction(ceil = 200.0, ratio = 1000.0)::invoke
     // 滞在ボーナス 1地点あたり10点．ただし， Territory につき1回だけである
     val stayBonus = 10.0
+    // 広さボーナス関数
+    val areaScoreFunction = { area: Double -> Math.pow(area, 0.25) }
 
-    override fun calcScore(locations: List<Location>, territoryValidPeriod: TerritoryValidityPeriod): Double {
-        val sortedValidLocations = locations.sortedBy { it.timeStamp }.filter { territoryValidPeriod.isValid(it.timeStamp) }
+    override fun calcScore(territories: List<Territory>, territoryValidPeriod: TerritoryValidityPeriod): Double {
+        return areaScoreFunction(territories.size.toDouble()) * territories.map { calcScorePerTerritory(it, territoryValidPeriod) }.sum()
+    }
+
+    override fun calcScorePerTerritory(territory: Territory, territoryValidPeriod: TerritoryValidityPeriod): Double {
+        val sortedValidLocations = territory.locations.sortedBy { it.timeStamp }.filter { territoryValidPeriod.isValid(it.timeStamp) }
         val transient = sortedValidLocations.size
         val residence = sortedValidLocations.fold(Triple(0.0, 1.0, Instant.EPOCH), { triple, temporalLocation ->
             val maxResidentialSpan = triple.first

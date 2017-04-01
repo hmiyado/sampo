@@ -73,7 +73,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(Territory.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
-                    alpha = drawableMap.scorer.calcScore(territory.locations, drawableMap.validityPeriod).toInt()
+                    alpha = drawableMap.scorer.calcScorePerTerritory(territory, drawableMap.validityPeriod).toInt()
                 })
         //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
     }
