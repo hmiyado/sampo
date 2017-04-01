@@ -4,7 +4,7 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Orientation
 import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
+import com.example.hmiyado.sampo.domain.model.ValidityPeriod
 import io.reactivex.Observable
 
 /**
@@ -31,7 +31,7 @@ interface MapStore {
 
     fun setTerritories(territories: List<Territory>)
 
-    fun setTerritoryValidityPeriod(territoryValidityPeriod: TerritoryValidityPeriod)
+    fun setTerritoryValidityPeriod(validityPeriod: ValidityPeriod)
 
     fun getOriginalLocation(): Observable<Location>
 
@@ -45,5 +45,5 @@ interface MapStore {
 
     fun getTerritories(): Observable<List<Territory>>
 
-    fun getTerritoryValidityPeriod(): Observable<TerritoryValidityPeriod>
+    fun getTerritoryValidityPeriod(): Observable<ValidityPeriod>
 }

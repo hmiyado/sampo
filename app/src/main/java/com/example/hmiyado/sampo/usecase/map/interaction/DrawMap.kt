@@ -5,7 +5,7 @@ import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryScorer
-import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
+import com.example.hmiyado.sampo.domain.model.ValidityPeriod
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseMapView
@@ -37,7 +37,7 @@ class DrawMap(
                         Function6(this::toDrawableMap))
     }
 
-    private fun toDrawableMap(originalLocation: Location, scaleFactor: Float, rotateAngle: Degree, footmarks: List<Location>, territories: List<Territory>, validityPeriod: TerritoryValidityPeriod): UseMapView.Sink.DrawableMap {
+    private fun toDrawableMap(originalLocation: Location, scaleFactor: Float, rotateAngle: Degree, footmarks: List<Location>, territories: List<Territory>, validityPeriod: ValidityPeriod): UseMapView.Sink.DrawableMap {
         return UseMapView.Sink.DrawableMap(originalLocation, scaleFactor, rotateAngle, footmarks, territories, scorer, validityPeriod)
     }
 

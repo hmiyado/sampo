@@ -13,7 +13,7 @@ import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.domain.model.TerritoryScorerSizeImpl
-import com.example.hmiyado.sampo.domain.model.TerritoryValidityPeriod
+import com.example.hmiyado.sampo.domain.model.ValidityPeriod
 import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
@@ -32,7 +32,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
             footmarks = emptyList(),
             territories = emptyList(),
             scorer = TerritoryScorerSizeImpl,
-            validityPeriod = TerritoryValidityPeriod.create(Instant.EPOCH, Period.ofWeeks(1))
+            validityPeriod = ValidityPeriod.create(Instant.EPOCH, Period.ofWeeks(1))
     )
 
     private lateinit var measurement: Measurement

@@ -19,7 +19,7 @@ class TerritoryScorerBaseImplTest {
     @Test
     fun calcScoreNeat() {
         val neat = LocationMockNeat(days = 1)
-        val period = TerritoryValidityPeriodImpl(Instant.EPOCH, Period.ofDays(1))
+        val period = ValidityPeriodImpl(Instant.EPOCH, Period.ofDays(1))
 
         val scorePerTerritory = TerritoryScorerBaseImpl.calcScorePerTerritory(neat.territories.first(), period)
         // stayBonus + carryingCapacity + ceil = 1290 くらい
@@ -32,7 +32,7 @@ class TerritoryScorerBaseImplTest {
     @Test
     fun calcScoreHunter() {
         val hunter = LocationMockHunter(days = 1)
-        val period = TerritoryValidityPeriodImpl(Instant.EPOCH, Period.ofDays(1))
+        val period = ValidityPeriodImpl(Instant.EPOCH, Period.ofDays(1))
         // stayBonus + 1 + 1
         val expectedScorePerTerritory = (TerritoryScorerBaseImpl.stayBonus + TerritoryScorerBaseImpl.transientScoreFunction(1.0) + TerritoryScorerBaseImpl.residentialScoreFunction(1.0))
 
@@ -45,7 +45,7 @@ class TerritoryScorerBaseImplTest {
     @Test
     fun calcScoreSalaryMan() {
         val salaryMan = LocationMockSalaryMan(days = 1)
-        val period = TerritoryValidityPeriodImpl(Instant.EPOCH, Period.ofDays(1))
+        val period = ValidityPeriodImpl(Instant.EPOCH, Period.ofDays(1))
 
         val score = TerritoryScorerBaseImpl.calcScore(salaryMan.territories, period)
         // 自宅または会社の概算スコア

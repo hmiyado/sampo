@@ -6,9 +6,9 @@ import org.threeten.bp.Period
 /**
  * Created by hmiyado on 2017/03/21.
  */
-interface TerritoryValidityPeriod {
+interface ValidityPeriod {
     companion object {
-        fun create(start: Instant, period: Period): TerritoryValidityPeriod = TerritoryValidityPeriodImpl(start, period)
+        fun create(start: Instant, period: Period): ValidityPeriod = ValidityPeriodImpl(start, period)
     }
 
     val start: Instant

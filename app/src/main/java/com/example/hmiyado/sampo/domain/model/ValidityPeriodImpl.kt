@@ -6,8 +6,8 @@ import org.threeten.bp.Period
 /**
  * Created by hmiyado on 2017/03/25.
  */
-class TerritoryValidityPeriodImpl(
+class ValidityPeriodImpl(
         override val start: Instant,
         override val period: Period
-) : TerritoryValidityPeriod {
+) : ValidityPeriod {
 }
