@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.model.mock
 
+import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateTerritory
@@ -29,8 +30,8 @@ class LocationMockHunter(
         val period = TimeUnit.DAYS.toMinutes(days)
         return (0..period).map {
             Location(
-                    Territory.LATITUDE_UNIT * it,
-                    Territory.LONGITUDE_UNIT * it,
+                    Area.LATITUDE_UNIT * it,
+                    Area.LONGITUDE_UNIT * it,
                     Instant.EPOCH.plusSeconds(TimeUnit.MINUTES.toSeconds(it))
             )
         }

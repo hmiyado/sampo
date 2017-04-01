@@ -10,10 +10,7 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.TerritoryScorerSizeImpl
-import com.example.hmiyado.sampo.domain.model.ValidityPeriod
+import com.example.hmiyado.sampo.domain.model.*
 import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
@@ -55,11 +52,11 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun drawTerritory(canvas: Canvas, territory: Territory, drawableMap: Sink.DrawableMap) {
-        val latitude = Territory.findLatitudeById(territory.latitudeId)
-        val longitude = Territory.findLongitudeById(territory.longitudeId)
+        val latitude = Area.findLatitudeById(territory.area.latitudeId)
+        val longitude = Area.findLongitudeById(territory.area.longitudeId)
 
-        val centerLatitude = latitude + Territory.LATITUDE_UNIT / 2
-        val centerLongitude = longitude + Territory.LONGITUDE_UNIT / 2
+        val centerLatitude = latitude + Area.LATITUDE_UNIT / 2
+        val centerLongitude = longitude + Area.LONGITUDE_UNIT / 2
 
         val centerLocation = Location(centerLatitude, centerLongitude, Instant.EPOCH)
 
@@ -71,7 +68,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         canvas.drawCircle(
                 view.dip(drawableMap.scaleFactor.scale(x)).toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
-                view.dip(drawableMap.scaleFactor.scale(Territory.getRadius(measurement))).toFloat(),
+                view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
                     alpha = drawableMap.scorer.calcScorePerTerritory(territory, drawableMap.validityPeriod).toInt()
                 })

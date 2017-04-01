@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
+import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.DefaultObserver
@@ -17,11 +18,10 @@ class UpdateTerritory(
 ) : Interaction<List<Territory>>() {
     companion object {
         fun updateTerritories(location: Location, territories: List<Territory>): List<Territory> {
-            val queryLatitudeId = Territory.findLatitudeIdBy(location.latitude)
-            val queryLongitudeId = Territory.findLongitudeIdBy(location.longitude)
-            val foundTerritory = territories.find { it.latitudeId == queryLatitudeId && it.longitudeId == queryLongitudeId }
+            val queryArea = Area(location)
+            val foundTerritory = territories.find { it.area == queryArea }
             if (foundTerritory == null) {
-                val newTerritory = Territory(queryLatitudeId, queryLongitudeId, listOf(location))
+                val newTerritory = Territory(queryArea, listOf(location))
                 return territories.plus(newTerritory)
             } else {
                 val newTerritory = foundTerritory.addLocation(location)

@@ -50,7 +50,7 @@ class MapStoreImpl : MapStore {
     }
 
     override fun setTerritories(territories: List<Territory>) {
-        Timber.d(territories.map { "Territory(${it.latitudeId}, ${it.longitudeId})" }.toString())
+        Timber.d(territories.map { "Territory(area=${it.area})" }.toString())
         territoriesSubject.onNext(territories)
     }
 

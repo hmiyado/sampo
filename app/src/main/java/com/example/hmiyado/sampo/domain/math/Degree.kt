@@ -13,11 +13,11 @@ class Degree(
     constructor(value: Int) : this(value.toDouble())
 
     operator fun minus(degree: Degree): Degree {
-        return Degree(value - degree.value % 360)
+        return Degree(value - degree.value)
     }
 
     operator fun plus(degree: Degree): Degree {
-        return Degree(value + degree.value % 360)
+        return Degree(value + degree.value)
     }
 
     operator fun times(number: Int): Degree {

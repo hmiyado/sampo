@@ -1,7 +1,7 @@
 package com.example.hmiyado.sampo.repository.location
 
+import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Territory
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -43,8 +43,8 @@ class LocationSensorVirtualImpl : LocationSensor {
     private fun updateNextLocation(num: Long) {
         val value = num * Math.PI / 16
         nextLocation = Location(
-                Territory.LATITUDE_UNIT * Math.cos(value),
-                Territory.LONGITUDE_UNIT * Math.sin(value),
+                Area.LATITUDE_UNIT * Math.cos(value),
+                Area.LONGITUDE_UNIT * Math.sin(value),
                 nextLocation.timeStamp.plusMillis(delayTimeMs)
         )
     }

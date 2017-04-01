@@ -12,30 +12,32 @@ class TerritoryTest {
     @Test
     fun findLatitudeIdBy() {
         val minLatitude = Degree(-90)
-        assertThat(Territory.findLatitudeIdBy(minLatitude), `is`(0))
+        assertThat(Area.findLatitudeIdBy(minLatitude), `is`(0))
         val maxLatitude = Degree(90)
-        assertThat(Territory.findLatitudeIdBy(maxLatitude), `is`(Territory.DIVISION_NUMBER))
+        assertThat(Area.findLatitudeIdBy(maxLatitude), `is`(Area.DIVISION_NUMBER))
         val middleLatitude = Degree(0)
-        assertThat(Territory.findLatitudeIdBy(middleLatitude), `is`(Territory.DIVISION_NUMBER / 2))
+        assertThat(Area.findLatitudeIdBy(middleLatitude), `is`(Area.DIVISION_NUMBER / 2))
     }
 
     @Test
     fun findLongitudeIdBy() {
-        val minLongitude = Degree(-180)
-        assertThat(Territory.findLongitudeIdBy(minLongitude), `is`(0))
-        val maxLongitude = Degree(180)
-        assertThat(Territory.findLongitudeIdBy(maxLongitude), `is`(Territory.DIVISION_NUMBER))
+        // 一周すると同じエリアになる
+        assertThat(Area.findLongitudeIdBy(Degree(-180)), `is`(0))
+        assertThat(Area.findLongitudeIdBy(Degree(180)), `is`(0))
+
+        val maxLongitude = Degree(179.999999999999)
+        assertThat(Area.findLongitudeIdBy(maxLongitude), `is`(Area.DIVISION_NUMBER - 1))
         val middleLongitude = Degree(0)
-        assertThat(Territory.findLongitudeIdBy(middleLongitude), `is`(Territory.DIVISION_NUMBER / 2))
+        assertThat(Area.findLongitudeIdBy(middleLongitude), `is`(Area.DIVISION_NUMBER / 2))
     }
 
     @Test
     fun compareTo() {
-        val territory0 = Territory(0, 0, emptyList())
-        val territory1 = Territory(0, 0, emptyList())
-        val territory2 = Territory(0, 1, emptyList())
-        val territory3 = Territory(1, 0, emptyList())
-        val territory4 = Territory(1, 1, emptyList())
+        val territory0 = Territory(locations = emptyList())
+        val territory1 = Territory(locations = emptyList())
+        val territory2 = Territory(locations = emptyList())
+        val territory3 = Territory(locations = emptyList())
+        val territory4 = Territory(locations = emptyList())
         assert(territory0 == territory1)
         assert(territory1 < territory2)
         assert(territory1 < territory3)

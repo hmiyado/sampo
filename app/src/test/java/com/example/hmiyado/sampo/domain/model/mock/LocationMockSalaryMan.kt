@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.domain.model.mock
 
+import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateTerritory
@@ -45,24 +46,24 @@ class LocationMockSalaryMan(
                 it > TimeUnit.HOURS.toMinutes(11) && it < TimeUnit.HOURS.toMinutes(12)   -> {
                     val timeToMove = it - TimeUnit.HOURS.toMinutes(11)
                     Location(
-                            Territory.LATITUDE_UNIT * timeToMove,
-                            Territory.LONGITUDE_UNIT * timeToMove,
+                            Area.LATITUDE_UNIT * timeToMove,
+                            Area.LONGITUDE_UNIT * timeToMove,
                             timeOffset.plusSeconds(it * 60)
                     )
                 }
                 it >= TimeUnit.HOURS.toMinutes(12) && it <= TimeUnit.HOURS.toMinutes(23) -> {
                     val time = TimeUnit.HOURS.toMinutes(1)
                     Location(
-                            Territory.LATITUDE_UNIT * time,
-                            Territory.LONGITUDE_UNIT * time,
+                            Area.LATITUDE_UNIT * time,
+                            Area.LONGITUDE_UNIT * time,
                             timeOffset.plusSeconds(it * 60)
                     )
                 }
                 else                                                                     -> {
                     val time = TimeUnit.HOURS.toMinutes(1) - (it - TimeUnit.HOURS.toMinutes(23))
                     Location(
-                            Territory.LATITUDE_UNIT * time,
-                            Territory.LONGITUDE_UNIT * time,
+                            Area.LATITUDE_UNIT * time,
+                            Area.LONGITUDE_UNIT * time,
                             timeOffset.plusSeconds(it * 60)
                     )
                 }
