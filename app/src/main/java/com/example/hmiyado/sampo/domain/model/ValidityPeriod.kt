@@ -8,11 +8,12 @@ import org.threeten.bp.Period
  */
 interface ValidityPeriod {
     companion object {
-        fun create(start: Instant, period: Period): ValidityPeriod = ValidityPeriodImpl(start, period)
+        fun create(start: Instant = Instant.EPOCH, period: Period = Period.ofDays(1)): ValidityPeriod = ValidityPeriodImpl(start, period)
     }
 
     val start: Instant
     val period: Period
+    val end: Instant
 
     fun isValid(instant: Instant): Boolean = instant.isBefore(start.plus(period)) || instant == start.plus(period)
 

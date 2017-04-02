@@ -10,4 +10,5 @@ class ValidityPeriodImpl(
         override val start: Instant,
         override val period: Period
 ) : ValidityPeriod {
+    override val end: Instant = start.plus(period)
 }
