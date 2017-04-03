@@ -3,8 +3,8 @@ package com.example.hmiyado.sampo.usecase.map.interaction
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.SampoScorer
 import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.TerritoryScorer
 import com.example.hmiyado.sampo.domain.model.ValidityPeriod
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
@@ -21,7 +21,7 @@ import io.reactivex.functions.Function6
 class DrawMap(
         private val store: MapStore,
         measurement: Measurement,
-        val scorer: TerritoryScorer,
+        val scorer: SampoScorer,
         private val useMapViewSink: UseMapView.Sink
 ) : Interaction<UseMapView.Sink.DrawableMap>() {
     override fun buildProducer(): Observable<UseMapView.Sink.DrawableMap> {

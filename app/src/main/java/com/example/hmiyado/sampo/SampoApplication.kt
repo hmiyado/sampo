@@ -4,8 +4,8 @@ import android.app.Application
 import com.example.hmiyado.sampo.controller.common.IntentDispatcher
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.SphericalTrigonometry
-import com.example.hmiyado.sampo.domain.model.TerritoryScorer
-import com.example.hmiyado.sampo.domain.model.TerritoryScorerSizeImpl
+import com.example.hmiyado.sampo.domain.model.SampoScorer
+import com.example.hmiyado.sampo.domain.model.SampoScorerSizeImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.repository.compass.CompassSensorImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensorVirtualImpl
@@ -44,7 +44,7 @@ class SampoApplication : Application(), KodeinAware {
         bind<MapStore>() with singleton { MapStoreImpl() }
         bind<IntentDispatcher>() with singleton { IntentDispatcher(applicationContext) }
         bind<Measurement>() with singleton { SphericalTrigonometry }
-        bind<TerritoryScorer>() with singleton { TerritoryScorerSizeImpl }
+        bind<SampoScorer>() with singleton { SampoScorerSizeImpl }
     }
 
 

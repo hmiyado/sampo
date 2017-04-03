@@ -4,8 +4,8 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.SampoScorer
 import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.TerritoryScorer
 import com.example.hmiyado.sampo.domain.model.ValidityPeriod
 import io.reactivex.Observable
 
@@ -32,7 +32,7 @@ interface UseMapView {
                 val rotateAngle: Degree,
                 val footmarks: List<Location>,
                 val territories: List<Territory>,
-                val scorer: TerritoryScorer,
+                val scorer: SampoScorer,
                 val validityPeriod: ValidityPeriod
         )
 

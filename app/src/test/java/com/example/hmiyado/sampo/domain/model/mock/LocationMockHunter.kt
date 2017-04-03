@@ -2,6 +2,7 @@ package com.example.hmiyado.sampo.domain.model.mock
 
 import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Marker
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateTerritory
 import org.hamcrest.CoreMatchers
@@ -14,8 +15,17 @@ import java.util.concurrent.TimeUnit
  * Created by hmiyado on 2017/03/31.
  */
 class LocationMockHunter(
-        val days: Long = 1
+        val days: Long = 1,
+        markerNum: Int = 3
 ) : LocationMock {
+    override val markers: List<Marker> = (1..markerNum).map {
+        Marker(
+                Location(
+                        Area.LATITUDE_UNIT * it,
+                        Area.LONGITUDE_UNIT * it
+                )
+        )
+    }
     override val territories: List<Territory>
         get() = generateTerritories()
     override val locations: List<Location>

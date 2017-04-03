@@ -28,7 +28,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
             rotateAngle = Degree(0),
             footmarks = emptyList(),
             territories = emptyList(),
-            scorer = TerritoryScorerSizeImpl,
+            scorer = SampoScorerSizeImpl,
             validityPeriod = ValidityPeriod.create(Instant.EPOCH, Period.ofWeeks(1))
     )
 
@@ -70,7 +70,9 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
-                    alpha = drawableMap.scorer.calcScorePerTerritory(territory, drawableMap.validityPeriod).toInt()
+                    alpha = drawableMap.scorer.run {
+                        territory.calcScore(emptyList(), drawableMap.validityPeriod).toInt()
+                    }
                 })
         //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
     }

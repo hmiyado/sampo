@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.domain.model.mock
 
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Marker
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateTerritory
 import org.threeten.bp.Instant
@@ -10,8 +11,10 @@ import java.util.concurrent.TimeUnit
  * Created by hmiyado on 2017/03/28.
  */
 class LocationMockNeat(
-        val days: Long = 1
+        val days: Long = 1,
+        markerNum: Long = 3
 ) : LocationMock {
+    override val markers: List<Marker> = (1..markerNum).map { Marker(Location()) }
     override val territories: List<Territory>
         get() = generateTerritories()
     override val locations: List<Location>

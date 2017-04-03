@@ -2,6 +2,7 @@ package com.example.hmiyado.sampo.domain.model.mock
 
 import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Marker
 import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.interaction.UpdateTerritory
 import org.threeten.bp.Instant
@@ -15,12 +16,31 @@ import java.util.concurrent.TimeUnit
  * 会社との往復は，1地点あたり11Territoryを通ってくる（つまり，58地点，58領域を通ってくる．1時間の内両端は自宅・会社なので2点少ない）．
  */
 class LocationMockSalaryMan(
-        val days: Long = 1
+        val days: Long = 1,
+        val markerNum: Long = 2
 ) : LocationMock {
+    override val markers: List<Marker>
+        get() = generateMarkers()
     override val territories: List<Territory>
         get() = generateTerritories()
     override val locations: List<Location>
         get() = generateLocations()
+
+    fun generateMarkers(): List<Marker> {
+        return (1..markerNum).map {
+            if (it % 2 == 0L) {
+                Marker()
+            } else {
+                val time = TimeUnit.HOURS.toMinutes(1)
+                Marker(
+                        Location(
+                                Area.LATITUDE_UNIT * time,
+                                Area.LONGITUDE_UNIT * time
+                        )
+                )
+            }
+        }
+    }
 
     fun generateTerritories(): List<Territory> {
         return locations.fold(emptyList<Territory>(), { territories, location -> UpdateTerritory.updateTerritories(location, territories) })
