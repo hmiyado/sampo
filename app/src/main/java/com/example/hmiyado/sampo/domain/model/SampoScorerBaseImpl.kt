@@ -4,6 +4,7 @@ import com.example.hmiyado.sampo.domain.math.function.CeiledProportionalFunction
 import com.example.hmiyado.sampo.domain.math.function.LogisticFunction
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import java.util.*
 
 /**
  * Created by hmiyado on 2017/03/28.
@@ -41,21 +42,30 @@ object SampoScorerBaseImpl : SampoScorer {
         }
     }
 
+    fun calcAreaImpact(territories: List<Territory>): Double {
+        return areaScoreFunction(territories.size.toDouble())
+    }
 
-    override fun calcScore(territories: List<Territory>, markers: List<Marker>, validPeriod: ValidityPeriod): Double {
-        return areaScoreFunction(territories.size.toDouble()) * territories.map { territory ->
-            territory.calcScore(markers.filter { marker -> territory.area == marker.area }, validPeriod)
+    fun calcTerritoriesScore(territories: List<Territory>, markers: List<Marker>, validPeriod: ValidityPeriod): Double {
+        return territories.map {
+            it.calcScore(markers.filter { marker -> it.area == marker.area }, validPeriod)
         }.sum()
     }
 
-    override fun Territory.calcScore(markers: List<Marker>, validPeriod: ValidityPeriod): Double {
-        val sortedValidLocations = locations.sortedBy { it.timeStamp }.filter { validPeriod.isValid(it.timeStamp) }
-        val transient = sortedValidLocations.size
-        val residence = sortedValidLocations.fold(Triple(0.0, 1.0, Instant.EPOCH), { triple, temporalLocation ->
+    override fun calcScore(territories: List<Territory>, markers: List<Marker>, validPeriod: ValidityPeriod): Double {
+        return calcAreaImpact(territories) * calcTerritoriesScore(territories, markers, validPeriod)
+    }
+
+    fun calcTransientScore(timeStamps: SortedSet<Instant>): Double {
+        return transientScoreFunction(timeStamps.size.toDouble())
+    }
+
+    fun calcResidentialScore(timeStamps: SortedSet<Instant>): Double {
+        val residence = timeStamps.fold(Triple(0.0, 1.0, Instant.EPOCH), { triple, instant ->
             val maxResidentialSpan = triple.first
             val temporalResidentialSpan = triple.second
             val previousTimestamp = triple.third
-            val newResidentialSpan = if (Duration.between(previousTimestamp, temporalLocation.timeStamp) <= RESIDENTIAL_DURATION) {
+            val newResidentialSpan = if (Duration.between(previousTimestamp, instant) <= RESIDENTIAL_DURATION) {
                 temporalResidentialSpan + 1
             } else {
                 1.0
@@ -63,18 +73,30 @@ object SampoScorerBaseImpl : SampoScorer {
             Triple(
                     Math.max(maxResidentialSpan, newResidentialSpan),
                     newResidentialSpan,
-                    temporalLocation.timeStamp
+                    instant
             )
         }).first
+        return residentialScoreFunction(residence)
+    }
 
-        val transientScore = transientScoreFunction(transient.toDouble())
-        val residentialScore = residentialScoreFunction(residence)
-        val markersImpact = markers
+    fun calcMarkersImpact(markers: List<Marker>, validPeriod: ValidityPeriod): Double {
+        // 影響力は基本 1 倍
+        return 1 + markers
                 .map { it.calcImpact(validPeriod.start) }
                 .sorted()
                 .mapIndexed { index, score -> score * Math.pow(markerImpactDecreasingRate, index.toDouble()) }
                 .sum()
+    }
 
-        return (stayBonus + transientScore + residentialScore) * (1 + markersImpact)
+    fun Territory.calcScore(validPeriod: ValidityPeriod): Double {
+        val timeStamps = locations.map { it.timeStamp }.filter { validPeriod.isValid(it) }.toSortedSet()
+
+        return stayBonus + calcTransientScore(timeStamps) + calcResidentialScore(timeStamps)
+    }
+
+    override fun Territory.calcScore(markers: List<Marker>, validPeriod: ValidityPeriod): Double {
+        val markersImpact = calcMarkersImpact(markers, validPeriod)
+
+        return this.calcScore(validPeriod) * markersImpact
     }
 }
