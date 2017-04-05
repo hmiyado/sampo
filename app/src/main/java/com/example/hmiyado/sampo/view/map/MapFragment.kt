@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.location.LocationManager
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.hmiyado.sampo.controller.common.IntentDispatcher
 import com.example.hmiyado.sampo.controller.map.CompassViewController
 import com.example.hmiyado.sampo.controller.map.MapViewController
 import com.example.hmiyado.sampo.controller.map.ScaleViewController
+import com.example.hmiyado.sampo.presenter.map.AddMarkerButtonPresenter
 import com.example.hmiyado.sampo.presenter.map.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
@@ -49,12 +51,14 @@ class MapFragment : RxFragment(), LazyKodeinAware {
             bind<UseScaleView.Sink>() with provider { instance<ScaleViewController>() }
             bind<UseLocationSetting.Source>() with provider { instance<LocationSettingReceiver>() }
             bind<UseLocationSensor.Sink>() with provider { instance<IntentDispatcher>() }
+            bind<UseMarkerAdder.Source>() with provider { instance<AddMarkerButtonPresenter>() }
 
             bind<MapFragmentPresenter>() with singleton { MapFragmentPresenter(this@MapFragment) }
-            bind<MapViewPresenter>() with singleton { find<MapView>(MapFragmentUi.mapViewId).presenter }
-            bind<MapViewController>() with singleton { find<MapView>(MapFragmentUi.mapViewId).controller }
-            bind<CompassViewController>() with singleton { find<CompassView>(MapFragmentUi.compassViewId).controller }
-            bind<ScaleViewController>() with singleton { find<ScaleView>(MapFragmentUi.scaleViewId).controller }
+            bind<MapViewPresenter>() with singleton { find<MapView>(ui.mapViewId).presenter }
+            bind<MapViewController>() with singleton { find<MapView>(ui.mapViewId).controller }
+            bind<CompassViewController>() with singleton { find<CompassView>(ui.compassViewId).controller }
+            bind<ScaleViewController>() with singleton { find<ScaleView>(ui.scaleViewId).controller }
+            bind<AddMarkerButtonPresenter>() with singleton { AddMarkerButtonPresenter(find<FloatingActionButton>(ui.addMarkerButtonId)) }
         }
     }
 
@@ -71,6 +75,7 @@ class MapFragment : RxFragment(), LazyKodeinAware {
     val compassSensor: CompassSensor by instance()
     private val locationManager: LocationManager by instance()
     private val contentResolver: ContentResolver by instance()
+    val ui: MapFragmentUi = MapFragmentUi()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +87,7 @@ class MapFragment : RxFragment(), LazyKodeinAware {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         //        Timber.d("on create view")
-        return MapFragmentUi().createView(AnkoContext.create(activity.baseContext, this))
+        return ui.createView(AnkoContext.create(activity.baseContext, this))
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

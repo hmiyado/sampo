@@ -18,6 +18,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<UpdateOrientation>() with singleton { UpdateOrientation(instance(), instance()) }
     bind<UpdateRotateAngle>() with singleton { UpdateRotateAngle(instance(), instance()) }
     bind<UpdateScale>() with singleton { UpdateScale(instance(), instance()) }
+    bind<AddMarker>() with singleton { AddMarker(instance(), instance()) }
 
     bind<List<Interaction<*>>>() with singleton {
         listOf(
@@ -27,7 +28,8 @@ val mapUseCaseModule = Kodein.Module {
                 instance<DrawScale>(),
                 instance<UpdateOrientation>(),
                 instance<UpdateRotateAngle>(),
-                instance<UpdateScale>()
+                instance<UpdateScale>(),
+                instance<AddMarker>()
         )
     }
 }

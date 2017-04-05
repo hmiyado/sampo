@@ -11,6 +11,7 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/04/05.
@@ -32,6 +33,7 @@ class AddMarker(
 
     override fun buildConsumer(): Observer<List<Marker>> {
         return DefaultObserver({
+            Timber.d(it.toString())
             store.setMarkers(it)
         })
     }
