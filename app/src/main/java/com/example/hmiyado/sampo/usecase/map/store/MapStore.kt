@@ -1,10 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.store
 
 import com.example.hmiyado.sampo.domain.math.Degree
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Orientation
-import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.ValidityPeriod
+import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
 
 /**
@@ -18,6 +15,7 @@ interface MapStore {
         val SCALE_UNIT = 1
     }
 
+    val updatedMarkersSignal: Observable<List<Marker>>
 
     fun setOriginalLocation(originalLocation: Location)
 
@@ -31,7 +29,9 @@ interface MapStore {
 
     fun setTerritories(territories: List<Territory>)
 
-    fun setTerritoryValidityPeriod(validityPeriod: ValidityPeriod)
+    fun setValidityPeriod(validityPeriod: ValidityPeriod)
+
+    fun setMarkers(markers: List<Marker>)
 
     fun getOriginalLocation(): Observable<Location>
 
@@ -45,5 +45,5 @@ interface MapStore {
 
     fun getTerritories(): Observable<List<Territory>>
 
-    fun getTerritoryValidityPeriod(): Observable<ValidityPeriod>
+    fun getValidityPeriod(): Observable<ValidityPeriod>
 }

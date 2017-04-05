@@ -32,7 +32,7 @@ class DrawMap(
                         store.getRotateAngle(),
                         store.getFootmarks(),
                         store.getTerritories(),
-                        store.getTerritoryValidityPeriod(),
+                        store.getValidityPeriod(),
                         // http://stackoverflow.com/questions/42725749/observable-combinelatest-type-inference-in-kotlin
                         Function6(this::toDrawableMap))
     }

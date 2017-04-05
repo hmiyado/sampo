@@ -1,10 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.store
 
 import com.example.hmiyado.sampo.domain.math.Degree
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.Orientation
-import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.ValidityPeriod
+import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import org.threeten.bp.Instant
@@ -24,6 +21,9 @@ class MapStoreImpl : MapStore {
     private val footmarksSubject = BehaviorSubject.createDefault<List<Location>>(emptyList())
     private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
     private val territoryValidityPeriodSubject = BehaviorSubject.createDefault<ValidityPeriod>(ValidityPeriod.create(Instant.now(), Period.ofWeeks(1)))
+    private val markersSubject = BehaviorSubject.createDefault<List<Marker>>(emptyList<Marker>())
+
+    override val updatedMarkersSignal: Observable<List<Marker>> = markersSubject.hide().share()
 
     override fun setOriginalLocation(originalLocation: Location) {
         originalLocationSubject.onNext(originalLocation)
@@ -41,7 +41,7 @@ class MapStoreImpl : MapStore {
         rotateAngleSubject.onNext(rotateAngleSubject.value + rotateAngle)
     }
 
-    override fun setTerritoryValidityPeriod(validityPeriod: ValidityPeriod) {
+    override fun setValidityPeriod(validityPeriod: ValidityPeriod) {
         territoryValidityPeriodSubject.onNext(validityPeriod)
     }
 
@@ -54,6 +54,11 @@ class MapStoreImpl : MapStore {
         territoriesSubject.onNext(territories)
     }
 
+
+    override fun setMarkers(markers: List<Marker>) {
+        markersSubject.onNext(markers)
+    }
+
     override fun getOriginalLocation(): Observable<Location> = originalLocationSubject.hide().share()
 
     override fun getOrientation(): Observable<Orientation> = orientationSubject.hide().share()
@@ -64,7 +69,7 @@ class MapStoreImpl : MapStore {
 
     override fun getFootmarks(): Observable<List<Location>> = footmarksSubject.hide().share()
 
-    override fun getTerritoryValidityPeriod(): Observable<ValidityPeriod> = territoryValidityPeriodSubject.hide().share()
+    override fun getValidityPeriod(): Observable<ValidityPeriod> = territoryValidityPeriodSubject.hide().share()
 
     override fun getTerritories(): Observable<List<Territory>> = territoriesSubject.hide().share()
 }
