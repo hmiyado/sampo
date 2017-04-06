@@ -1,5 +1,6 @@
 package com.example.hmiyado.sampo.usecase.map
 
+import com.example.hmiyado.sampo.domain.model.DrawableMap
 import com.example.hmiyado.sampo.domain.model.Marker
 import io.reactivex.Observable
 
@@ -12,6 +13,11 @@ interface UseMarkerView {
     }
 
     interface Sink {
-        fun draw(markers: List<Marker>)
+        data class DrawableMarkers(
+                val drawableMap: DrawableMap,
+                val markers: List<Marker>
+        )
+
+        fun draw(drawableMarkers: DrawableMarkers)
     }
 }

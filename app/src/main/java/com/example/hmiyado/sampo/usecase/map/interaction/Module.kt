@@ -14,6 +14,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
     bind<DrawCompass>() with singleton { DrawCompass(instance(), instance()) }
     bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance(), instance()) }
+    bind<DrawMarkers>() with singleton { DrawMarkers(instance(), instance()) }
     bind<DrawScale>() with singleton { DrawScale(instance(), instance()) }
     bind<UpdateOrientation>() with singleton { UpdateOrientation(instance(), instance()) }
     bind<UpdateRotateAngle>() with singleton { UpdateRotateAngle(instance(), instance()) }
@@ -25,6 +26,7 @@ val mapUseCaseModule = Kodein.Module {
                 instance<ControlLocationSensor>(),
                 instance<DrawCompass>(),
                 instance<DrawMap>(),
+                instance<DrawMarkers>(),
                 instance<DrawScale>(),
                 instance<UpdateOrientation>(),
                 instance<UpdateRotateAngle>(),
