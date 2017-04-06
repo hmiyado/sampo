@@ -1,12 +1,8 @@
 package com.example.hmiyado.sampo.usecase.map
 
-import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.Radian
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.SampoScorer
-import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.ValidityPeriod
+import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
 
 /**
@@ -26,17 +22,15 @@ interface UseMapView {
     }
 
     interface Sink {
-        data class DrawableMap(
-                val originalLocation: Location,
-                val scaleFactor: Float,
-                val rotateAngle: Degree,
+        data class DrawableFootmarks(
+                val drawableMap: DrawableMap,
                 val footmarks: List<Location>,
                 val territories: List<Territory>,
-                val scorer: SampoScorer,
-                val validityPeriod: ValidityPeriod
+                val validityPeriod: ValidityPeriod,
+                val scorer: SampoScorer
         )
 
-        fun draw(drawableMap: DrawableMap)
+        fun draw(drawableFootmarks: DrawableFootmarks)
 
         fun setMeasurement(measurement: Measurement): Unit
     }

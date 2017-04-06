@@ -3,6 +3,7 @@ package com.example.hmiyado.sampo.usecase.map.store
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
+import io.reactivex.functions.Function3
 
 /**
  * Created by hmiyado on 2017/02/26.
@@ -14,6 +15,12 @@ interface MapStore {
          */
         val SCALE_UNIT = 1
     }
+
+    val drawableMapSignal: Observable<DrawableMap>
+        get() = Observable.combineLatest(
+                getOriginalLocation(),
+                getScaleFactor(),
+                getRotateAngle(), Function3(::DrawableMap))
 
     val updatedMarkersSignal: Observable<List<Marker>>
 

@@ -1,18 +1,15 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.domain.model.SampoScorer
-import com.example.hmiyado.sampo.domain.model.Territory
-import com.example.hmiyado.sampo.domain.model.ValidityPeriod
+import com.example.hmiyado.sampo.domain.model.*
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
 import com.example.hmiyado.sampo.usecase.map.UseMapView
+import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink.DrawableFootmarks
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import io.reactivex.Observable
 import io.reactivex.Observer
-import io.reactivex.functions.Function6
+import io.reactivex.functions.Function4
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -23,25 +20,23 @@ class DrawMap(
         measurement: Measurement,
         val scorer: SampoScorer,
         private val useMapViewSink: UseMapView.Sink
-) : Interaction<UseMapView.Sink.DrawableMap>() {
-    override fun buildProducer(): Observable<UseMapView.Sink.DrawableMap> {
+) : Interaction<DrawableFootmarks>() {
+    override fun buildProducer(): Observable<DrawableFootmarks> {
         return Observable
                 .combineLatest(
-                        store.getOriginalLocation(),
-                        store.getScaleFactor(),
-                        store.getRotateAngle(),
+                        store.drawableMapSignal,
                         store.getFootmarks(),
                         store.getTerritories(),
                         store.getValidityPeriod(),
                         // http://stackoverflow.com/questions/42725749/observable-combinelatest-type-inference-in-kotlin
-                        Function6(this::toDrawableMap))
+                        Function4(this::toDrawableTarget))
     }
 
-    private fun toDrawableMap(originalLocation: Location, scaleFactor: Float, rotateAngle: Degree, footmarks: List<Location>, territories: List<Territory>, validityPeriod: ValidityPeriod): UseMapView.Sink.DrawableMap {
-        return UseMapView.Sink.DrawableMap(originalLocation, scaleFactor, rotateAngle, footmarks, territories, scorer, validityPeriod)
+    private fun toDrawableTarget(drawableMap: DrawableMap, footmarks: List<Location>, territories: List<Territory>, validityPeriod: ValidityPeriod): DrawableFootmarks {
+        return DrawableFootmarks(drawableMap, footmarks, territories, validityPeriod, scorer)
     }
 
-    override fun buildConsumer(): Observer<UseMapView.Sink.DrawableMap> {
+    override fun buildConsumer(): Observer<DrawableFootmarks> {
         return DefaultObserver(useMapViewSink::draw)
     }
 

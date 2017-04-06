@@ -10,27 +10,24 @@ import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.cos
 import com.example.hmiyado.sampo.domain.math.sin
-import com.example.hmiyado.sampo.domain.model.*
+import com.example.hmiyado.sampo.domain.model.Area
+import com.example.hmiyado.sampo.domain.model.DrawableMap
+import com.example.hmiyado.sampo.domain.model.Location
+import com.example.hmiyado.sampo.domain.model.Territory
 import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink
+import com.example.hmiyado.sampo.usecase.map.UseMapView.Sink.DrawableFootmarks
 import com.example.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 import org.threeten.bp.Instant
-import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2016/12/10.
  * @link MapView に対応するController
  */
 class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
-    private var drawableMap: Sink.DrawableMap = Sink.DrawableMap(
-            originalLocation = Location.empty(),
-            scaleFactor = 1.0f,
-            rotateAngle = Degree(0),
-            footmarks = emptyList(),
-            territories = emptyList(),
-            scorer = SampoScorerSizeImpl,
-            validityPeriod = ValidityPeriod.create(Instant.EPOCH, Period.ofWeeks(1))
-    )
+    lateinit var drawableFootmarks: DrawableFootmarks
+    val drawableMap
+        get() = drawableFootmarks.drawableMap
 
     private lateinit var measurement: Measurement
 
@@ -51,7 +48,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         canvas.rotate(rotateAngle.toFloat())
     }
 
-    private fun drawTerritory(canvas: Canvas, territory: Territory, drawableMap: Sink.DrawableMap) {
+    private fun drawTerritory(canvas: Canvas, territory: Territory, drawableMap: DrawableMap) {
         val latitude = Area.findLatitudeById(territory.area.latitudeId)
         val longitude = Area.findLongitudeById(territory.area.longitudeId)
 
@@ -70,8 +67,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
-                    alpha = drawableMap.scorer.run {
-                        territory.calcScore(emptyList(), drawableMap.validityPeriod).toInt()
+                    alpha = drawableFootmarks.scorer.run {
+                        territory.calcScore(emptyList(), drawableFootmarks.validityPeriod).toInt()
                     }
                 })
         //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
@@ -103,8 +100,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         }
     }
 
-    override fun draw(drawableMap: Sink.DrawableMap) {
-        this.drawableMap = drawableMap
+    override fun draw(drawableFootmarks: DrawableFootmarks) {
+        this.drawableFootmarks = drawableFootmarks
         invalidate()
     }
 
@@ -115,7 +112,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         drawMesh(canvas)
         drawOriginalLocation(canvas)
 
-        drawableMap.footmarks.forEach {
+        drawableFootmarks.footmarks.forEach {
             val distance = measurement.determinePathwayDistance(drawableMap.originalLocation, it)
             val azimuth = measurement.determineAzimuth(drawableMap.originalLocation, it)
             val x = distance * cos(azimuth)
@@ -123,7 +120,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
             drawPoint(canvas, drawableMap.scaleFactor.scale(x), drawableMap.scaleFactor.scale(y), createPaint(Color.GREEN, view.dip(1).toFloat()))
         }
 
-        drawableMap.territories.forEach {
+        drawableFootmarks.territories.forEach {
             drawTerritory(canvas, it, drawableMap)
         }
     }
