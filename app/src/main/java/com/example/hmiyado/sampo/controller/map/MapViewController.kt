@@ -8,8 +8,6 @@ import com.example.hmiyado.sampo.R
 import com.example.hmiyado.sampo.controller.ViewController
 import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
-import com.example.hmiyado.sampo.domain.math.cos
-import com.example.hmiyado.sampo.domain.math.sin
 import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.DrawableMap
 import com.example.hmiyado.sampo.domain.model.Location
@@ -58,11 +56,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
 
         val centerLocation = Location(centerLatitude, centerLongitude, Instant.EPOCH)
 
-        val distance = measurement.determinePathwayDistance(drawableMap.originalLocation, centerLocation)
-        val azimuth = measurement.determineAzimuth(drawableMap.originalLocation, centerLocation)
-        val x = distance * cos(azimuth)
-        val y = distance * sin(azimuth)
-
+        val (x, y) = measurement.determineVector(drawableMap.originalLocation, centerLocation)
+        
         canvas.drawCircle(
                 view.dip(drawableMap.scaleFactor.scale(x)).toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
@@ -114,10 +109,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         drawOriginalLocation(canvas)
 
         drawableFootmarks.footmarks.forEach {
-            val distance = measurement.determinePathwayDistance(drawableMap.originalLocation, it)
-            val azimuth = measurement.determineAzimuth(drawableMap.originalLocation, it)
-            val x = distance * cos(azimuth)
-            val y = distance * sin(azimuth)
+            val (x, y) = measurement.determineVector(drawableMap.originalLocation, it)
             drawPoint(canvas, drawableMap.scaleFactor.scale(x), drawableMap.scaleFactor.scale(y), createPaint(Color.GREEN, view.dip(1).toFloat()))
         }
 

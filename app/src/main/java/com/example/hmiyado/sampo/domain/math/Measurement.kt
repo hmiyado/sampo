@@ -73,4 +73,15 @@ interface Measurement {
                 destination.longitude.toRadian()
         )
     }
+
+    /**
+     * departure から destination へのベクトル (x, y) を返す
+     */
+    fun determineVector(departure: Location, destination: Location): Vector2 {
+        val distance = determinePathwayDistance(departure, destination)
+        val azimuth = determineAzimuth(departure, destination)
+        val x = distance * cos(azimuth)
+        val y = distance * sin(azimuth)
+        return Vector2(x, y)
+    }
 }
