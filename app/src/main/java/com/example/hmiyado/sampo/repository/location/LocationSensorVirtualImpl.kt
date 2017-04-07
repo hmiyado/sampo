@@ -6,7 +6,6 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /**
@@ -51,7 +50,6 @@ class LocationSensorVirtualImpl : LocationSensor {
 
     private fun onNextLocation(num: Long) {
         locationSubject.onNext(nextLocation)
-        Timber.d(nextLocation.toString())
         updateNextLocation(num)
     }
 }

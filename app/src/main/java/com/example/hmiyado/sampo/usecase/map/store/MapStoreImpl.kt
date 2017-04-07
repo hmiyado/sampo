@@ -7,7 +7,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import org.threeten.bp.Instant
 import org.threeten.bp.Period
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -24,9 +23,10 @@ class MapStoreImpl(
     private val footmarksSubject = BehaviorSubject.createDefault<List<Location>>(emptyList())
     private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
     private val territoryValidityPeriodSubject = BehaviorSubject.createDefault<ValidityPeriod>(ValidityPeriod.create(Instant.now(), Period.ofWeeks(1)))
-    private val markersSubject = BehaviorSubject.createDefault<List<Marker>>(emptyList<Marker>())
+    private val markersSubject = BehaviorSubject.createDefault<List<Marker>>(emptyList())
 
-    override val updatedMarkersSignal: Observable<List<Marker>> = markersSubject.hide().share()
+    override val updatedMarkersSignal: Observable<List<Marker>>
+        get() = markersSubject.hide().share()
 
     override fun setOriginalLocation(originalLocation: Location) {
         originalLocationSubject.onNext(originalLocation)
@@ -53,7 +53,6 @@ class MapStoreImpl(
     }
 
     override fun setTerritories(territories: List<Territory>) {
-        Timber.d(territories.map { "Territory(area=${it.area})" }.toString())
         territoriesSubject.onNext(territories)
     }
 
