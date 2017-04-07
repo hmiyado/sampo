@@ -1,6 +1,5 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
-import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.model.*
 import com.example.hmiyado.sampo.usecase.DefaultObserver
 import com.example.hmiyado.sampo.usecase.Interaction
@@ -17,7 +16,6 @@ import io.reactivex.functions.Function4
  */
 class DrawMap(
         private val store: MapStore,
-        measurement: Measurement,
         val scorer: SampoScorer,
         private val useMapViewSink: UseMapView.Sink
 ) : Interaction<DrawableFootmarks>() {
@@ -38,9 +36,5 @@ class DrawMap(
 
     override fun buildConsumer(): Observer<DrawableFootmarks> {
         return DefaultObserver(useMapViewSink::draw)
-    }
-
-    init {
-        useMapViewSink.setMeasurement(measurement)
     }
 }

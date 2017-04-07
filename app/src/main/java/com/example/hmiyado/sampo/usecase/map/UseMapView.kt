@@ -1,6 +1,5 @@
 package com.example.hmiyado.sampo.usecase.map
 
-import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.math.Radian
 import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
@@ -31,7 +30,5 @@ interface UseMapView {
         )
 
         fun draw(drawableFootmarks: DrawableFootmarks)
-
-        fun setMeasurement(measurement: Measurement): Unit
     }
 }

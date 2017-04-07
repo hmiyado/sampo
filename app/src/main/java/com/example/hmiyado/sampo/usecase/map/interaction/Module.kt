@@ -13,7 +13,7 @@ import com.github.salomonbrys.kodein.singleton
 val mapUseCaseModule = Kodein.Module {
     bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
     bind<DrawCompass>() with singleton { DrawCompass(instance(), instance()) }
-    bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance(), instance()) }
+    bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance()) }
     bind<DrawMarkers>() with singleton { DrawMarkers(instance(), instance()) }
     bind<DrawScale>() with singleton { DrawScale(instance(), instance()) }
     bind<UpdateOrientation>() with singleton { UpdateOrientation(instance(), instance()) }

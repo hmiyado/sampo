@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.store
 
 import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
@@ -20,9 +21,14 @@ interface MapStore {
         get() = Observable.combineLatest(
                 getOriginalLocation(),
                 getScaleFactor(),
-                getRotateAngle(), Function3(::DrawableMap))
+                getRotateAngle(),
+                Function3 { location, scaleFactor, rotateAngle ->
+                    DrawableMap(location, scaleFactor, rotateAngle, measurement)
+                })
 
     val updatedMarkersSignal: Observable<List<Marker>>
+
+    val measurement: Measurement
 
     fun setOriginalLocation(originalLocation: Location)
 

@@ -41,7 +41,7 @@ class SampoApplication : Application(), KodeinAware {
         }
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
         bind<LocationSettingReceiver>() with singleton { LocationSettingReceiver() }
-        bind<MapStore>() with singleton { MapStoreImpl() }
+        bind<MapStore>() with singleton { MapStoreImpl(instance()) }
         bind<IntentDispatcher>() with singleton { IntentDispatcher(applicationContext) }
         bind<Measurement>() with singleton { SphericalTrigonometry }
         bind<SampoScorer>() with singleton { SampoScorerSizeImpl }

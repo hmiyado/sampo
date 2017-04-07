@@ -29,7 +29,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     val drawableMap
         get() = drawableFootmarks.drawableMap
 
-    private lateinit var measurement: Measurement
+    private val measurement: Measurement
+        get() = drawableMap.measurement
 
     private fun createPaint(colorInt: Int, strokeWidth: Float): Paint {
         val paintMapPoint = Paint()
@@ -126,8 +127,4 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun Float.scale(num: Double) = (num / this).toFloat()
-
-    override fun setMeasurement(measurement: Measurement) {
-        this.measurement = measurement
-    }
 }

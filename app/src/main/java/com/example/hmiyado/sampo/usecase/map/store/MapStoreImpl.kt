@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.store
 
 import com.example.hmiyado.sampo.domain.math.Degree
+import com.example.hmiyado.sampo.domain.math.Measurement
 import com.example.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -13,7 +14,9 @@ import timber.log.Timber
 
  * 状態の保持/更新方法の提供/状態の提供の責務を負うクラス．
  */
-class MapStoreImpl : MapStore {
+class MapStoreImpl(
+        override val measurement: Measurement
+) : MapStore {
     private val originalLocationSubject = BehaviorSubject.createDefault<Location>(Location.empty())
     private val orientationSubject = BehaviorSubject.createDefault<Orientation>(Orientation.Companion.empty())
     private val scaleFactorSubject = BehaviorSubject.createDefault<Float>(1f)
