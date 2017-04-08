@@ -12,10 +12,8 @@ import org.jetbrains.anko.listView
 /**
  * Created by hmiyado on 2017/02/05.
  */
-class ResultFragmentUi : AnkoComponent<RxFragment> {
-    companion object {
-        val listViewId = View.generateViewId()
-    }
+class ListFragmentUi : AnkoComponent<RxFragment> {
+    val listViewId = View.generateViewId()
 
     override fun createView(ui: AnkoContext<RxFragment>) = with(ui) {
         linearLayout {

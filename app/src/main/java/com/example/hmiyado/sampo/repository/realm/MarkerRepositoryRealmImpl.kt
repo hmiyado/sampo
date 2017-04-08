@@ -1,4 +1,4 @@
-package com.example.hmiyado.sampo.repository.marker
+package com.example.hmiyado.sampo.repository.realm
 
 import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Location
@@ -6,6 +6,7 @@ import com.example.hmiyado.sampo.domain.model.Marker
 import com.example.hmiyado.sampo.domain.model.Time.toDate
 import com.example.hmiyado.sampo.domain.model.Time.toInstant
 import com.example.hmiyado.sampo.domain.model.ValidityPeriod
+import com.example.hmiyado.sampo.repository.marker.MarkerRepository
 import com.example.hmiyado.sampo.repository.model.MarkerModel
 import io.realm.Realm
 import io.realm.exceptions.RealmPrimaryKeyConstraintException
@@ -29,11 +30,12 @@ class MarkerRepositoryRealmImpl : MarkerRepository {
     override fun saveMarker(marker: Marker) {
         Realm.getDefaultInstance().executeTransaction {
             try {
-                val markerModel = it.createObject(MarkerModel::class.java)
-                markerModel.latitude = marker.location.latitude.toDouble()
-                markerModel.longitude = marker.location.longitude.toDouble()
-                markerModel.markedDate = marker.location.timeStamp.toDate()
-                markerModel.expirationDate = marker.validityPeriod.end.toDate()
+                it.createObject(MarkerModel::class.java).apply {
+                    latitude = marker.location.latitude.toDouble()
+                    longitude = marker.location.longitude.toDouble()
+                    markedDate = marker.location.timeStamp.toDate()
+                    expirationDate = marker.validityPeriod.end.toDate()
+                }
             } catch (realmPrimaryKeyConstraintException: RealmPrimaryKeyConstraintException) {
                 Timber.e(realmPrimaryKeyConstraintException.message)
             }

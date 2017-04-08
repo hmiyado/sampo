@@ -53,7 +53,7 @@ class Degree(
     }
 
     override fun toString(): String {
-        return "$value°"
+        return String.format("%.3f°", value)
     }
 
     fun toRadian(): Radian {

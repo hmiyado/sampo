@@ -3,6 +3,8 @@ package com.example.hmiyado.sampo.view.result
 import android.app.Fragment
 import android.os.Bundle
 import com.example.hmiyado.sampo.view.common.FragmentRequester
+import com.example.hmiyado.sampo.view.result.repository.location.ResultLocationRepositoryFragment
+import com.example.hmiyado.sampo.view.result.repository.marker.ResultMarkerRepositoryFragment
 import com.example.hmiyado.sampo.view.result.ui.ResultActivityUi
 import com.trello.rxlifecycle2.android.ActivityEvent
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
@@ -64,10 +66,11 @@ class ResultActivity : RxAppCompatActivity() {
                     .subscribe({ resultFragmentType ->
                         Timber.d(resultFragmentType.toString())
                         when (resultFragmentType) {
-                            ResultFragmentType.Menu    -> commitFragment(ResultMenuFragment())
-                            ResultFragmentType.Realm   -> commitFragment(ResultRepositoryFragment())
-                            ResultFragmentType.Summary -> commitFragment(ResultSummaryFragment())
-                            else                       -> {
+                            ResultFragmentType.Menu                -> commitFragment(ResultMenuFragment())
+                            ResultFragmentType.LOCATION_REPOSITORY -> commitFragment(ResultLocationRepositoryFragment.newInstance())
+                            ResultFragmentType.MARKER_REPOSITORY   -> commitFragment(ResultMarkerRepositoryFragment.newInstance())
+                            ResultFragmentType.Summary             -> commitFragment(ResultSummaryFragment())
+                            else                                   -> {
                             }
                         }
                     }, {}, {

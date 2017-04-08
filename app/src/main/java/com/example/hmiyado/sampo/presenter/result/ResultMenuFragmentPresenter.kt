@@ -17,15 +17,18 @@ class ResultMenuFragmentPresenter(
 
     override fun request(resultMenuItem: ResultMenuItem) {
         when (resultMenuItem) {
-            ResultMenuItem.Realm   -> {
-                request(ResultFragmentType.Realm)
+            ResultMenuItem.LOCATION_REPOSITORY -> {
+                request(ResultFragmentType.LOCATION_REPOSITORY)
             }
-            ResultMenuItem.Summary -> {
+            ResultMenuItem.MARKER_REPOSITORY   -> {
+                request(ResultFragmentType.MARKER_REPOSITORY)
+            }
+            ResultMenuItem.Summary             -> {
                 request(ResultFragmentType.Summary)
             }
-            ResultMenuItem.Share   -> {
+            ResultMenuItem.Share               -> {
             }
-            else                   -> {
+            else                               -> {
             }
         }
     }

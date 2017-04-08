@@ -1,14 +1,12 @@
-package com.example.hmiyado.sampo.view.result
+package com.example.hmiyado.sampo.view.result.repository.location
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import com.example.hmiyado.sampo.domain.model.Location
-import com.example.hmiyado.sampo.presenter.common.ListViewPresenter
 import com.example.hmiyado.sampo.presenter.result.ResultRepositoryFragmentPresenter
-import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
+import com.example.hmiyado.sampo.view.result.ui.ListFragmentUi
 import com.github.salomonbrys.kodein.KodeinInjected
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.appKodein
@@ -20,10 +18,10 @@ import timber.log.Timber
 /**
  * Created by hmiyado on 2017/02/16.
  */
-class ResultRepositoryFragment : RxFragment(), KodeinInjected {
+class ResultLocationRepositoryFragment : RxFragment(), KodeinInjected {
     companion object {
-        fun newInstance(): ResultRepositoryFragment {
-            return ResultRepositoryFragment()
+        fun newInstance(): ResultLocationRepositoryFragment {
+            return ResultLocationRepositoryFragment()
         }
     }
 
@@ -31,7 +29,7 @@ class ResultRepositoryFragment : RxFragment(), KodeinInjected {
 
     val presenter: ResultRepositoryFragmentPresenter by lazy { ResultRepositoryFragmentPresenter(this) }
 
-    val listViewPresenter: ListViewPresenter<Location> by lazy { ListViewPresenter<Location>(find<ListView>(ResultFragmentUi.listViewId)) }
+    val ui = ListFragmentUi()
     val listViewAdapter: ResultRepositoryItemListAdapter by lazy { ResultRepositoryItemListAdapter(activity.baseContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,15 +44,12 @@ class ResultRepositoryFragment : RxFragment(), KodeinInjected {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return ResultFragmentUi().createView(AnkoContext.create(activity.baseContext, this))
+        return ui.createView(AnkoContext.create(activity.baseContext, this))
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        find<ListView>(ResultFragmentUi.listViewId).let {
-            it.adapter = listViewAdapter
-            listViewPresenter.set(it)
-        }
+        find<ListView>(ui.listViewId).adapter = listViewAdapter
     }
 
     override fun onStop() {

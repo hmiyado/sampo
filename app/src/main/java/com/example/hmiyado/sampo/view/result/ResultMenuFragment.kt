@@ -13,7 +13,7 @@ import com.example.hmiyado.sampo.usecase.common.UseListView
 import com.example.hmiyado.sampo.usecase.result.UseMenuRequester
 import com.example.hmiyado.sampo.usecase.result.interaction.resultMenuUseCaseModule
 import com.example.hmiyado.sampo.view.common.FragmentRequester
-import com.example.hmiyado.sampo.view.result.ui.ResultFragmentUi
+import com.example.hmiyado.sampo.view.result.ui.ListFragmentUi
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
 import com.trello.rxlifecycle2.android.FragmentEvent
@@ -37,7 +37,7 @@ class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, 
             import(resultMenuUseCaseModule)
             bind<UseMenuRequester>() with provider { instance<ResultMenuFragmentPresenter>() }
             bind<UseListView.Source<ResultMenuItem>>() with provider { instance<ListViewPresenter<ResultMenuItem>>() }
-            bind<ListViewPresenter<ResultMenuItem>>() with singleton { ListViewPresenter<ResultMenuItem>(find<ListView>(ResultFragmentUi.listViewId)) }
+            bind<ListViewPresenter<ResultMenuItem>>() with singleton { ListViewPresenter<ResultMenuItem>(find<ListView>(ui.listViewId)) }
             bind<ResultMenuFragmentPresenter>() with singleton { ResultMenuFragmentPresenter(this@ResultMenuFragment) }
             bind<ResultOptionItemListAdapter>() with singleton { ResultOptionItemListAdapter(activity.baseContext) }
         }
@@ -49,6 +49,7 @@ class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, 
 
     val listViewPresenter: ListViewPresenter<ResultMenuItem> by kodein.instance()
     val resultOptionItemListAdapter: ResultOptionItemListAdapter by kodein.instance()
+    val ui = ListFragmentUi()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,13 +59,13 @@ class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Timber.d("on create view")
-        return ResultFragmentUi().createView(AnkoContext.create(activity.baseContext, this))
+        return ui.createView(AnkoContext.create(activity.baseContext, this))
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view ?: return
-        find<ListView>(ResultFragmentUi.listViewId).let {
+        find<ListView>(ui.listViewId).let {
             it.adapter = resultOptionItemListAdapter
             listViewPresenter.set(it)
         }

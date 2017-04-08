@@ -9,9 +9,14 @@ import com.example.hmiyado.sampo.domain.model.SampoScorerBaseImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.repository.compass.CompassSensorImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensorVirtualImpl
-import com.example.hmiyado.sampo.repository.location.*
+import com.example.hmiyado.sampo.repository.location.LocationRepository
+import com.example.hmiyado.sampo.repository.location.LocationSensor
+import com.example.hmiyado.sampo.repository.location.LocationSensorImpl
+import com.example.hmiyado.sampo.repository.location.LocationSensorVirtualImpl
 import com.example.hmiyado.sampo.repository.marker.MarkerRepository
-import com.example.hmiyado.sampo.repository.marker.MarkerRepositoryRealmImpl
+import com.example.hmiyado.sampo.repository.realm.LocationRepositoryRealmImpl
+import com.example.hmiyado.sampo.repository.realm.MarkerRepositoryRealmImpl
+import com.example.hmiyado.sampo.repository.realm.SampoRealmMigration
 import com.example.hmiyado.sampo.service.LocationSettingReceiver
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.usecase.map.store.MapStoreImpl
@@ -58,7 +63,8 @@ class SampoApplication : Application(), KodeinAware {
         Realm.init(baseContext)
         val realmConfig = RealmConfiguration.Builder()
                 .name(BuildConfig.BUILD_TYPE + BuildConfig.FLAVOR)
-                .schemaVersion(1)
+                .schemaVersion(2)
+                .migration(SampoRealmMigration)
                 .build()
         if (BuildConfig.DEBUG) {
             Realm.deleteRealm(realmConfig)

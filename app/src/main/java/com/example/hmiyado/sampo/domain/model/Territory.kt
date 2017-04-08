@@ -42,6 +42,6 @@ class Territory(
     }
 
     override fun toString(): String {
-        return "Territory(area=$area, locations=$locations)"
+        return "Territory(area=$area, markers=$locations)"
     }
 }

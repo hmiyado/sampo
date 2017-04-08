@@ -1,9 +1,10 @@
-package com.example.hmiyado.sampo.repository.location
+package com.example.hmiyado.sampo.repository.realm
 
 import com.example.hmiyado.sampo.domain.math.toDegree
 import com.example.hmiyado.sampo.domain.model.Location
 import com.example.hmiyado.sampo.domain.model.Time.toDate
 import com.example.hmiyado.sampo.domain.model.Time.toInstant
+import com.example.hmiyado.sampo.repository.location.LocationRepository
 import com.example.hmiyado.sampo.repository.model.LocationModel
 import io.realm.Realm
 import io.realm.exceptions.RealmPrimaryKeyConstraintException

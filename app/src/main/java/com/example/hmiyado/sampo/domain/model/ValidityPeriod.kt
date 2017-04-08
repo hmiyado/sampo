@@ -9,7 +9,7 @@ import org.threeten.bp.Period
 interface ValidityPeriod {
     companion object {
         fun create(start: Instant = Instant.EPOCH, period: Period = Period.ofDays(1)): ValidityPeriod = ValidityPeriodImpl(start, period)
-        fun create(start: Instant, end: Instant): ValidityPeriod = create(start, end)
+        fun create(start: Instant, end: Instant): ValidityPeriod = ValidityPeriodImpl(start, end)
     }
 
     val begin: Instant

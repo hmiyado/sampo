@@ -14,16 +14,16 @@ import org.threeten.bp.format.DateTimeFormatter
 /**
  * Created by hmiyado on 2017/02/18.
  */
-class ResultRealmItemView(context: Context) : LinearLayout(context) {
+class ResultLocationView(context: Context) : LinearLayout(context) {
     val timeView: TextView
     val longitudeView: TextView
     val latitudeView: TextView
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.result_realm_item_layout, this)
-        timeView = find<TextView>(R.id.result_realm_item_time)
-        longitudeView = find<TextView>(R.id.result_realm_item_longitude)
-        latitudeView = find<TextView>(R.id.result_realm_item_latitude)
+        LayoutInflater.from(context).inflate(R.layout.result_location_layout, this)
+        timeView = find<TextView>(R.id.result_location_time)
+        longitudeView = find<TextView>(R.id.result_location_longitude)
+        latitudeView = find<TextView>(R.id.result_location_latitude)
     }
 
     fun setLocation(location: Location) {
