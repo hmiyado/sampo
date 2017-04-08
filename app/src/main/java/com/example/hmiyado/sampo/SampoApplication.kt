@@ -10,6 +10,8 @@ import com.example.hmiyado.sampo.repository.compass.CompassSensor
 import com.example.hmiyado.sampo.repository.compass.CompassSensorImpl
 import com.example.hmiyado.sampo.repository.compass.CompassSensorVirtualImpl
 import com.example.hmiyado.sampo.repository.location.*
+import com.example.hmiyado.sampo.repository.marker.MarkerRepository
+import com.example.hmiyado.sampo.repository.marker.MarkerRepositoryRealmImpl
 import com.example.hmiyado.sampo.service.LocationSettingReceiver
 import com.example.hmiyado.sampo.usecase.map.store.MapStore
 import com.example.hmiyado.sampo.usecase.map.store.MapStoreImpl
@@ -40,6 +42,7 @@ class SampoApplication : Application(), KodeinAware {
             bind<CompassSensor>() with singleton { CompassSensorImpl(instance()) }
         }
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
+        bind<MarkerRepository>() with singleton { MarkerRepositoryRealmImpl() }
         bind<LocationSettingReceiver>() with singleton { LocationSettingReceiver() }
         bind<MapStore>() with singleton { MapStoreImpl(instance()) }
         bind<IntentDispatcher>() with singleton { IntentDispatcher(applicationContext) }

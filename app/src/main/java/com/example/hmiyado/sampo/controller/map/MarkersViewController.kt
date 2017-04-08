@@ -11,7 +11,6 @@ import com.example.hmiyado.sampo.usecase.map.UseMarkerView.Sink.DrawableMarkers
 import com.example.hmiyado.sampo.view.map.custom.MarkerView
 import org.jetbrains.anko.childrenSequence
 import org.jetbrains.anko.imageResource
-import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/04/07.
@@ -21,7 +20,6 @@ class MarkersViewController(view: RelativeLayout) : ViewController<RelativeLayou
         get() = Vector2(view.width / 2.0, view.height / 2.0)
 
     override fun draw(drawableMarkers: DrawableMarkers) {
-        Timber.d("markers size = ${drawableMarkers.markers.size}")
         synchronized(view) {
             drawableMarkers.markers.minus(view.childrenMarkerViews().map { it.marker }).forEach {
                 MarkerView(view.context, it).apply {

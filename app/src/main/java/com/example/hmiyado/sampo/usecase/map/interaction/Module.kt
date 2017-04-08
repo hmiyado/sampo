@@ -1,6 +1,7 @@
 package com.example.hmiyado.sampo.usecase.map.interaction
 
 import com.example.hmiyado.sampo.usecase.Interaction
+import com.example.hmiyado.sampo.usecase.map.MarkerProducer
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.instance
@@ -11,6 +12,8 @@ import com.github.salomonbrys.kodein.singleton
  */
 
 val mapUseCaseModule = Kodein.Module {
+    bind<MarkerProducer>() with singleton { MarkerProducer(instance(), instance()) }
+
     bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
     bind<DrawCompass>() with singleton { DrawCompass(instance(), instance()) }
     bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance()) }
@@ -20,6 +23,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<UpdateRotateAngle>() with singleton { UpdateRotateAngle(instance(), instance()) }
     bind<UpdateScale>() with singleton { UpdateScale(instance(), instance()) }
     bind<AddMarker>() with singleton { AddMarker(instance(), instance()) }
+    bind<SaveMarker>() with singleton { SaveMarker(instance(), instance()) }
 
     bind<List<Interaction<*>>>() with singleton {
         listOf(
@@ -31,7 +35,8 @@ val mapUseCaseModule = Kodein.Module {
                 instance<UpdateOrientation>(),
                 instance<UpdateRotateAngle>(),
                 instance<UpdateScale>(),
-                instance<AddMarker>()
+                instance<AddMarker>(),
+                instance<SaveMarker>()
         )
     }
 }

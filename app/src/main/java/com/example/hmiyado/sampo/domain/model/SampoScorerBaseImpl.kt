@@ -32,7 +32,7 @@ object SampoScorerBaseImpl : SampoScorer {
     val markerDefaultImpact = 1.0
 
     override fun Marker.calcImpact(now: Instant): Double {
-        val total = validityPeriod.end.toEpochMilli() - validityPeriod.start.toEpochMilli()
+        val total = validityPeriod.end.toEpochMilli() - validityPeriod.begin.toEpochMilli()
         val residualPeriod = validityPeriod.end.toEpochMilli() - now.toEpochMilli()
 
         return if (residualPeriod <= 0) {
@@ -82,7 +82,7 @@ object SampoScorerBaseImpl : SampoScorer {
     fun calcMarkersImpact(markers: List<Marker>, validPeriod: ValidityPeriod): Double {
         // 影響力は基本 1 倍
         return 1 + markers
-                .map { it.calcImpact(validPeriod.start) }
+                .map { it.calcImpact(validPeriod.begin) }
                 .sorted()
                 .mapIndexed { index, score -> score * Math.pow(markerImpactDecreasingRate, index.toDouble()) }
                 .sum()
