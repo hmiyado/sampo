@@ -56,11 +56,11 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
 
         val centerLocation = Location(centerLatitude, centerLongitude, Instant.EPOCH)
 
-        val (x, y) = measurement.determineVector(drawableMap.originalLocation, centerLocation)
-        
+        val (x, y) = drawableMap.determineVectorFromOriginOnCanvas(view, centerLocation)
+
         canvas.drawCircle(
-                view.dip(drawableMap.scaleFactor.scale(x)).toFloat(),
-                view.dip(drawableMap.scaleFactor.scale(y)).toFloat(),
+                x.toFloat(),
+                y.toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
                     alpha = drawableFootmarks.scorer.run {
@@ -71,7 +71,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun drawPoint(canvas: Canvas, x: Float, y: Float, paintFootmark: Paint) {
-        canvas.drawCircle(view.dip(x).toFloat(), view.dip(y).toFloat(), view.dip(3).toFloat(), paintFootmark)
+        canvas.drawCircle(x, y, view.dip(3).toFloat(), paintFootmark)
     }
 
     private fun drawOriginalLocation(canvas: Canvas) {
@@ -109,8 +109,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         drawOriginalLocation(canvas)
 
         drawableFootmarks.footmarks.forEach {
-            val (x, y) = measurement.determineVector(drawableMap.originalLocation, it)
-            drawPoint(canvas, drawableMap.scaleFactor.scale(x), drawableMap.scaleFactor.scale(y), createPaint(Color.GREEN, view.dip(1).toFloat()))
+            val (x, y) = drawableMap.determineVectorFromOriginOnCanvas(view, it)
+            drawPoint(canvas, x.toFloat(), y.toFloat(), createPaint(Color.GREEN, view.dip(1).toFloat()))
         }
 
         drawableFootmarks.territories.forEach {
