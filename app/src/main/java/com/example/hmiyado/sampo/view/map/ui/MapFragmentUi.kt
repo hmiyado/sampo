@@ -61,6 +61,7 @@ class MapFragmentUi() : AnkoComponent<MapFragment> {
                         textView {
                             id = scoreTextViewId
                             text = "123456789"
+                            textColor = Color.BLACK
                             textSize = 27f
                         }
                     }.lparams(width = matchParent, height = wrapContent) {

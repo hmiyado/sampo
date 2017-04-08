@@ -15,6 +15,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<MarkerProducer>() with singleton { MarkerProducer(instance(), instance()) }
 
     bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
+    bind<DisplayScore>() with singleton { DisplayScore(instance(), instance(), instance()) }
     bind<DrawCompass>() with singleton { DrawCompass(instance(), instance()) }
     bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance()) }
     bind<DrawMarkers>() with singleton { DrawMarkers(instance(), instance()) }
@@ -29,6 +30,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<List<Interaction<*>>>() with singleton {
         listOf(
                 instance<ControlLocationSensor>(),
+                instance<DisplayScore>(),
                 instance<DrawCompass>(),
                 instance<DrawMap>(),
                 instance<DrawMarkers>(),
