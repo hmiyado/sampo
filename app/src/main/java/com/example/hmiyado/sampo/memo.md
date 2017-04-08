@@ -155,7 +155,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 配布可能な状態にする
 
 - 新しいモデルの保存
-    - [] Marker
+    - [x] Marker
 - マーカーの上限数規定
     - [] 上限数を Store にもつ
     - [] 上限数個になったら， Add Markers を disable にする

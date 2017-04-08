@@ -15,6 +15,10 @@ interface MapStore {
          * 倍率１のときの，1 dip あたりの地図上の距離（メートル）
          */
         val SCALE_UNIT = 1
+        /**
+         * 初期のマーカーの個数の上限
+         */
+        val INITIAL_MARKER_LIMIT = 3
     }
 
     val drawableMapSignal: Observable<DrawableMap>
@@ -27,6 +31,8 @@ interface MapStore {
                 })
 
     val updatedMarkersSignal: Observable<List<Marker>>
+
+    val updatedMarkerLimitSignal: Observable<Int>
 
     val measurement: Measurement
 

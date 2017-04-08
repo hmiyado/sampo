@@ -24,9 +24,13 @@ class MapStoreImpl(
     private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
     private val territoryValidityPeriodSubject = BehaviorSubject.createDefault<ValidityPeriod>(ValidityPeriod.create(Instant.now(), Period.ofWeeks(1)))
     private val markersSubject = BehaviorSubject.createDefault<List<Marker>>(emptyList())
+    private val markerLimitSubject = BehaviorSubject.createDefault(MapStore.INITIAL_MARKER_LIMIT)
 
     override val updatedMarkersSignal: Observable<List<Marker>>
         get() = markersSubject.hide().share()
+
+    override val updatedMarkerLimitSignal: Observable<Int>
+        get() = markerLimitSubject.hide().share()
 
     override fun setOriginalLocation(originalLocation: Location) {
         originalLocationSubject.onNext(originalLocation)

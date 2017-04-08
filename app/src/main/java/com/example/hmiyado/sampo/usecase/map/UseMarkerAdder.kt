@@ -9,4 +9,8 @@ interface UseMarkerAdder {
     interface Source {
         val onClickedSignal: Observable<Unit>
     }
+
+    interface Sink {
+        fun setEnabled(enabled: Boolean)
+    }
 }

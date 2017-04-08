@@ -12,10 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.example.hmiyado.sampo.controller.common.IntentDispatcher
-import com.example.hmiyado.sampo.controller.map.CompassViewController
-import com.example.hmiyado.sampo.controller.map.MapViewController
-import com.example.hmiyado.sampo.controller.map.MarkersViewController
-import com.example.hmiyado.sampo.controller.map.ScaleViewController
+import com.example.hmiyado.sampo.controller.map.*
 import com.example.hmiyado.sampo.presenter.map.AddMarkerButtonPresenter
 import com.example.hmiyado.sampo.presenter.map.MapFragmentPresenter
 import com.example.hmiyado.sampo.presenter.map.MapViewPresenter
@@ -54,6 +51,7 @@ class MapFragment : RxFragment(), LazyKodeinAware {
             bind<UseLocationSetting.Source>() with provider { instance<LocationSettingReceiver>() }
             bind<UseLocationSensor.Sink>() with provider { instance<IntentDispatcher>() }
             bind<UseMarkerAdder.Source>() with provider { instance<AddMarkerButtonPresenter>() }
+            bind<UseMarkerAdder.Sink>() with provider { instance<AddMarkerButtonController>() }
             bind<UseMarkerView.Sink>() with provider { instance<MarkersViewController>() }
 
             bind<MapFragmentPresenter>() with singleton { MapFragmentPresenter(this@MapFragment) }
@@ -63,6 +61,7 @@ class MapFragment : RxFragment(), LazyKodeinAware {
             bind<CompassViewController>() with singleton { find<CompassView>(ui.compassViewId).controller }
             bind<ScaleViewController>() with singleton { find<ScaleView>(ui.scaleViewId).controller }
             bind<AddMarkerButtonPresenter>() with singleton { AddMarkerButtonPresenter(find<FloatingActionButton>(ui.addMarkerButtonId)) }
+            bind<AddMarkerButtonController>() with singleton { AddMarkerButtonController(find<FloatingActionButton>(ui.addMarkerButtonId)) }
         }
     }
 
