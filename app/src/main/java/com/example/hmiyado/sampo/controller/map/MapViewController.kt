@@ -1,13 +1,10 @@
 package com.example.hmiyado.sampo.controller.map
 
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import com.example.hmiyado.sampo.R
 import com.example.hmiyado.sampo.controller.ViewController
-import com.example.hmiyado.sampo.domain.math.Degree
 import com.example.hmiyado.sampo.domain.math.Measurement
+import com.example.hmiyado.sampo.domain.math.Vector2
 import com.example.hmiyado.sampo.domain.model.Area
 import com.example.hmiyado.sampo.domain.model.DrawableMap
 import com.example.hmiyado.sampo.domain.model.Location
@@ -42,11 +39,6 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         canvas.translate((view.width / 2).toFloat(), (view.height / 2).toFloat())
     }
 
-    private fun rotateCanvas(canvas: Canvas, rotateAngle: Degree) {
-        // canvas を回転する
-        canvas.rotate(rotateAngle.toFloat())
-    }
-
     private fun drawTerritory(canvas: Canvas, territory: Territory, drawableMap: DrawableMap) {
         val latitude = Area.findLatitudeById(territory.area.latitudeId)
         val longitude = Area.findLongitudeById(territory.area.longitudeId)
@@ -75,24 +67,43 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun drawOriginalLocation(canvas: Canvas) {
+        val matrix = Matrix().apply {
+            postRotate(drawableMap.rotateAngle.toFloat())
+        }
+
         val originBitmap = BitmapFactory.decodeResource(view.resources, R.drawable.ic_navigation_black_18dp)
-        canvas.drawBitmap(originBitmap, -originBitmap.width.toFloat() / 2, -originBitmap.height.toFloat() / 2, null)
+        val rotatedBitmap = Bitmap.createBitmap(originBitmap, 0, 0, originBitmap.width, originBitmap.height, matrix, false)
+        canvas.drawBitmap(rotatedBitmap, -rotatedBitmap.width.toFloat() / 2, -rotatedBitmap.height.toFloat() / 2, null)
     }
 
     private fun drawMesh(canvas: Canvas) {
         val paint = createPaint(Color.LTGRAY, view.dip(1).toFloat())
-        val meshInterval = view.dip(50)
-        (0..canvas.height step meshInterval).forEach {
-            val left = canvas.width.unaryMinus().toFloat()
-            val right = canvas.width.toFloat()
-            canvas.drawLine(left, it.toFloat(), right, it.toFloat(), paint)
-            canvas.drawLine(left, it.unaryMinus().toFloat(), right, it.unaryMinus().toFloat(), paint)
+        val drawOneMesh = { start: Vector2, stop: Vector2 ->
+            val startRotated = start.rotate(drawableMap.rotateAngle)
+            val stopRotated = stop.rotate(drawableMap.rotateAngle)
+
+            canvas.drawLine(
+                    startRotated.x.toFloat(),
+                    startRotated.y.toFloat(),
+                    stopRotated.x.toFloat(),
+                    stopRotated.y.toFloat(),
+                    paint
+            )
         }
-        (0..canvas.width step meshInterval).forEach {
-            val top = canvas.height.toFloat()
-            val bottom = canvas.height.unaryMinus().toFloat()
-            canvas.drawLine(it.toFloat(), bottom, it.toFloat(), top, paint)
-            canvas.drawLine(it.unaryMinus().toFloat(), bottom, it.unaryMinus().toFloat(), top, paint)
+
+        val meshInterval = view.dip(50)
+        val maxXRange = view.width - view.width % meshInterval + meshInterval
+        val maxYRange = view.height - view.height % meshInterval + meshInterval
+        (-maxYRange..maxYRange step meshInterval).forEach {
+            val start = Vector2(-maxXRange, it)
+            val stop = Vector2(maxXRange, it)
+            drawOneMesh(start, stop)
+        }
+        (-maxXRange..maxXRange step meshInterval).forEach {
+            val start = Vector2(it, -maxYRange)
+            val stop = Vector2(it, maxYRange)
+
+            drawOneMesh(start, stop)
         }
     }
 
@@ -103,7 +114,6 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
 
     fun draw(canvas: Canvas) {
         centeringCanvas(canvas)
-        rotateCanvas(canvas, drawableMap.rotateAngle)
 
         drawMesh(canvas)
         drawOriginalLocation(canvas)

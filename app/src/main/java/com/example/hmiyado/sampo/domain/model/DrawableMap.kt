@@ -26,7 +26,7 @@ data class DrawableMap(
                     calcScaledCoordinate(view, x),
                     calcScaledCoordinate(view, y)
             )
-        }
+        }.rotate(rotateAngle)
     }
 
     fun calcScaledCoordinate(view: View, p: Double): Float = view.dip((p / scaleFactor).toFloat()).toFloat()
