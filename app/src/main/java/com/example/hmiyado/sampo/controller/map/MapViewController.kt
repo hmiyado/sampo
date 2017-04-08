@@ -39,7 +39,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun centeringCanvas(canvas: Canvas) {
-        canvas.translate((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat())
+        canvas.translate((view.width / 2).toFloat(), (view.height / 2).toFloat())
     }
 
     private fun rotateCanvas(canvas: Canvas, rotateAngle: Degree) {
