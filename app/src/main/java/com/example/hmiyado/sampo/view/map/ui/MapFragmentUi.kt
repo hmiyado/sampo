@@ -1,6 +1,5 @@
 package com.example.hmiyado.sampo.view.map.ui
 
-import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
 import com.example.hmiyado.sampo.R
@@ -36,10 +35,6 @@ class MapFragmentUi() : AnkoComponent<MapFragment> {
                 }.lparams(width = matchParent, height = matchParent)
                 relativeLayout {
                     id = markerCanvasId
-                    // TODO 取り除く
-                    // marker をちゃんと配置できることがわかるようになるまでの簡易的な措置
-                    backgroundColor = Color.BLUE
-                    alpha = 0.1f
                 }.lparams(width = matchParent, height = matchParent)
 
                 relativeLayout {
