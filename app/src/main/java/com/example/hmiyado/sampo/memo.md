@@ -157,8 +157,8 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - 新しいモデルの保存
     - [x] Marker
 - マーカーの上限数規定
-    - [] 上限数を Store にもつ
-    - [] 上限数個になったら， Add Markers を disable にする
+    - [x] 上限数を Store にもつ
+    - [x] 上限数個になったら， Add Markers を disable にする
 - スコアを計算する
 - スコアを閲覧可能にする
 

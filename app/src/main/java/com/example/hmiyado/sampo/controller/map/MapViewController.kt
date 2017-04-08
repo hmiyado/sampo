@@ -56,7 +56,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
                     alpha = drawableFootmarks.scorer.run {
-                        territory.calcScore(emptyList(), drawableFootmarks.validityPeriod).toInt()
+                        val maxAlpha = 256
+                        (maxAlpha * territory.calcScore(drawableFootmarks.validityPeriod) / maxTerritoryScore).toInt()
                     }
                 })
         //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")

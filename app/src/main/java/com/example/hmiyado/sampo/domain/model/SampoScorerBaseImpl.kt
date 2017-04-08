@@ -10,6 +10,8 @@ import java.util.*
  * Created by hmiyado on 2017/03/28.
  */
 object SampoScorerBaseImpl : SampoScorer {
+    override val maxTerritoryScore: Double
+        get() = residentialCapacity + transientCeil + stayBonus
     const val residentialCapacity = 1080.0
     const val transientCeil = 200.0
 
@@ -88,7 +90,7 @@ object SampoScorerBaseImpl : SampoScorer {
                 .sum()
     }
 
-    fun Territory.calcScore(validPeriod: ValidityPeriod): Double {
+    override fun Territory.calcScore(validPeriod: ValidityPeriod): Double {
         val timeStamps = locations.map { it.timeStamp }.filter { validPeriod.isValid(it) }.toSortedSet()
 
         return stayBonus + calcTransientScore(timeStamps) + calcResidentialScore(timeStamps)
