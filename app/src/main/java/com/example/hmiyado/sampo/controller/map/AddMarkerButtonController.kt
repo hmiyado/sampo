@@ -10,5 +10,10 @@ import com.example.hmiyado.sampo.usecase.map.UseMarkerAdder
 class AddMarkerButtonController(view: View) : ViewController<View>(view), UseMarkerAdder.Sink {
     override fun setEnabled(enabled: Boolean) {
         view.isEnabled = enabled
+        if (view.isEnabled) {
+            view.alpha = 1.0f
+        } else {
+            view.alpha = 0.5f
+        }
     }
 }
