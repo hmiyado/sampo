@@ -159,8 +159,10 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - マーカーの上限数規定
     - [x] 上限数を Store にもつ
     - [x] 上限数個になったら， Add Markers を disable にする
-- スコアを計算する
+- [x] スコアを計算する
 - スコアを閲覧可能にする
+    - [] map 画面
+    - [] result 画面
 
 ## 3月の実装予定
 - 4月までの実装: ゲーム性の向上

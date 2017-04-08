@@ -1,7 +1,11 @@
 package com.example.hmiyado.sampo.view.map.ui
 
+import android.graphics.Color
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.LinearLayout
+import com.example.hmiyado.sampo.BuildConfig
 import com.example.hmiyado.sampo.R
 import com.example.hmiyado.sampo.view.common.sampoToolbar
 import com.example.hmiyado.sampo.view.map.MapFragment
@@ -22,6 +26,8 @@ class MapFragmentUi() : AnkoComponent<MapFragment> {
     val scaleViewId = View.generateViewId()
     val markerCanvasId = View.generateViewId()
     val addMarkerButtonId = View.generateViewId()
+    val scoreLayoutId = View.generateViewId()
+    val scoreTextViewId = View.generateViewId()
 
     override fun createView(ui: AnkoContext<MapFragment>) = with(ui) {
         linearLayout {
@@ -44,11 +50,32 @@ class MapFragmentUi() : AnkoComponent<MapFragment> {
                         alignParentTop()
                         alignParentLeft()
                     }
-                    scaleView {
-                        id = scaleViewId
-                    }.lparams(width = dip(200), height = dip(50)) {
+                    linearLayout {
+                        id = scoreLayoutId
+                        orientation = LinearLayout.VERTICAL
+                        textView {
+                            text = "なわばり"
+                            textSize = 17f
+                            textColor = Color.BLACK
+                        }
+                        textView {
+                            id = scoreTextViewId
+                            text = "123456789"
+                            textSize = 27f
+                        }
+                    }.lparams(width = matchParent, height = wrapContent) {
                         alignParentBottom()
                         alignParentLeft()
+                    }
+                    scaleView {
+                        id = scaleViewId
+                        visibility = if (BuildConfig.DEBUG) {
+                            VISIBLE
+                        } else {
+                            GONE
+                        }
+                    }.lparams(width = dip(200), height = dip(50)) {
+                        topOf(scoreLayoutId)
                     }
                     floatingActionButton(theme = R.style.AppTheme) {
                         id = addMarkerButtonId
