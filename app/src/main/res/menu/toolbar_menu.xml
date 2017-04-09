@@ -8,8 +8,13 @@
         android:title="地図"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/toolbar_menue_result"
+        android:id="@+id/toolbar_menu_result"
         android:icon="@drawable/ic_assessment_black_24dp"
         android:title="結果"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/toolbar_menu_setting"
+        android:icon="@drawable/ic_settings_applications_black_24dp"
+        android:title="設定"
         app:showAsAction="ifRoom"/>
 </menu>

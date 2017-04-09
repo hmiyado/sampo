@@ -53,7 +53,10 @@
 
         <activity
             android:name=".view.result.ResultActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".view.setting.SettingActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

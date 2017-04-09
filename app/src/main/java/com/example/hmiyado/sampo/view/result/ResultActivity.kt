@@ -7,6 +7,7 @@ import com.example.hmiyado.sampo.view.result.repository.location.ResultLocationR
 import com.example.hmiyado.sampo.view.result.repository.marker.ResultMarkerRepositoryFragment
 import com.example.hmiyado.sampo.view.result.ui.ResultActivityUi
 import com.trello.rxlifecycle2.android.ActivityEvent
+import com.trello.rxlifecycle2.android.BuildConfig
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle2.kotlin.bindUntilEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +24,13 @@ class ResultActivity : RxAppCompatActivity() {
         ui.setContentView(this)
 
         if (fragmentManager.findFragmentById(ResultActivityUi.ROOT_VIEW_ID) == null) {
-            commitFragment(ResultMenuFragment())
+            commitFragment(
+                    if (BuildConfig.DEBUG) {
+                        ResultMenuFragment()
+                    } else {
+                        ResultSummaryFragment.newInstance()
+                    }
+            )
         }
     }
 

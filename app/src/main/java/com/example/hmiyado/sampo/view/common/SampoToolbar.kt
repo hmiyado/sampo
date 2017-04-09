@@ -7,6 +7,7 @@ import android.util.TypedValue
 import com.example.hmiyado.sampo.R
 import com.example.hmiyado.sampo.view.map.MapActivity
 import com.example.hmiyado.sampo.view.result.ResultActivity
+import com.example.hmiyado.sampo.view.setting.SettingActivity
 import org.jetbrains.anko.backgroundColor
 
 /**
@@ -26,17 +27,25 @@ class SampoToolbar(context: Context?) : Toolbar(context) {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.toolbar_menu_map     -> {
-                        context.startActivity(Intent(context, MapActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        startActivity(context, MapActivity::class.java)
                         true
                     }
-                    R.id.toolbar_menue_result -> {
-                        context.startActivity(Intent(context, ResultActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    R.id.toolbar_menu_result  -> {
+                        startActivity(context, ResultActivity::class.java)
+                        true
+                    }
+                    R.id.toolbar_menu_setting -> {
+                        startActivity(context, SettingActivity::class.java)
                         true
                     }
                     else                      -> false
                 }
             }
         }
+    }
+
+    private fun startActivity(context: Context, klass: Class<*>) {
+        context.startActivity(Intent(context, klass).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
 }
