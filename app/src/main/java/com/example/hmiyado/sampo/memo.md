@@ -162,7 +162,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [x] スコアを計算する
 - スコアを閲覧可能にする
     - [x] map 画面
-    - [] result 画面
+    - [x] result 画面
 - 通知欄の改良
     - [] アイコン
     - [] テキスト(なわばり)

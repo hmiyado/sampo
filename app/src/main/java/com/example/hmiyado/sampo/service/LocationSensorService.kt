@@ -66,7 +66,7 @@ class LocationSensorService : RxService(), LazyKodeinAware {
         } else {
             @Suppress("DEPRECATION")
             Notification.Action.Builder(
-                    android.R.drawable.ic_menu_close_clear_cancel,
+                    R.drawable.ic_close_white_36dp,
                     IntentType.STOP.name.toLowerCase(),
                     pendingIntent
             )
@@ -106,9 +106,8 @@ class LocationSensorService : RxService(), LazyKodeinAware {
                         Notification.MediaStyle()
                                 .setShowActionsInCompactView(0)
                 )
-                .setContentTitle("content title")
-                .setContentText("content text")
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setContentTitle("さんぽ中")
+                .setSmallIcon(R.drawable.ic_directions_walk_black_48dp)
                 .build()
     }
 
