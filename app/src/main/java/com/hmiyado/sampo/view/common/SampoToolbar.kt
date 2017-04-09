@@ -9,6 +9,7 @@ import com.hmiyado.sampo.view.map.MapActivity
 import com.hmiyado.sampo.view.result.ResultActivity
 import com.hmiyado.sampo.view.setting.SettingActivity
 import org.jetbrains.anko.backgroundColor
+import timber.log.Timber
 
 /**
  * Created by hmiyado on 2017/02/03.
@@ -45,6 +46,7 @@ class SampoToolbar(context: Context?) : Toolbar(context) {
     }
 
     private fun startActivity(context: Context, klass: Class<*>) {
+        Timber.d("intent to ${klass.simpleName}")
         context.startActivity(Intent(context, klass).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 

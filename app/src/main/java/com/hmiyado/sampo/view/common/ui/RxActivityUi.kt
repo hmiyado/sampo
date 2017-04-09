@@ -1,4 +1,4 @@
-package com.hmiyado.sampo.view.map.ui
+package com.hmiyado.sampo.view.common.ui
 
 import android.view.View
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity

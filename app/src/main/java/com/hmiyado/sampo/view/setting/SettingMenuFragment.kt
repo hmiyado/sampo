@@ -1,19 +1,21 @@
-package com.hmiyado.sampo.view.result
+package com.hmiyado.sampo.view.setting
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
-import com.hmiyado.sampo.domain.result.ResultMenuItem
+import com.hmiyado.sampo.R
+import com.hmiyado.sampo.domain.setting.SettingMenu
 import com.hmiyado.sampo.presenter.common.ListViewPresenter
-import com.hmiyado.sampo.presenter.result.ResultMenuFragmentPresenter
+import com.hmiyado.sampo.presenter.result.SettingMenuFragmentPresenter
 import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.common.UseListView
 import com.hmiyado.sampo.usecase.result.UseMenuRequester
-import com.hmiyado.sampo.usecase.result.interaction.resultMenuUseCaseModule
+import com.hmiyado.sampo.usecase.setting.interaction.settingMenuUseCaseModule
 import com.hmiyado.sampo.view.common.FragmentRequester
 import com.hmiyado.sampo.view.result.ui.ListFragmentUi
 import com.trello.rxlifecycle2.android.FragmentEvent
@@ -26,36 +28,37 @@ import timber.log.Timber
 /**
  * Created by hmiyado on 2017/02/05.
  */
-class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, LazyKodeinAware {
+class SettingMenuFragment : RxFragment(), FragmentRequester<SettingMenu>, LazyKodeinAware {
     companion object {
-        fun newInstance() = ResultMenuFragment()
+        fun newInstance() = SettingMenuFragment()
     }
 
     override val kodein: LazyKodein = LazyKodein {
-        Kodein {
+        Kodein.Companion {
             extend(appKodein())
-            import(resultMenuUseCaseModule)
-            bind<UseMenuRequester<ResultMenuItem>>() with provider { instance<ResultMenuFragmentPresenter>() }
-            bind<UseListView.Source<ResultMenuItem>>() with provider { instance<ListViewPresenter<ResultMenuItem>>() }
-            bind<ListViewPresenter<ResultMenuItem>>() with singleton { ListViewPresenter<ResultMenuItem>(find<ListView>(ui.listViewId)) }
-            bind<ResultMenuFragmentPresenter>() with singleton { ResultMenuFragmentPresenter(this@ResultMenuFragment) }
-            bind<ResultOptionItemListAdapter>() with singleton { ResultOptionItemListAdapter(activity.baseContext) }
+            import(settingMenuUseCaseModule)
+            bind<UseMenuRequester<SettingMenu>>() with provider { instance<SettingMenuFragmentPresenter>() }
+            bind<UseListView.Source<SettingMenu>>() with provider { instance<ListViewPresenter<SettingMenu>>() }
+            bind<ListViewPresenter<SettingMenu>>() with singleton { ListViewPresenter<SettingMenu>(find<ListView>(ui.listViewId)) }
+            bind<SettingMenuFragmentPresenter>() with singleton { SettingMenuFragmentPresenter() }
+            bind<ArrayAdapter<SettingMenu>>() with singleton { ArrayAdapter<SettingMenu>(activity.baseContext, R.layout.result_option_item_layout) }
         }
     }
 
 
-    val presenter: ResultMenuFragmentPresenter by kodein.instance()
+    val presenter: SettingMenuFragmentPresenter by kodein.instance()
     private val interactions: List<Interaction<*>> by kodein.instance()
-    override val fragmentRequest: Observable<ResultFragmentType> = presenter.getFragmentRequest()
+    override val fragmentRequest: Observable<SettingMenu>
+        get() = presenter.fragmentRequest
 
-    val listViewPresenter: ListViewPresenter<ResultMenuItem> by kodein.instance()
-    val resultOptionItemListAdapter: ResultOptionItemListAdapter by kodein.instance()
+    val listViewPresenter: ListViewPresenter<SettingMenu> by kodein.instance()
+    val itemListAdapter: ArrayAdapter<SettingMenu> by kodein.instance()
     val ui = ListFragmentUi()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        resultOptionItemListAdapter.addAll(ResultMenuItem.values().toList())
+        itemListAdapter.addAll(SettingMenu.values().toList())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -67,7 +70,7 @@ class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, 
         super.onViewCreated(view, savedInstanceState)
         view ?: return
         find<ListView>(ui.listViewId).let {
-            it.adapter = resultOptionItemListAdapter
+            it.adapter = itemListAdapter
             listViewPresenter.set(it)
         }
 
@@ -78,5 +81,4 @@ class ResultMenuFragment : RxFragment(), FragmentRequester<ResultFragmentType>, 
         super.onStart()
         Interaction.Builder(this, FragmentEvent.STOP).buildAll(interactions)
     }
-
 }

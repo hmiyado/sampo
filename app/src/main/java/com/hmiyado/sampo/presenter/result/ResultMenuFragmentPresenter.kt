@@ -12,11 +12,11 @@ import io.reactivex.subjects.PublishSubject
  */
 class ResultMenuFragmentPresenter(
         private val resultMenuFragment: ResultMenuFragment
-) : UseMenuRequester {
+) : UseMenuRequester<ResultMenuItem> {
     private val fragmentRequester = PublishSubject.create<ResultFragmentType>()
 
-    override fun request(resultMenuItem: ResultMenuItem) {
-        when (resultMenuItem) {
+    override fun request(menuItem: ResultMenuItem) {
+        when (menuItem) {
             ResultMenuItem.LOCATION_REPOSITORY -> {
                 request(ResultFragmentType.LOCATION_REPOSITORY)
             }

@@ -6,5 +6,5 @@ import io.reactivex.Observable
  * Created by hmiyado on 2017/02/16.
  */
 interface FragmentRequester<T> {
-    fun getFragmentRequest(): Observable<T>
+    val fragmentRequest: Observable<T>
 }
