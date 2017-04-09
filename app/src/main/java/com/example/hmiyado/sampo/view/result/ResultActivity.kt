@@ -69,7 +69,7 @@ class ResultActivity : RxAppCompatActivity() {
                             ResultFragmentType.Menu                -> commitFragment(ResultMenuFragment())
                             ResultFragmentType.LOCATION_REPOSITORY -> commitFragment(ResultLocationRepositoryFragment.newInstance())
                             ResultFragmentType.MARKER_REPOSITORY   -> commitFragment(ResultMarkerRepositoryFragment.newInstance())
-                            ResultFragmentType.Summary             -> commitFragment(ResultSummaryFragment())
+                            ResultFragmentType.Summary             -> commitFragment(ResultSummaryFragment.newInstance())
                             else                                   -> {
                             }
                         }

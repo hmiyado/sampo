@@ -161,8 +161,11 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [x] 上限数個になったら， Add Markers を disable にする
 - [x] スコアを計算する
 - スコアを閲覧可能にする
-    - [] map 画面
+    - [x] map 画面
     - [] result 画面
+- 通知欄の改良
+    - [] アイコン
+    - [] テキスト(なわばり)
 
 ## 3月の実装予定
 - 4月までの実装: ゲーム性の向上

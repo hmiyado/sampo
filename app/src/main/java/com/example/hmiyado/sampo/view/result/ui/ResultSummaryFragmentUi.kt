@@ -11,30 +11,39 @@ import org.jetbrains.anko.*
  * Created by hmiyado on 2017/03/01.
  */
 class ResultSummaryFragmentUi : AnkoComponent<RxFragment> {
-    companion object {
-        val totalDistanceTextViewId = View.generateViewId()
-    }
+    val totalDistanceTextViewId = View.generateViewId()
+    val dailyScoreTextViewId = View.generateViewId()
 
     override fun createView(ui: AnkoContext<RxFragment>): View = with(ui) {
         linearLayout {
             orientation = LinearLayout.VERTICAL
             sampoToolbar { }
             linearLayout {
-                orientation = LinearLayout.VERTICAL
-                textView {
-                    textColor = Color.BLACK
-                    text = "さんぽ"
-                }
                 textView {
                     textColor = Color.BLACK
                     text = "総距離"
+                    visibility = View.GONE
                 }
                 textView {
                     id = totalDistanceTextViewId
                     textColor = Color.BLACK
                     text = "??? メートル"
+                    visibility = View.GONE
+                }
+                textView {
+                    textColor = Color.BLACK
+                    text = "スコア"
+                    textSize = 21f
+                }
+                textView {
+                    id = dailyScoreTextViewId
+                    textColor = Color.BLACK
+                    textSize = 21f
                 }
             }
+
+
+            lparams(width = matchParent, height = matchParent)
         }
     }
 }

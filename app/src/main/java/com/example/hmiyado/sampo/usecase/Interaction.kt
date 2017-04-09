@@ -3,6 +3,7 @@ package com.example.hmiyado.sampo.usecase
 import com.trello.rxlifecycle2.LifecycleProvider
 import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -17,8 +18,8 @@ abstract class Interaction<T> {
             var lifecycleProvider: LifecycleProvider<T>,
             var event: T
     ) {
-        var observeThread = AndroidSchedulers.mainThread()
-        var subscribeThread = Schedulers.newThread()
+        var observeThread: Scheduler = AndroidSchedulers.mainThread()
+        var subscribeThread: Scheduler = Schedulers.newThread()
 
         fun <T> build(interaction: Interaction<T>) {
             interaction.buildProducer()
