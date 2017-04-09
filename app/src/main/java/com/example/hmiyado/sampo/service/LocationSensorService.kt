@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.IBinder
+import com.example.hmiyado.sampo.R
 import com.example.hmiyado.sampo.libs.rx.RxService
 import com.example.hmiyado.sampo.libs.rx.ServiceEvent
 import com.example.hmiyado.sampo.repository.location.LocationSensor
