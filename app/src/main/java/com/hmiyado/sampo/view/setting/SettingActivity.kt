@@ -5,7 +5,11 @@ import android.os.Bundle
 import com.hmiyado.sampo.domain.setting.SettingMenu
 import com.hmiyado.sampo.view.common.FragmentRequester
 import com.hmiyado.sampo.view.common.ui.RxActivityUi
+import com.trello.rxlifecycle2.android.ActivityEvent
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle2.kotlin.bindUntilEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.setContentView
 import timber.log.Timber
 
@@ -28,26 +32,26 @@ class SettingActivity : RxAppCompatActivity() {
         }
     }
 
-    //    override fun onBackPressed() {
-    //        if (fragmentManager.popBackStackImmediate()) {
-    //            val fragment = fragmentManager.findFragmentById(ui.ROOT_VIEW_ID)
-    //            if (fragment == null) {
-    //                finish()
-    //                return
-    //            }
-    //        }
-    //    }
-    //
-    //    override fun onStart() {
-    //        super.onStart()
-    //        val fragment = fragmentManager.findFragmentById(ui.ROOT_VIEW_ID)
-    //        if (fragment == null) {
-    //            finish()
-    //            return
-    //        }
-    //        subscribeFragmentRequester(fragment)
-    //    }
-    //
+    override fun onBackPressed() {
+        if (fragmentManager.popBackStackImmediate()) {
+            val fragment = fragmentManager.findFragmentById(ui.ROOT_VIEW_ID)
+            if (fragment == null) {
+                finish()
+                return
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val fragment = fragmentManager.findFragmentById(ui.ROOT_VIEW_ID)
+        if (fragment == null) {
+            finish()
+            return
+        }
+        subscribeFragmentRequester(fragment)
+    }
+
     private fun commitFragment(fragment: Fragment) {
         fragmentManager
                 .beginTransaction()
@@ -55,26 +59,26 @@ class SettingActivity : RxAppCompatActivity() {
                 .replace(ui.ROOT_VIEW_ID, fragment, fragment.tag)
                 .commit()
     }
-    //
-    //    private fun subscribeFragmentRequester(fragment: Fragment) {
-    //        if (fragment is SettingMenuRequester) {
-    //            fragment.fragmentRequest
-    //                    .subscribeOn(Schedulers.newThread())
-    //                    .bindUntilEvent(this, ActivityEvent.STOP)
-    //                    .observeOn(AndroidSchedulers.mainThread())
-    //                    .subscribe({ settingMenu ->
-    //                        Timber.d(settingMenu.toString())
-    //                        when (settingMenu) {
-    //                            SettingMenu.ABOUT_APP -> {
-    //                            }
-    //                            SettingMenu.LICENCE   -> {
-    //                            }
-    //                            else                  -> {
-    //                            }
-    //                        }
-    //                    }, {}, {
-    //                        Timber.d("onComplete")
-    //                    })
-    //        }
-    //    }
+
+    private fun subscribeFragmentRequester(fragment: Fragment) {
+        if (fragment is SettingMenuRequester) {
+            fragment.fragmentRequest
+                    .subscribeOn(Schedulers.newThread())
+                    .bindUntilEvent(this, ActivityEvent.STOP)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ settingMenu ->
+                        Timber.d(settingMenu.toString())
+                        when (settingMenu) {
+                            SettingMenu.ABOUT_APP -> {
+                            }
+                            SettingMenu.LICENCE   -> {
+                            }
+                            else                  -> {
+                            }
+                        }
+                    }, {}, {
+                        Timber.d("onComplete")
+                    })
+        }
+    }
 }
