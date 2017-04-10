@@ -70,6 +70,7 @@ class SettingActivity : RxAppCompatActivity() {
                         Timber.d(settingMenu.toString())
                         when (settingMenu) {
                             SettingMenu.ABOUT_APP -> {
+                                commitFragment(AboutAppFragment.newInstance())
                             }
                             SettingMenu.LICENCE   -> {
                             }

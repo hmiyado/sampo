@@ -16,7 +16,6 @@ import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.common.UseListView
 import com.hmiyado.sampo.usecase.result.UseMenuRequester
 import com.hmiyado.sampo.usecase.setting.interaction.settingMenuUseCaseModule
-import com.hmiyado.sampo.view.common.FragmentRequester
 import com.hmiyado.sampo.view.result.ui.ListFragmentUi
 import com.trello.rxlifecycle2.android.FragmentEvent
 import com.trello.rxlifecycle2.components.RxFragment
@@ -28,7 +27,7 @@ import timber.log.Timber
 /**
  * Created by hmiyado on 2017/02/05.
  */
-class SettingMenuFragment : RxFragment(), FragmentRequester<SettingMenu>, LazyKodeinAware {
+class SettingMenuFragment : RxFragment(), LazyKodeinAware, SettingActivity.SettingMenuRequester {
     companion object {
         fun newInstance() = SettingMenuFragment()
     }

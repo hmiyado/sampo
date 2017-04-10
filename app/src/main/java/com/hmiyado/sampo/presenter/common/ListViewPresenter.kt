@@ -10,7 +10,7 @@ import io.reactivex.subjects.PublishSubject
  * Created by hmiyado on 2017/02/08.
  */
 class ListViewPresenter<T>(view: ListView) : ViewPresenter<ListView>(view), UseListView.Source<T> {
-    val onItemSelectedObservable = PublishSubject.create<T>()
+    private val onItemSelectedObservable: PublishSubject<T> = PublishSubject.create<T>()
 
     @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
     override fun getSelectedItem(): Observable<T> {
