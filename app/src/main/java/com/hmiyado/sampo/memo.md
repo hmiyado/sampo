@@ -151,6 +151,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [x] アイコンの変更　https://material.io/icons/
     - [x] テーマの設定
 - [] 描画の際のスコア計算をバックグラウンドスレッドで行う / スコアを Territory でもって，メモ化しておく
+- [] 通知欄をタップしたら MapActivity をたちあげる
 
 ## 4月中の実装予定
 配布可能な状態にする
@@ -611,3 +612,46 @@ UseLocationでできるようになった
 それはさらに言えば，LocationManagerのテスト
 ここをモックしたらもう別物のテストになる
 
+# ライセンス
+// support libraries 
+compile 'com.android.support:support-v4:25.3.1'
+compile 'com.android.support:design:25.3.1'
+compile 'com.android.support:appcompat-v7:25.3.1'
+compile 'com.android.support:multidex:1.0.1'
+
+compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+compile "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
+
+compile 'com.jakewharton.timber:timber:4.1.2'
+
+// rx
+compile 'io.reactivex.rxjava2:rxkotlin:2.0.0'
+// https://mvnrepository.com/artifact/io.reactivex/rxandroid
+compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.0.1'
+compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+// anko
+compile 'org.jetbrains.anko:anko-sdk15:0.9.1'
+// sdk19, sdk21, sdk23 are also available
+compile 'org.jetbrains.anko:anko-support-v4:0.9.1'
+// In case you need support-v4 bindings
+compile 'org.jetbrains.anko:anko-appcompat-v7:0.9.1'
+// For appcompat-v7 bindings
+compile 'org.jetbrains.anko:anko-design:0.9.1'
+compile 'com.github.salomonbrys.kodein:kodein:3.2.0'
+compile 'com.github.salomonbrys.kodein:kodein-android:3.2.0'
+testCompile 'junit:junit:4.12', {
+    transitive = false
+}
+// https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all
+testCompile 'org.hamcrest:hamcrest-all:1.3'
+testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+testCompile 'org.mockito:mockito-core:1.10.19'
+
+androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+androidTestCompile 'org.testng:testng:6.9.6'
