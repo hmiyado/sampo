@@ -73,6 +73,7 @@ class SettingActivity : RxAppCompatActivity() {
                                 commitFragment(AboutAppFragment.newInstance())
                             }
                             SettingMenu.LICENCE   -> {
+                                commitFragment(LicenseFragment.newInstance())
                             }
                             else                  -> {
                             }
