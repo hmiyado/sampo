@@ -127,7 +127,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] CI(継続的インテグレーション)導入
     - Firebase Test Lab for Android は無料？
     - https://firebase.googleblog.com/2017/01/BoostingAppQuality2017.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+FirebaseBlog+(The+Firebase+Blog)
-- [] Location のLat/LongをDegreeに変える
+- [x] Location のLat/LongをDegreeに変える
     - Degreeは十進度数法だと明記する(度分秒法もあるので)
 - [x] バックグラウンドでLocationを取得する
     - https://developer.android.com/guide/components/services.html?hl=ja
@@ -139,15 +139,15 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] 結果を表示できるActivity，Fragmentを作る
     - [x] Realm のリスト
     - [x] 距離計算結果
-    - [] エリア計算結果
+    - [x] エリア計算結果
 - [x] 累計距離計算
-- [] エリア計算
+- [x] エリア計算
     - エリアの計算方法をどうする？
         - 各点を中心とする円領域
         - [x] 地表面を分割した区画
 - [] twitter 連携
 - [] slack 連携
-- [] デザイン
+- [x] デザイン
     - [x] アイコンの変更　https://material.io/icons/
     - [x] テーマの設定
 - [] 描画の際のスコア計算をバックグラウンドスレッドで行う / スコアを Territory でもって，メモ化しておく
@@ -171,9 +171,15 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [x] テキスト(なわばり)
 - ライセンス表示
     - Settings
-        - [] アプリについて
-        - [] ライセンス表示
+        - [x] アプリについて
+        - [x] ライセンス表示
 - [x] パッケージ名の修正
+- [] まともに見れるようにする
+    - [] List Item
+    - [] スコア画面
+        - [] Daily Score
+        - [] Weekly Score
+        - [] Area Achievement
 
 ## 3月の実装予定
 - 4月までの実装: ゲーム性の向上

@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
-import com.hmiyado.sampo.R
 import com.hmiyado.sampo.domain.setting.SettingMenu
 import com.hmiyado.sampo.presenter.common.ListViewPresenter
 import com.hmiyado.sampo.presenter.result.SettingMenuFragmentPresenter
@@ -40,7 +38,7 @@ class SettingMenuFragment : RxFragment(), LazyKodeinAware, SettingActivity.Setti
             bind<UseListView.Source<SettingMenu>>() with provider { instance<ListViewPresenter<SettingMenu>>() }
             bind<ListViewPresenter<SettingMenu>>() with singleton { ListViewPresenter<SettingMenu>(find<ListView>(ui.listViewId)) }
             bind<SettingMenuFragmentPresenter>() with singleton { SettingMenuFragmentPresenter() }
-            bind<ArrayAdapter<SettingMenu>>() with singleton { ArrayAdapter<SettingMenu>(activity.baseContext, R.layout.result_option_item_layout) }
+            bind<SettingMenuAdapter>() with singleton { SettingMenuAdapter() }
         }
     }
 
@@ -51,14 +49,8 @@ class SettingMenuFragment : RxFragment(), LazyKodeinAware, SettingActivity.Setti
         get() = presenter.fragmentRequest
 
     val listViewPresenter: ListViewPresenter<SettingMenu> by kodein.instance()
-    val itemListAdapter: ArrayAdapter<SettingMenu> by kodein.instance()
+    val itemListAdapter: SettingMenuAdapter by kodein.instance()
     val ui = ListFragmentUi()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        itemListAdapter.addAll(SettingMenu.values().toList())
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Timber.d("on create view")
