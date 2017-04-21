@@ -6,12 +6,15 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.MarkerProducer
+import com.hmiyado.sampo.usecase.map.store.MapStore
+import com.hmiyado.sampo.usecase.map.store.MapStoreImpl
 
 /**
  * Created by hmiyado on 2017/03/23.
  */
 
 val mapUseCaseModule = Kodein.Module {
+    bind<MapStore>() with singleton { MapStoreImpl(instance()) }
     bind<MarkerProducer>() with singleton { MarkerProducer(instance(), instance()) }
 
     bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
@@ -20,6 +23,9 @@ val mapUseCaseModule = Kodein.Module {
     bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance()) }
     bind<DrawMarkers>() with singleton { DrawMarkers(instance(), instance()) }
     bind<DrawScale>() with singleton { DrawScale(instance(), instance()) }
+    bind<UpdateLocation>() with singleton { UpdateLocation(instance(), instance()) }
+    bind<UpdateFootmarks>() with singleton { UpdateFootmarks(instance()) }
+    bind<UpdateTerritory>() with singleton { UpdateTerritory(instance()) }
     bind<UpdateOrientation>() with singleton { UpdateOrientation(instance(), instance()) }
     bind<UpdateRotateAngle>() with singleton { UpdateRotateAngle(instance(), instance()) }
     bind<UpdateScale>() with singleton { UpdateScale(instance(), instance()) }
@@ -40,23 +46,21 @@ val mapUseCaseModule = Kodein.Module {
                 instance<UpdateScale>(),
                 instance<AddMarker>(),
                 instance<SetMarkerAdderAvailability>(),
-                instance<SaveMarker>()
+                instance<SaveMarker>(),
+                instance<UpdateLocation>(),
+                instance<UpdateFootmarks>(),
+                instance<UpdateTerritory>()
         )
     }
 }
 
 val locationSensorUseCaseModule = Kodein.Module {
+    //    bind<MapStore>() with singleton { MapStoreImpl(instance()) }
     bind<SaveLocation>() with singleton { SaveLocation(instance(), instance()) }
-    bind<UpdateLocation>() with singleton { UpdateLocation(instance(), instance()) }
-    bind<UpdateFootmarks>() with singleton { UpdateFootmarks(instance()) }
-    bind<UpdateTerritory>() with singleton { UpdateTerritory(instance()) }
 
     bind<List<Interaction<*>>>() with singleton {
         listOf(
-                instance<SaveLocation>(),
-                instance<UpdateLocation>(),
-                instance<UpdateFootmarks>(),
-                instance<UpdateTerritory>()
+                instance<SaveLocation>()//,
         )
     }
 }

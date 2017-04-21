@@ -16,15 +16,12 @@ import timber.log.Timber
  * Realmを使った位置情報レポジトリの実装
  */
 class LocationRepositoryRealmImpl : LocationRepository {
-
-    companion object {
-        fun convertToLocationFromModel(locationModel: LocationModel): Location {
-            return Location(
-                    latitude = locationModel.latitude.toDegree(),
-                    longitude = locationModel.longitude.toDegree(),
-                    timeStamp = locationModel.timeStamp.toInstant()
-            )
-        }
+    private fun LocationModel.toLocation(): Location {
+        return Location(
+                latitude = latitude.toDegree(),
+                longitude = longitude.toDegree(),
+                timeStamp = timeStamp.toInstant()
+        )
     }
 
     override fun saveLocation(location: Location) {
@@ -48,7 +45,7 @@ class LocationRepositoryRealmImpl : LocationRepository {
 
     override fun loadLocationList(): List<Location> {
         return Realm.getDefaultInstance().where(LocationModel::class.java).findAll().map {
-            convertToLocationFromModel(it)
+            it.toLocation()
         }
     }
 
@@ -58,7 +55,18 @@ class LocationRepositoryRealmImpl : LocationRepository {
                 .between("timeStamp", begin.toDate(), end.toDate())
                 .findAll()
                 .map {
-                    convertToLocationFromModel(it)
+                    it.toLocation()
                 }
     }
+
+    override fun loadLocationList(begin: Instant): List<Location> {
+        return Realm.getDefaultInstance()
+                .where(LocationModel::class.java)
+                .greaterThan("timeStamp", begin.toDate())
+                .findAll()
+                .map {
+                    it.toLocation()
+                }
+    }
+
 }

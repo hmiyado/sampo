@@ -12,4 +12,5 @@ interface LocationRepository {
     fun saveLocationList(locationList: List<Location>)
     fun loadLocationList(): List<Location>
     fun loadLocationList(begin: Instant, end: Instant): List<Location>
+    fun loadLocationList(begin: Instant): List<Location>
 }

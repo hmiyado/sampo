@@ -22,8 +22,6 @@ import com.hmiyado.sampo.repository.realm.LocationRepositoryRealmImpl
 import com.hmiyado.sampo.repository.realm.MarkerRepositoryRealmImpl
 import com.hmiyado.sampo.repository.realm.SampoRealmMigration
 import com.hmiyado.sampo.service.LocationSettingReceiver
-import com.hmiyado.sampo.usecase.map.store.MapStore
-import com.hmiyado.sampo.usecase.map.store.MapStoreImpl
 import com.jakewharton.threetenabp.AndroidThreeTen
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -49,7 +47,6 @@ class SampoApplication : Application(), KodeinAware {
         bind<LocationRepository>() with autoScopedSingleton(androidActivityScope) { LocationRepositoryRealmImpl() }
         bind<MarkerRepository>() with singleton { MarkerRepositoryRealmImpl() }
         bind<LocationSettingReceiver>() with singleton { LocationSettingReceiver() }
-        bind<MapStore>() with singleton { MapStoreImpl(instance()) }
         bind<IntentDispatcher>() with singleton { IntentDispatcher(applicationContext) }
         bind<Measurement>() with singleton { SphericalTrigonometry }
         bind<SampoScorer>() with singleton { SampoScorerBaseImpl }

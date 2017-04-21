@@ -180,6 +180,23 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
         - [] Daily Score
         - [] Weekly Score
         - [] Area Achievement
+- [] 地図画面から位置情報観測サービスを開始できるようにする
+
+## MapStore Singleton 問題
+MapStore のシングルトンを Activity で抱えていることに寄って・・・
+
+- Sensor サービスと　MapActivityが微妙に切り離せない
+- MapStore が増大するとアプリケーション全部がやば
+
+みたいな問題が起こっているっぽかったので，切り分ける．
+
+- SensorService ではロケーションをリポジトリに保存して，Activityに通知を送る
+- Activity では通知を受けて新しいロケーションをリポジトリから掘り出す
+
+ということを行う．
+SensorService から Activity には Intent を投げつける．
+もう面倒だから，独自定義のActionでいいだろう．
+Activity 側では，それを受ける Reciever を準備しておく．
 
 ## 3月の実装予定
 - 4月までの実装: ゲーム性の向上
