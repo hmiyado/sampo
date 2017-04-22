@@ -29,6 +29,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<UpdateOrientation>() with singleton { UpdateOrientation(instance(), instance()) }
     bind<UpdateRotateAngle>() with singleton { UpdateRotateAngle(instance(), instance()) }
     bind<UpdateScale>() with singleton { UpdateScale(instance(), instance()) }
+    bind<UpdateValidityPeriodEnd>() with singleton { UpdateValidityPeriodEnd(instance()) }
     bind<AddMarker>() with singleton { AddMarker(instance(), instance()) }
     bind<SetMarkerAdderAvailability>() with singleton { SetMarkerAdderAvailability(instance(), instance()) }
     bind<SaveMarker>() with singleton { SaveMarker(instance(), instance()) }
@@ -44,6 +45,7 @@ val mapUseCaseModule = Kodein.Module {
                 instance<UpdateOrientation>(),
                 instance<UpdateRotateAngle>(),
                 instance<UpdateScale>(),
+                instance<UpdateValidityPeriodEnd>(),
                 instance<AddMarker>(),
                 instance<SetMarkerAdderAvailability>(),
                 instance<SaveMarker>(),

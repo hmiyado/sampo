@@ -154,8 +154,11 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] スコアを Territory でもって，メモ化しておく
 - [x] 通知欄をタップしたら MapActivity をたちあげる
 - [] drawableTerritories has not been initialized でアプリ落ちる問題？ 解決した気がする？
-- [] ResultActivity で MapStore をインスタンス化する
+- [x] ResultActivity で MapStore をインスタンス化する
 - [] validity period をちゃんと設定する
+    - [x] validity period を変更すると，
+    - [x] 実際に validity period を変更するようにする(適当な時間ごとにポーリングして，時刻を更新する)
+- [] 結果がいちいち0から始まる．Map 画面と同じにならない
 
 ## 4月中の実装予定
 配布可能な状態にする

@@ -9,6 +9,7 @@ import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.interaction.DisplayScore
 import com.hmiyado.sampo.usecase.map.interaction.UpdateLocation
 import com.hmiyado.sampo.usecase.map.interaction.UpdateTerritory
+import com.hmiyado.sampo.usecase.map.interaction.UpdateValidityPeriodEnd
 import com.hmiyado.sampo.usecase.map.store.MapStore
 import com.hmiyado.sampo.usecase.map.store.MapStoreImpl
 import org.threeten.bp.Period
@@ -33,6 +34,7 @@ val resultSummaryUseCaseModule = Module {
     bind<LoadLocation>() with singleton { LoadLocation(instance(), instance()) }
     bind<UpdateLocation>() with singleton { UpdateLocation(instance(), instance()) }
     bind<UpdateTerritory>() with singleton { UpdateTerritory(instance()) }
+    bind<UpdateValidityPeriodEnd>() with singleton { UpdateValidityPeriodEnd(instance()) }
     bind<DisplayScore>(ResultSummaryTag.DailyScoreView) with singleton { DisplayScore(instance(), instance(), Period.ofDays(1), instance(ResultSummaryTag.DailyScoreView)) }
     bind<DisplayScore>(ResultSummaryTag.WeeklyScoreView) with singleton { DisplayScore(instance(), instance(), Period.ofDays(7), instance(ResultSummaryTag.WeeklyScoreView)) }
 
@@ -42,7 +44,8 @@ val resultSummaryUseCaseModule = Module {
                 instance<DisplayScore>(ResultSummaryTag.WeeklyScoreView),
                 instance<LoadLocation>(),
                 instance<UpdateLocation>(),
-                instance<UpdateTerritory>()
+                instance<UpdateTerritory>(),
+                instance<UpdateValidityPeriodEnd>()
         )
     }
 }
