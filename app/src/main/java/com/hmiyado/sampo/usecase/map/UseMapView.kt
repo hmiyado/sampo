@@ -2,9 +2,7 @@ package com.hmiyado.sampo.usecase.map
 
 import com.hmiyado.sampo.domain.math.Radian
 import com.hmiyado.sampo.domain.model.DrawableMap
-import com.hmiyado.sampo.domain.model.SampoScorer
 import com.hmiyado.sampo.domain.model.Territory
-import com.hmiyado.sampo.domain.model.ValidityPeriod
 import io.reactivex.Observable
 
 /**
@@ -26,9 +24,11 @@ interface UseMapView {
     interface Sink {
         data class DrawableTerritories(
                 val drawableMap: DrawableMap,
-                val territories: List<Territory>,
-                val validityPeriod: ValidityPeriod,
-                val scorer: SampoScorer
+                /**
+                 * territory と score のペア
+                 */
+                val territories: List<Pair<Territory, Double>>,
+                val maxTerritoryScore: Double
         )
 
         fun draw(drawableTerritories: DrawableTerritories)

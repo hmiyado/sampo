@@ -33,7 +33,13 @@ class DrawMap(
     }
 
     private fun toDrawableTarget(drawableMap: DrawableMap, territories: List<Territory>, validityPeriod: ValidityPeriod): DrawableTerritories {
-        return DrawableTerritories(drawableMap, territories, validityPeriod, scorer)
+        val scores = scorer.run {
+            territories.map {
+                it.calcScore(validityPeriod)
+            }
+        }
+
+        return DrawableTerritories(drawableMap, territories.zip(scores), scorer.maxTerritoryScore)
     }
 
     override fun buildConsumer(): Observer<DrawableTerritories> {

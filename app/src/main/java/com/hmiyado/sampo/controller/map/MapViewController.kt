@@ -39,28 +39,37 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         canvas.translate((view.width / 2).toFloat(), (view.height / 2).toFloat())
     }
 
-    private fun drawTerritory(canvas: Canvas, territory: Territory, drawableMap: DrawableMap) {
-        val latitude = Area.findLatitudeById(territory.area.latitudeId)
-        val longitude = Area.findLongitudeById(territory.area.longitudeId)
-
-        val centerLatitude = latitude + Area.LATITUDE_UNIT / 2
-        val centerLongitude = longitude + Area.LONGITUDE_UNIT / 2
-
-        val centerLocation = Location(centerLatitude, centerLongitude, Instant.EPOCH)
-
-        val (x, y) = drawableMap.determineVectorFromOriginOnCanvas(view, centerLocation)
-
-        canvas.drawCircle(
-                x.toFloat(),
-                y.toFloat(),
-                view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
-                createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
-                    alpha = drawableTerritories.scorer.run {
+    private fun drawTerritory(canvas: Canvas, territory: Territory, score: Double, drawableMap: DrawableMap) {
+        val areaRadius = view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat()
+        val territoryPaint = createPaint(Color.MAGENTA, view.dip(1).toFloat())
+        territory.area.run {
+            Pair(Area.findLatitudeById(latitudeId), Area.findLongitudeById(longitudeId))
+        }.let { (latitude, longitude) ->
+            Pair(latitude + Area.LATITUDE_UNIT / 2, longitude + Area.LONGITUDE_UNIT / 2)
+        }.let { (centerLatitude, centerLongitude) ->
+            Location(centerLatitude, centerLongitude, Instant.EPOCH)
+        }.let {
+            drawableMap.determineVectorFromOriginOnCanvas(view, it)
+        }.let { (x, y) ->
+            canvas.drawCircle(
+                    x.toFloat(),
+                    y.toFloat(),
+                    areaRadius,
+                    territoryPaint.apply {
                         val maxAlpha = 256
-                        (maxAlpha * territory.calcScore(drawableTerritories.validityPeriod) / maxTerritoryScore).toInt()
-                    }
-                })
-        //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
+                        alpha = (maxAlpha * score / drawableTerritories.maxTerritoryScore).toInt()
+
+                    })
+        }
+
+        val paint = createPaint(Color.GREEN, view.dip(1).toFloat())
+        territory.locations
+                .map {
+                    drawableMap.determineVectorFromOriginOnCanvas(view, it)
+                }
+                .forEach { (x, y) ->
+                    drawPoint(canvas, x.toFloat(), y.toFloat(), paint)
+                }
     }
 
     private fun drawPoint(canvas: Canvas, x: Float, y: Float, paintFootmark: Paint) {
@@ -119,8 +128,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         drawMesh(canvas)
         drawOriginalLocation(canvas)
 
-        drawableTerritories.territories.forEach {
-            drawTerritory(canvas, it, drawableMap)
+        drawableTerritories.territories.forEach { (territory, score) ->
+            drawTerritory(canvas, territory, score, drawableMap)
         }
     }
 
