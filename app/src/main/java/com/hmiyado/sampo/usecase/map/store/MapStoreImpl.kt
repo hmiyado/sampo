@@ -2,11 +2,13 @@ package com.hmiyado.sampo.usecase.map.store
 
 import com.hmiyado.sampo.domain.math.Degree
 import com.hmiyado.sampo.domain.math.Measurement
-import com.hmiyado.sampo.domain.model.*
+import com.hmiyado.sampo.domain.model.Location
+import com.hmiyado.sampo.domain.model.Marker
+import com.hmiyado.sampo.domain.model.Orientation
+import com.hmiyado.sampo.domain.model.Territory
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import org.threeten.bp.Instant
-import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -21,15 +23,18 @@ class MapStoreImpl(
     private val scaleFactorSubject = BehaviorSubject.createDefault<Float>(1f)
     private val rotateAngleSubject = BehaviorSubject.createDefault<Degree>(Degree(0.0))
     private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
-    private val territoryValidityPeriodSubject = BehaviorSubject.createDefault<ValidityPeriod>(ValidityPeriod.create(Instant.now(), Period.ofWeeks(1)))
     private val markersSubject = BehaviorSubject.createDefault<List<Marker>>(emptyList())
     private val markerLimitSubject = BehaviorSubject.createDefault(MapStore.INITIAL_MARKER_LIMIT)
+    private val validityPeriodEndSubject = BehaviorSubject.createDefault(Instant.EPOCH)
 
     override val updatedMarkersSignal: Observable<List<Marker>>
         get() = markersSubject.hide().share()
 
     override val updatedMarkerLimitSignal: Observable<Int>
         get() = markerLimitSubject.hide().share()
+
+    override val updatedValidityPeriodEndSignal: Observable<Instant>
+        get() = validityPeriodEndSubject.hide().share()
 
     override fun setOriginalLocation(originalLocation: Location) {
         originalLocationSubject.onNext(originalLocation)
@@ -47,10 +52,6 @@ class MapStoreImpl(
         rotateAngleSubject.onNext(rotateAngleSubject.value + rotateAngle)
     }
 
-    override fun setValidityPeriod(validityPeriod: ValidityPeriod) {
-        territoryValidityPeriodSubject.onNext(validityPeriod)
-    }
-
     override fun setTerritories(territories: List<Territory>) {
         territoriesSubject.onNext(territories)
     }
@@ -60,6 +61,10 @@ class MapStoreImpl(
         markersSubject.onNext(markers)
     }
 
+    override fun setValidityPeriodEnd(end: Instant) {
+        validityPeriodEndSubject.onNext(end)
+    }
+
     override fun getOriginalLocation(): Observable<Location> = originalLocationSubject.hide().share()
 
     override fun getOrientation(): Observable<Orientation> = orientationSubject.hide().share()
@@ -67,8 +72,6 @@ class MapStoreImpl(
     override fun getScaleFactor(): Observable<Float> = scaleFactorSubject.hide().share()
 
     override fun getRotateAngle(): Observable<Degree> = rotateAngleSubject.hide().share()
-
-    override fun getValidityPeriod(): Observable<ValidityPeriod> = territoryValidityPeriodSubject.hide().share()
 
     override fun getTerritories(): Observable<List<Territory>> = territoriesSubject.hide().share()
 }

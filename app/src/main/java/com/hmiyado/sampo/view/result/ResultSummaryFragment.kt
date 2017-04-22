@@ -9,6 +9,7 @@ import com.github.salomonbrys.kodein.android.appKodein
 import com.hmiyado.sampo.controller.map.ScoreViewController
 import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.UseScoreView
+import com.hmiyado.sampo.usecase.result.interaction.ResultSummaryTag
 import com.hmiyado.sampo.usecase.result.interaction.resultSummaryUseCaseModule
 import com.hmiyado.sampo.view.result.ui.ResultSummaryFragmentUi
 import com.trello.rxlifecycle2.android.FragmentEvent
@@ -25,9 +26,11 @@ class ResultSummaryFragment : RxFragment(), LazyKodeinAware {
             extend(appKodein())
             import(resultSummaryUseCaseModule)
 
-            bind<UseScoreView.Sink>() with provider { instance<ScoreViewController>() }
+            bind<UseScoreView.Sink>(ResultSummaryTag.DailyScoreView) with provider { instance<ScoreViewController>(ResultSummaryTag.DailyScoreView) }
+            bind<UseScoreView.Sink>(ResultSummaryTag.WeeklyScoreView) with provider { instance<ScoreViewController>(ResultSummaryTag.WeeklyScoreView) }
 
-            bind<ScoreViewController>() with singleton { ScoreViewController(find(ui.dailyScoreTextViewId)) }
+            bind<ScoreViewController>(ResultSummaryTag.DailyScoreView) with singleton { ScoreViewController(find(ui.dailyScoreTextViewId)) }
+            bind<ScoreViewController>(ResultSummaryTag.WeeklyScoreView) with singleton { ScoreViewController(find(ui.weeklyScoreTextViewId)) }
         }
     }
 

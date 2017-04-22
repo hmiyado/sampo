@@ -5,6 +5,7 @@ import com.hmiyado.sampo.domain.math.Measurement
 import com.hmiyado.sampo.domain.model.*
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
+import org.threeten.bp.Instant
 
 /**
  * Created by hmiyado on 2017/02/26.
@@ -34,6 +35,8 @@ interface MapStore {
 
     val updatedMarkerLimitSignal: Observable<Int>
 
+    val updatedValidityPeriodEndSignal: Observable<Instant>
+
     val measurement: Measurement
 
     fun setOriginalLocation(originalLocation: Location)
@@ -46,9 +49,9 @@ interface MapStore {
 
     fun setTerritories(territories: List<Territory>)
 
-    fun setValidityPeriod(validityPeriod: ValidityPeriod)
-
     fun setMarkers(markers: List<Marker>)
+
+    fun setValidityPeriodEnd(end: Instant)
 
     fun getOriginalLocation(): Observable<Location>
 
@@ -59,6 +62,4 @@ interface MapStore {
     fun getRotateAngle(): Observable<Degree>
 
     fun getTerritories(): Observable<List<Territory>>
-
-    fun getValidityPeriod(): Observable<ValidityPeriod>
 }

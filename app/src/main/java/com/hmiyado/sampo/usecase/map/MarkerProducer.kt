@@ -6,6 +6,8 @@ import com.hmiyado.sampo.domain.model.ValidityPeriod
 import com.hmiyado.sampo.usecase.map.store.MapStore
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
+import org.threeten.bp.Instant
+import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2017/04/08.
@@ -16,9 +18,9 @@ class MarkerProducer(
 ) {
     val product: Observable<Marker> = useMarkerAdder.onClickedSignal
             .withLatestFrom(store.getOriginalLocation(),
-                    store.getValidityPeriod(),
-                    Function3<Unit, Location, ValidityPeriod, Marker> { _, location, validityPeriod ->
-                        Marker(location, validityPeriod)
+                    store.updatedValidityPeriodEndSignal,
+                    Function3<Unit, Location, Instant, Marker> { _, location, validityPeriodEnd ->
+                        Marker(location, ValidityPeriod.create(Period.ofDays(1), end = validityPeriodEnd))
                     })
             .share()
 }

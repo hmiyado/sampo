@@ -10,6 +10,7 @@ interface ValidityPeriod {
     companion object {
         fun create(start: Instant = Instant.EPOCH, period: Period = Period.ofDays(1)): ValidityPeriod = ValidityPeriodImpl(start, period)
         fun create(start: Instant, end: Instant): ValidityPeriod = ValidityPeriodImpl(start, end)
+        fun create(period: Period = Period.ofDays(1), end: Instant) = ValidityPeriodImpl(end.minus(period), end)
     }
 
     val begin: Instant

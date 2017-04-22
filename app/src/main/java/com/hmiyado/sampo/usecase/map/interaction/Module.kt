@@ -8,6 +8,7 @@ import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.MarkerProducer
 import com.hmiyado.sampo.usecase.map.store.MapStore
 import com.hmiyado.sampo.usecase.map.store.MapStoreImpl
+import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2017/03/23.
@@ -18,7 +19,7 @@ val mapUseCaseModule = Kodein.Module {
     bind<MarkerProducer>() with singleton { MarkerProducer(instance(), instance()) }
 
     bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
-    bind<DisplayScore>() with singleton { DisplayScore(instance(), instance(), instance()) }
+    bind<DisplayScore>() with singleton { DisplayScore(instance(), instance(), Period.ofDays(1), instance()) }
     bind<DrawCompass>() with singleton { DrawCompass(instance(), instance()) }
     bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance()) }
     bind<DrawMarkers>() with singleton { DrawMarkers(instance(), instance()) }

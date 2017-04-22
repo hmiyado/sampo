@@ -30,7 +30,7 @@ class ResultSummaryFragmentUi : AnkoComponent<RxFragment> {
                     visibility = View.GONE
                 }
                 textView(theme) {
-                    text = "今日のスコア"
+                    text = "今日のなわばり"
                     textSize = 21f
                 }
                 textView(theme) {
@@ -38,7 +38,7 @@ class ResultSummaryFragmentUi : AnkoComponent<RxFragment> {
                     textSize = 21f
                 }
                 textView(theme) {
-                    text = "今週のスコア"
+                    text = "今週のなわばり"
                     textSize = 21f
                 }
                 textView(theme) {
@@ -46,7 +46,7 @@ class ResultSummaryFragmentUi : AnkoComponent<RxFragment> {
                     textSize = 21f
                 }
                 textView(theme) {
-                    text = "踏破率"
+                    text = "いままでのなわばり"
                     textSize = 21f
                 }
                 textView(theme) {

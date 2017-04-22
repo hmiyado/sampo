@@ -12,6 +12,8 @@ import com.hmiyado.sampo.usecase.map.store.MapStore
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.functions.Function3
+import org.threeten.bp.Instant
+import org.threeten.bp.Period
 
 /**
  * Created by hmiyado on 2016/12/15.
@@ -27,15 +29,15 @@ class DrawMap(
                 .combineLatest(
                         store.drawableMapSignal,
                         store.getTerritories(),
-                        store.getValidityPeriod(),
+                        store.updatedValidityPeriodEndSignal,
                         // http://stackoverflow.com/questions/42725749/observable-combinelatest-type-inference-in-kotlin
                         Function3(this::toDrawableTarget))
     }
 
-    private fun toDrawableTarget(drawableMap: DrawableMap, territories: List<Territory>, validityPeriod: ValidityPeriod): DrawableTerritories {
+    private fun toDrawableTarget(drawableMap: DrawableMap, territories: List<Territory>, validityPeriodEnd: Instant): DrawableTerritories {
         val scores = scorer.run {
             territories.map {
-                it.calcScore(validityPeriod)
+                it.calcScore(ValidityPeriod.create(Period.ofDays(1), validityPeriodEnd))
             }
         }
 
