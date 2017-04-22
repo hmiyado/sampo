@@ -150,9 +150,10 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [x] デザイン
     - [x] アイコンの変更　https://material.io/icons/
     - [x] テーマの設定
-- [] 描画の際のスコア計算をバックグラウンドスレッドで行う / スコアを Territory でもって，メモ化しておく
-- [] 通知欄をタップしたら MapActivity をたちあげる
-- [] drawableTerritories has not been initialized でアプリ落ちる問題？
+- [x] 描画の際のスコア計算をバックグラウンドスレッドで行う
+- [] スコアを Territory でもって，メモ化しておく
+- [x] 通知欄をタップしたら MapActivity をたちあげる
+- [] drawableTerritories has not been initialized でアプリ落ちる問題？ 解決した気がする？
 
 ## 4月中の実装予定
 配布可能な状態にする

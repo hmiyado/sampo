@@ -16,6 +16,7 @@ import com.hmiyado.sampo.libs.rx.ServiceEvent
 import com.hmiyado.sampo.repository.location.LocationSensor
 import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.interaction.locationSensorUseCaseModule
+import com.hmiyado.sampo.view.map.MapActivity
 import timber.log.Timber
 
 /**
@@ -100,6 +101,13 @@ class LocationSensorService : RxService(), LazyKodeinAware {
     }
 
     private fun createNotification(): Notification {
+        val intent = Intent(baseContext, MapActivity::class.java)
+        val contentIntent = PendingIntent.getActivity(
+                baseContext,
+                0,
+                intent,
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+
         return Notification.Builder(applicationContext)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .addAction(createCloseAction())
@@ -108,6 +116,7 @@ class LocationSensorService : RxService(), LazyKodeinAware {
                                 .setShowActionsInCompactView(0)
                 )
                 .setContentTitle("さんぽ中")
+                .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_directions_walk_black_48dp)
                 .build()
     }
