@@ -44,8 +44,6 @@ interface MapStore {
 
     fun setRotateAngle(rotateAngle: Degree)
 
-    fun setFootmarks(footmarks: List<Location>)
-
     fun setTerritories(territories: List<Territory>)
 
     fun setValidityPeriod(validityPeriod: ValidityPeriod)
@@ -59,8 +57,6 @@ interface MapStore {
     fun getScaleFactor(): Observable<Float>
 
     fun getRotateAngle(): Observable<Degree>
-
-    fun getFootmarks(): Observable<List<Location>>
 
     fun getTerritories(): Observable<List<Territory>>
 

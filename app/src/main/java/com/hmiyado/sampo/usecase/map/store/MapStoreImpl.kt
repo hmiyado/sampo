@@ -20,7 +20,6 @@ class MapStoreImpl(
     private val orientationSubject = BehaviorSubject.createDefault<Orientation>(Orientation.Companion.empty())
     private val scaleFactorSubject = BehaviorSubject.createDefault<Float>(1f)
     private val rotateAngleSubject = BehaviorSubject.createDefault<Degree>(Degree(0.0))
-    private val footmarksSubject = BehaviorSubject.createDefault<List<Location>>(emptyList())
     private val territoriesSubject = BehaviorSubject.createDefault<List<Territory>>(emptyList())
     private val territoryValidityPeriodSubject = BehaviorSubject.createDefault<ValidityPeriod>(ValidityPeriod.create(Instant.now(), Period.ofWeeks(1)))
     private val markersSubject = BehaviorSubject.createDefault<List<Marker>>(emptyList())
@@ -52,10 +51,6 @@ class MapStoreImpl(
         territoryValidityPeriodSubject.onNext(validityPeriod)
     }
 
-    override fun setFootmarks(footmarks: List<Location>) {
-        footmarksSubject.onNext(footmarks)
-    }
-
     override fun setTerritories(territories: List<Territory>) {
         territoriesSubject.onNext(territories)
     }
@@ -72,8 +67,6 @@ class MapStoreImpl(
     override fun getScaleFactor(): Observable<Float> = scaleFactorSubject.hide().share()
 
     override fun getRotateAngle(): Observable<Degree> = rotateAngleSubject.hide().share()
-
-    override fun getFootmarks(): Observable<List<Location>> = footmarksSubject.hide().share()
 
     override fun getValidityPeriod(): Observable<ValidityPeriod> = territoryValidityPeriodSubject.hide().share()
 

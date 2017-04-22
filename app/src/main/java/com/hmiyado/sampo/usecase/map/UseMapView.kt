@@ -1,7 +1,10 @@
 package com.hmiyado.sampo.usecase.map
 
 import com.hmiyado.sampo.domain.math.Radian
-import com.hmiyado.sampo.domain.model.*
+import com.hmiyado.sampo.domain.model.DrawableMap
+import com.hmiyado.sampo.domain.model.SampoScorer
+import com.hmiyado.sampo.domain.model.Territory
+import com.hmiyado.sampo.domain.model.ValidityPeriod
 import io.reactivex.Observable
 
 /**
@@ -21,14 +24,13 @@ interface UseMapView {
     }
 
     interface Sink {
-        data class DrawableFootmarks(
+        data class DrawableTerritories(
                 val drawableMap: DrawableMap,
-                val footmarks: List<Location>,
                 val territories: List<Territory>,
                 val validityPeriod: ValidityPeriod,
                 val scorer: SampoScorer
         )
 
-        fun draw(drawableFootmarks: DrawableFootmarks)
+        fun draw(drawableTerritories: DrawableTerritories)
     }
 }

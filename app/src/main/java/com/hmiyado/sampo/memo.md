@@ -152,7 +152,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [x] テーマの設定
 - [] 描画の際のスコア計算をバックグラウンドスレッドで行う / スコアを Territory でもって，メモ化しておく
 - [] 通知欄をタップしたら MapActivity をたちあげる
-- [] drawableFootmarks has not been initialized でアプリ落ちる問題
+- [] drawableTerritories has not been initialized でアプリ落ちる問題？
 
 ## 4月中の実装予定
 配布可能な状態にする

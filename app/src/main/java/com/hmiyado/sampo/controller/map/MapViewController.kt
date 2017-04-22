@@ -10,7 +10,7 @@ import com.hmiyado.sampo.domain.model.DrawableMap
 import com.hmiyado.sampo.domain.model.Location
 import com.hmiyado.sampo.domain.model.Territory
 import com.hmiyado.sampo.usecase.map.UseMapView.Sink
-import com.hmiyado.sampo.usecase.map.UseMapView.Sink.DrawableFootmarks
+import com.hmiyado.sampo.usecase.map.UseMapView.Sink.DrawableTerritories
 import com.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
 import org.threeten.bp.Instant
@@ -20,9 +20,9 @@ import org.threeten.bp.Instant
  * @link MapView に対応するController
  */
 class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
-    lateinit var drawableFootmarks: DrawableFootmarks
+    lateinit var drawableTerritories: DrawableTerritories
     val drawableMap
-        get() = drawableFootmarks.drawableMap
+        get() = drawableTerritories.drawableMap
 
     private val measurement: Measurement
         get() = drawableMap.measurement
@@ -55,9 +55,9 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                 y.toFloat(),
                 view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat(),
                 createPaint(Color.MAGENTA, view.dip(1).toFloat()).apply {
-                    alpha = drawableFootmarks.scorer.run {
+                    alpha = drawableTerritories.scorer.run {
                         val maxAlpha = 256
-                        (maxAlpha * territory.calcScore(drawableFootmarks.validityPeriod) / maxTerritoryScore).toInt()
+                        (maxAlpha * territory.calcScore(drawableTerritories.validityPeriod) / maxTerritoryScore).toInt()
                     }
                 })
         //        Timber.d("draw: ($x, $y) r = ${Territory.getRadius(measurement)}")
@@ -108,8 +108,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         }
     }
 
-    override fun draw(drawableFootmarks: DrawableFootmarks) {
-        this.drawableFootmarks = drawableFootmarks
+    override fun draw(drawableTerritories: DrawableTerritories) {
+        this.drawableTerritories = drawableTerritories
         invalidate()
     }
 
@@ -119,12 +119,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         drawMesh(canvas)
         drawOriginalLocation(canvas)
 
-        drawableFootmarks.footmarks.forEach {
-            val (x, y) = drawableMap.determineVectorFromOriginOnCanvas(view, it)
-            drawPoint(canvas, x.toFloat(), y.toFloat(), createPaint(Color.GREEN, view.dip(1).toFloat()))
-        }
-
-        drawableFootmarks.territories.forEach {
+        drawableTerritories.territories.forEach {
             drawTerritory(canvas, it, drawableMap)
         }
     }
