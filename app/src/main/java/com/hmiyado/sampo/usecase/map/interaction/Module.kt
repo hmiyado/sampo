@@ -1,9 +1,6 @@
 package com.hmiyado.sampo.usecase.map.interaction
 
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.bind
-import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.singleton
+import com.github.salomonbrys.kodein.*
 import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.MarkerProducer
 import com.hmiyado.sampo.usecase.map.store.MapStore
@@ -18,23 +15,23 @@ val mapUseCaseModule = Kodein.Module {
     bind<MapStore>() with singleton { MapStoreImpl(instance()) }
     bind<MarkerProducer>() with singleton { MarkerProducer(instance(), instance()) }
 
-    bind<ControlLocationSensor>() with singleton { ControlLocationSensor(instance(), instance()) }
-    bind<DisplayScore>() with singleton { DisplayScore(instance(), instance(), Period.ofDays(1), instance()) }
-    bind<DrawCompass>() with singleton { DrawCompass(instance(), instance()) }
-    bind<DrawMap>() with singleton { DrawMap(instance(), instance(), instance()) }
-    bind<DrawMarkers>() with singleton { DrawMarkers(instance(), instance()) }
-    bind<DrawScale>() with singleton { DrawScale(instance(), instance()) }
-    bind<UpdateLocation>() with singleton { UpdateLocation(instance(), instance()) }
-    bind<UpdateTerritory>() with singleton { UpdateTerritory(instance()) }
-    bind<UpdateOrientation>() with singleton { UpdateOrientation(instance(), instance()) }
-    bind<UpdateRotateAngle>() with singleton { UpdateRotateAngle(instance(), instance()) }
-    bind<UpdateScale>() with singleton { UpdateScale(instance(), instance()) }
-    bind<UpdateValidityPeriodEnd>() with singleton { UpdateValidityPeriodEnd(instance()) }
-    bind<AddMarker>() with singleton { AddMarker(instance(), instance()) }
-    bind<SetMarkerAdderAvailability>() with singleton { SetMarkerAdderAvailability(instance(), instance()) }
-    bind<SaveMarker>() with singleton { SaveMarker(instance(), instance()) }
+    bind<ControlLocationSensor>() with provider { ControlLocationSensor(instance(), instance()) }
+    bind<DisplayScore>() with provider { DisplayScore(instance(), instance(), Period.ofDays(1), instance()) }
+    bind<DrawCompass>() with provider { DrawCompass(instance(), instance()) }
+    bind<DrawMap>() with provider { DrawMap(instance(), instance(), instance()) }
+    bind<DrawMarkers>() with provider { DrawMarkers(instance(), instance()) }
+    bind<DrawScale>() with provider { DrawScale(instance(), instance()) }
+    bind<UpdateLocation>() with provider { UpdateLocation(instance(), instance()) }
+    bind<UpdateTerritory>() with provider { UpdateTerritory(instance()) }
+    bind<UpdateOrientation>() with provider { UpdateOrientation(instance(), instance()) }
+    bind<UpdateRotateAngle>() with provider { UpdateRotateAngle(instance(), instance()) }
+    bind<UpdateScale>() with provider { UpdateScale(instance(), instance()) }
+    bind<UpdateValidityPeriodEnd>() with provider { UpdateValidityPeriodEnd(instance()) }
+    bind<AddMarker>() with provider { AddMarker(instance(), instance()) }
+    bind<SetMarkerAdderAvailability>() with provider { SetMarkerAdderAvailability(instance(), instance()) }
+    bind<SaveMarker>() with provider { SaveMarker(instance(), instance()) }
 
-    bind<List<Interaction<*>>>() with singleton {
+    bind<List<Interaction<*>>>() with provider {
         listOf(
                 instance<ControlLocationSensor>(),
                 instance<DisplayScore>(),

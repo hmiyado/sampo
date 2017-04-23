@@ -159,7 +159,8 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
     - [x] validity period を変更すると，
     - [x] 実際に validity period を変更するようにする(適当な時間ごとにポーリングして，時刻を更新する)
 - [] 結果がいちいち0から始まる．Map 画面と同じにならない
-- [] Result, Map を行き来すると，処理が重くなって死ぬ
+- [x] Result, Map を行き来すると，処理が重くなって死ぬ
+    - Interaction のライフサイクルを ViewCreated - DestroyView にしたら直った．なぜ？
 
 ## 4月中の実装予定
 配布可能な状態にする

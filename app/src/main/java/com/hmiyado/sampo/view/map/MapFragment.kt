@@ -74,9 +74,6 @@ class MapFragment : RxFragment(), LazyKodeinAware {
         }
     }
 
-    val presenter: MapFragmentPresenter by instance()
-    val interactions: List<Interaction<*>> by instance()
-
     val locationSettingReceiver: LocationSettingReceiver by instance()
     val compassSensor: CompassSensor by instance()
     private val locationManager: LocationManager by instance()
@@ -98,6 +95,7 @@ class MapFragment : RxFragment(), LazyKodeinAware {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Interaction.Builder(this, FragmentEvent.DESTROY_VIEW).buildAll(kodein().instance())
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -108,7 +106,6 @@ class MapFragment : RxFragment(), LazyKodeinAware {
     override fun onStart() {
         super.onStart()
         Timber.d("on start")
-        Interaction.Builder(this, FragmentEvent.STOP).buildAll(interactions)
     }
 
     override fun onResume() {
