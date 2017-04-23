@@ -184,10 +184,10 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [x] パッケージ名の修正
 - [] まともに見れるようにする
     - [] List Item
-    - [] スコア画面
-        - [] Daily Score
-        - [] Weekly Score
-        - [] Area Achievement
+    - [x] スコア画面
+        - [x] Daily Score
+        - [x] Weekly Score
+        - [x] Area Achievement
 - [] 地図画面から位置情報観測サービスを開始できるようにする
 
 ## MapStore Singleton 問題

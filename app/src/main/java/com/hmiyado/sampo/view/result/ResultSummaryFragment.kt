@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.appKodein
 import com.hmiyado.sampo.controller.map.ScoreViewController
+import com.hmiyado.sampo.controller.result.VisitedAreaViewController
 import com.hmiyado.sampo.usecase.Interaction
 import com.hmiyado.sampo.usecase.map.UseScoreView
+import com.hmiyado.sampo.usecase.result.UseVisitedAreaViewer
 import com.hmiyado.sampo.usecase.result.interaction.ResultSummaryTag
 import com.hmiyado.sampo.usecase.result.interaction.resultSummaryUseCaseModule
 import com.hmiyado.sampo.view.result.ui.ResultSummaryFragmentUi
@@ -28,9 +30,11 @@ class ResultSummaryFragment : RxFragment(), LazyKodeinAware {
 
             bind<UseScoreView.Sink>(ResultSummaryTag.DailyScoreView) with provider { instance<ScoreViewController>(ResultSummaryTag.DailyScoreView) }
             bind<UseScoreView.Sink>(ResultSummaryTag.WeeklyScoreView) with provider { instance<ScoreViewController>(ResultSummaryTag.WeeklyScoreView) }
+            bind<UseVisitedAreaViewer.Sink>() with provider { instance<VisitedAreaViewController>() }
 
             bind<ScoreViewController>(ResultSummaryTag.DailyScoreView) with singleton { ScoreViewController(find(ui.dailyScoreTextViewId)) }
             bind<ScoreViewController>(ResultSummaryTag.WeeklyScoreView) with singleton { ScoreViewController(find(ui.weeklyScoreTextViewId)) }
+            bind<VisitedAreaViewController>() with singleton { VisitedAreaViewController(find(ui.visitedAreaTextViewId)) }
         }
     }
 

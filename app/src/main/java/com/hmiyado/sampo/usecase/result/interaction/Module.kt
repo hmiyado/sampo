@@ -37,6 +37,7 @@ val resultSummaryUseCaseModule = Module {
     bind<UpdateValidityPeriodEnd>() with singleton { UpdateValidityPeriodEnd(instance()) }
     bind<DisplayScore>(ResultSummaryTag.DailyScoreView) with singleton { DisplayScore(instance(), instance(), Period.ofDays(1), instance(ResultSummaryTag.DailyScoreView)) }
     bind<DisplayScore>(ResultSummaryTag.WeeklyScoreView) with singleton { DisplayScore(instance(), instance(), Period.ofDays(7), instance(ResultSummaryTag.WeeklyScoreView)) }
+    bind<ViewVisitedArea>() with singleton { ViewVisitedArea(instance(), instance()) }
 
     bind<List<Interaction<*>>>() with singleton {
         listOf(
@@ -45,7 +46,8 @@ val resultSummaryUseCaseModule = Module {
                 instance<LoadTerritories>(),
                 instance<UpdateLocation>(),
                 instance<UpdateTerritory>(),
-                instance<UpdateValidityPeriodEnd>()
+                instance<UpdateValidityPeriodEnd>(),
+                instance<ViewVisitedArea>()
         )
     }
 }

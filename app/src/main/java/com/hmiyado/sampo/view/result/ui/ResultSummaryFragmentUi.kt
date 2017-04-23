@@ -13,7 +13,7 @@ class ResultSummaryFragmentUi : AnkoComponent<RxFragment> {
     val totalDistanceTextViewId = View.generateViewId()
     val dailyScoreTextViewId = View.generateViewId()
     val weeklyScoreTextViewId = View.generateViewId()
-    val areaScoreTextViewId = View.generateViewId()
+    val visitedAreaTextViewId = View.generateViewId()
 
     override fun createView(ui: AnkoContext<RxFragment>): View = with(ui) {
         val theme = R.style.AppTheme
@@ -50,7 +50,7 @@ class ResultSummaryFragmentUi : AnkoComponent<RxFragment> {
                     textSize = 21f
                 }
                 textView(theme) {
-                    id = areaScoreTextViewId
+                    id = visitedAreaTextViewId
                     textSize = 21f
                 }
             }
