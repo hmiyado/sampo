@@ -35,13 +35,19 @@ class DrawMap(
     }
 
     private fun toDrawableTarget(drawableMap: DrawableMap, territories: List<Territory>, validityPeriodEnd: Instant): DrawableTerritories {
-        val scores = scorer.run {
-            territories.map {
-                it.calcScore(ValidityPeriod.create(Period.ofDays(1), validityPeriodEnd))
+        val validityPeriod = ValidityPeriod.create(Period.ofDays(1), validityPeriodEnd)
+        val coordinates = territories.map {
+            val coordinate = drawableMap.determineVectorFromOrigin(it.area.center)
+            val score = scorer.run {
+                it.calcScore(validityPeriod)
             }
+            val locationCoordinates = it.locations.map {
+                drawableMap.determineVectorFromOrigin(it)
+            }
+            Triple(coordinate, score, locationCoordinates)
         }
 
-        return DrawableTerritories(drawableMap, territories.zip(scores), scorer.maxTerritoryScore)
+        return DrawableTerritories(drawableMap, coordinates, scorer.maxTerritoryScore)
     }
 
     override fun buildConsumer(): Observer<DrawableTerritories> {

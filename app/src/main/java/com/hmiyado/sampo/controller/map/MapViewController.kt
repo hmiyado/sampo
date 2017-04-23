@@ -5,7 +5,6 @@ import com.hmiyado.sampo.R
 import com.hmiyado.sampo.controller.ViewController
 import com.hmiyado.sampo.domain.math.Vector2
 import com.hmiyado.sampo.domain.model.DrawableMap
-import com.hmiyado.sampo.domain.model.Territory
 import com.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.hmiyado.sampo.usecase.map.UseMapView.Sink.DrawableTerritories
 import com.hmiyado.sampo.view.map.custom.MapView
@@ -34,10 +33,10 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         canvas.translate((view.width / 2).toFloat(), (view.height / 2).toFloat())
     }
 
-    private fun drawTerritory(canvas: Canvas, territory: Territory, score: Double, drawableMap: DrawableMap) {
+    private fun drawTerritory(canvas: Canvas, territory: Triple<Vector2, Double, List<Vector2>>, drawableMap: DrawableMap) {
         val areaRadius = view.dip(drawableMap.areaRadius).toFloat()
-        territory.area.let {
-            drawableMap.determineVectorFromOriginOnCanvas(view, it.center)
+        territory.first.let {
+            drawableMap.calcScaledCoordinate(view, it)
         }.let { (x, y) ->
             canvas.drawCircle(
                     x.toFloat(),
@@ -45,15 +44,15 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
                     areaRadius,
                     territoryPaint.apply {
                         val maxAlpha = 256
-                        alpha = (maxAlpha * score / drawableTerritories.maxTerritoryScore).toInt()
+                        alpha = (maxAlpha * territory.second / drawableTerritories.maxTerritoryScore).toInt()
 
                     })
         }
 
         val paint = createPaint(Color.GREEN, view.dip(1).toFloat())
-        territory.locations
+        territory.third
                 .map {
-                    drawableMap.determineVectorFromOriginOnCanvas(view, it)
+                    drawableMap.calcScaledCoordinate(view, it)
                 }
                 .forEach { (x, y) ->
                     drawPoint(canvas, x.toFloat(), y.toFloat(), paint)
@@ -116,8 +115,8 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
         drawMesh(canvas)
         drawOriginalLocation(canvas)
 
-        drawableTerritories.territories.forEach { (territory, score) ->
-            drawTerritory(canvas, territory, score, drawableMap)
+        drawableTerritories.territoriesCoordinates.forEach { it ->
+            drawTerritory(canvas, it, drawableMap)
         }
     }
 

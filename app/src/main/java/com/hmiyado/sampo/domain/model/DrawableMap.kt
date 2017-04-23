@@ -32,6 +32,12 @@ data class DrawableMap(
         }.rotate(rotateAngle)
     }
 
+
+    fun calcScaledCoordinate(view: View, vector2: Vector2): Vector2 = Vector2(
+            calcScaledCoordinate(view, vector2.x),
+            calcScaledCoordinate(view, vector2.y)
+    ).rotate(rotateAngle)
+
     fun calcScaledCoordinate(view: View, p: Double): Float = view.dip((p / scaleFactor).toFloat()).toFloat()
 
     private fun Float.scale(num: Double) = (num / this).toFloat()
