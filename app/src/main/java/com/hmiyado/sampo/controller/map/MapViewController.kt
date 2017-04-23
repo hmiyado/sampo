@@ -20,7 +20,7 @@ import org.threeten.bp.Instant
  * @link MapView に対応するController
  */
 class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
-    lateinit var drawableTerritories: DrawableTerritories
+    var drawableTerritories: DrawableTerritories = DrawableTerritories()
     val drawableMap
         get() = drawableTerritories.drawableMap
 

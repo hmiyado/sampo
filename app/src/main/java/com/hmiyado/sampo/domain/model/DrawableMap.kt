@@ -3,14 +3,15 @@ package com.hmiyado.sampo.domain.model
 import android.view.View
 import com.hmiyado.sampo.domain.math.Degree
 import com.hmiyado.sampo.domain.math.Measurement
+import com.hmiyado.sampo.domain.math.SphericalTrigonometry
 import com.hmiyado.sampo.domain.math.Vector2
 import org.jetbrains.anko.dip
 
 data class DrawableMap(
-        val originalLocation: Location,
-        val scaleFactor: Float,
-        val rotateAngle: Degree,
-        val measurement: Measurement
+        val originalLocation: Location = Location.empty(),
+        val scaleFactor: Float = 0f,
+        val rotateAngle: Degree = Degree(0),
+        val measurement: Measurement = SphericalTrigonometry
 ) {
     /**
      * [originalLocation] から location へのベクトルの水平成分と垂直成分(メートル)を計算する

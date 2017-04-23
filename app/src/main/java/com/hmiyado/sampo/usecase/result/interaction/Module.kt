@@ -31,7 +31,7 @@ enum class ResultSummaryTag {
 val resultSummaryUseCaseModule = Module {
     bind<MapStore>() with singleton { MapStoreImpl(instance()) }
 
-    bind<LoadLocation>() with singleton { LoadLocation(instance(), instance()) }
+    bind<LoadTerritories>() with singleton { LoadTerritories(instance(), instance()) }
     bind<UpdateLocation>() with singleton { UpdateLocation(instance(), instance()) }
     bind<UpdateTerritory>() with singleton { UpdateTerritory(instance()) }
     bind<UpdateValidityPeriodEnd>() with singleton { UpdateValidityPeriodEnd(instance()) }
@@ -42,7 +42,7 @@ val resultSummaryUseCaseModule = Module {
         listOf(
                 instance<DisplayScore>(ResultSummaryTag.DailyScoreView),
                 instance<DisplayScore>(ResultSummaryTag.WeeklyScoreView),
-                instance<LoadLocation>(),
+                instance<LoadTerritories>(),
                 instance<UpdateLocation>(),
                 instance<UpdateTerritory>(),
                 instance<UpdateValidityPeriodEnd>()

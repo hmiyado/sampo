@@ -23,12 +23,12 @@ interface UseMapView {
 
     interface Sink {
         data class DrawableTerritories(
-                val drawableMap: DrawableMap,
+                val drawableMap: DrawableMap = DrawableMap(),
                 /**
                  * territory と score のペア
                  */
-                val territories: List<Pair<Territory, Double>>,
-                val maxTerritoryScore: Double
+                val territories: List<Pair<Territory, Double>> = emptyList(),
+                val maxTerritoryScore: Double = 0.0
         )
 
         fun draw(drawableTerritories: DrawableTerritories)
