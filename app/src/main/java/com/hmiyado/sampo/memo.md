@@ -161,6 +161,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
 - [] 結果がいちいち0から始まる．Map 画面と同じにならない
 - [x] Result, Map を行き来すると，処理が重くなって死ぬ
     - Interaction のライフサイクルを ViewCreated - DestroyView にしたら直った．なぜ？
+- [] 
 
 ## 4月中の実装予定
 配布可能な状態にする
@@ -189,6 +190,7 @@ Kodeinを導入(https://salomonbrys.github.io/Kodein/)
         - [x] Weekly Score
         - [x] Area Achievement
 - [] 地図画面から位置情報観測サービスを開始できるようにする
+- [] アプリのアイコンを変える
 
 ## MapStore Singleton 問題
 MapStore のシングルトンを Activity で抱えていることに寄って・・・
