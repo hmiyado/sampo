@@ -3,17 +3,13 @@ package com.hmiyado.sampo.controller.map
 import android.graphics.*
 import com.hmiyado.sampo.R
 import com.hmiyado.sampo.controller.ViewController
-import com.hmiyado.sampo.domain.math.Measurement
 import com.hmiyado.sampo.domain.math.Vector2
-import com.hmiyado.sampo.domain.model.Area
 import com.hmiyado.sampo.domain.model.DrawableMap
-import com.hmiyado.sampo.domain.model.Location
 import com.hmiyado.sampo.domain.model.Territory
 import com.hmiyado.sampo.usecase.map.UseMapView.Sink
 import com.hmiyado.sampo.usecase.map.UseMapView.Sink.DrawableTerritories
 import com.hmiyado.sampo.view.map.custom.MapView
 import org.jetbrains.anko.dip
-import org.threeten.bp.Instant
 
 /**
  * Created by hmiyado on 2016/12/10.
@@ -24,8 +20,7 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     val drawableMap
         get() = drawableTerritories.drawableMap
 
-    private val measurement: Measurement
-        get() = drawableMap.measurement
+    private val territoryPaint = createPaint(Color.MAGENTA, view.dip(1).toFloat())
 
     private fun createPaint(colorInt: Int, strokeWidth: Float): Paint {
         val paintMapPoint = Paint()
@@ -40,16 +35,9 @@ class MapViewController(view: MapView) : ViewController<MapView>(view), Sink {
     }
 
     private fun drawTerritory(canvas: Canvas, territory: Territory, score: Double, drawableMap: DrawableMap) {
-        val areaRadius = view.dip(drawableMap.scaleFactor.scale(Area.getRadius(measurement))).toFloat()
-        val territoryPaint = createPaint(Color.MAGENTA, view.dip(1).toFloat())
-        territory.area.run {
-            Pair(Area.findLatitudeById(latitudeId), Area.findLongitudeById(longitudeId))
-        }.let { (latitude, longitude) ->
-            Pair(latitude + Area.LATITUDE_UNIT / 2, longitude + Area.LONGITUDE_UNIT / 2)
-        }.let { (centerLatitude, centerLongitude) ->
-            Location(centerLatitude, centerLongitude, Instant.EPOCH)
-        }.let {
-            drawableMap.determineVectorFromOriginOnCanvas(view, it)
+        val areaRadius = view.dip(drawableMap.areaRadius).toFloat()
+        territory.area.let {
+            drawableMap.determineVectorFromOriginOnCanvas(view, it.center)
         }.let { (x, y) ->
             canvas.drawCircle(
                     x.toFloat(),

@@ -13,6 +13,8 @@ data class DrawableMap(
         val rotateAngle: Degree = Degree(0),
         val measurement: Measurement = SphericalTrigonometry
 ) {
+    val areaRadius = scaleFactor.scale(Area.getRadius(measurement))
+
     /**
      * [originalLocation] から location へのベクトルの水平成分と垂直成分(メートル)を計算する
      */
@@ -31,4 +33,6 @@ data class DrawableMap(
     }
 
     fun calcScaledCoordinate(view: View, p: Double): Float = view.dip((p / scaleFactor).toFloat()).toFloat()
+
+    private fun Float.scale(num: Double) = (num / this).toFloat()
 }

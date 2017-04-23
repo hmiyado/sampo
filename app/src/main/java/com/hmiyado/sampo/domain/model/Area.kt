@@ -49,6 +49,14 @@ data class Area(
         }
     }
 
+    val center: Location = this.run {
+        Pair(Area.findLatitudeById(latitudeId), Area.findLongitudeById(longitudeId))
+    }.let { (latitude, longitude) ->
+        Pair(latitude + Area.LATITUDE_UNIT / 2, longitude + Area.LONGITUDE_UNIT / 2)
+    }.let { (centerLatitude, centerLongitude) ->
+        Location(centerLatitude, centerLongitude)
+    }
+
     override fun compareTo(other: Area): Int {
         if (this == other) {
             return 0
